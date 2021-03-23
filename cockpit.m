@@ -6,7 +6,6 @@
 ## @ moritz siegel
 
 ## init
-pkg load matgeom
 close all
 clear all
 clc
@@ -23,13 +22,13 @@ nmax = 15; #/num, maximum number of files analysed.( default: 10 )
 global verbose = true; # /bool, plot for error checking? ( default: true )
 exclude = [ 6, 7, 11 ]
 channel_order0 = [ 0, 1, 2 ];
-channel_order = repmat( channel_order0, nmax, 1 )
-channel_order( 3, : ) = [ 2, 0, 1 ]
-channel_order( 4, : ) = [ 1, 2, 0 ]
-channel_order( 6, : ) = [ 2, 0, 1 ]
-channel_order( 7, : ) = [ 1, 2, 0 ]
-channel_order( 8, : ) = [ 2, 0, 1 ]
-channel_order( 12, : ) = [ 2, 0, 1 ]
+channel_order = repmat( channel_order0, nmax, 1 );
+channel_order( 3, : ) = [ 2, 0, 1 ];
+channel_order( 4, : ) = [ 1, 2, 0 ];
+channel_order( 6, : ) = [ 2, 0, 1 ];
+channel_order( 7, : ) = [ 1, 2, 0 ];
+channel_order( 8, : ) = [ 2, 0, 1 ];
+channel_order( 12, : ) = [ 2, 0, 1 ];
 ## end of settings: hands off /////////////////////////////////////////////////
 ## ///////////////////////////////////////////////////////////////////////////
 

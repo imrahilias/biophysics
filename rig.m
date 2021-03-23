@@ -23,7 +23,7 @@ function [ r, t, s ] = rig( p, q )
   p_shifted = p - repmat( centroid_p, 1, n );
   q_shifted = q - repmat( centroid_q, 1, n );
   
-  ## covariance (?) matrix
+  ## covariance matrix
   h = p_shifted * q_shifted';
   
   ## singular value decomposition

@@ -58,5 +58,4 @@ deltay = 29 +/- 4 nm
 - rigid projection demands sets of the same size so some regions are skipped
 - rigid projection does not cover sheering/scaling/etc
 - more efficient 3d clustering
-- 3d projection optimisation routine
 - affine projection is probably needed anyway for sheering/scaling

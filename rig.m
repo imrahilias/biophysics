@@ -15,7 +15,7 @@ function [ r, t, s ] = rig( p, q )
   assert( size( p, 1 ) == 3, 'input matrix p must be 3xn' );
   assert( size( q, 1 ) == 3, 'input matrix q must be 3xn' );
   n = size( p, 2 );
-  assert( n > 2, 'need at least 2 points' );
+  assert( n > 2, 'need at least 3 points' );
   
   ## find centroids & shift there
   centroid_p = mean( p, 2 );

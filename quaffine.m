@@ -25,7 +25,7 @@ shear = [ 1, 0.5, 0; 0, 1, 0; 0, 0, 1 ];
 affine = eye( 3 );
 affine = affine * rot;
 #affine = affine * reflect;
-affine = affine * scale;
+#affine = affine * scale;
 affine = affine * shear;
 q = ( affine * p' )';
 q = q + translate;
@@ -64,12 +64,14 @@ s_q = q_shifted' * q_shifted;
 #assert( [1,0,0] * s_p * [1,0,0]' > 0 & [1,0,0] * s_q * [1,0,0]' > 0, "not positive-definite"); # chol() checks that
 
 ## inverse square-roots of the covariance matrices
-l_p = chol( s_p, "lower" ); # choleski decomposition: A -> LL*
-l_q = chol( s_q, "lower" );
-ss_p = inv( l_p ); # inverse: A -> A^-1
-ss_q = inv( l_q );
-p_orthogonal = ( ss_p * p_shifted' )';
-q_orthogonal = ( ss_q * q_shifted' )';
+s_sqrt_p = chol( s_p, "lower" ); # choleski decomposition: A -> LL*
+s_sqrt_q = chol( s_q, "lower" );
+s_inv_sqrt_p = inv( s_sqrt_p ); # inverse: A -> A^-1
+s_inv_sqrt_q = inv( s_sqrt_q );
+p_orthogonal = ( s_inv_sqrt_p * p_shifted' )';
+q_orthogonal = ( s_inv_sqrt_q * q_shifted' )';
+
+## p and q are now related by a rotational matrix r = s_inv_sqrt_q affine s_sqrt_p (no inverse!)
 
 ## plot & compare both orthonormalised point clouds with shifted
 fhos0 = figure;
@@ -87,3 +89,67 @@ axis equal;
 plot3( q_orthogonal(:,1), q_orthogonal(:,2), q_orthogonal(:,3), 'r' );
 print( fhoo0, "quaffine_2_orthogonal.png" );
 
+## 3) enter 4th dimension: quaternions
+radii3_p = sum( p_orthogonal .^ 2, 2 ) / 3; # we define re( quat ) = r/3, why not unit quat?
+radii3_q = sum( q_orthogonal .^ 2, 2 ) / 3;
+quaternion_p = [ radii3_p, p_orthogonal ];
+quaternion_q = [ radii3_q, p_orthogonal ];
+
+## a) first-order elementary symmetric polynomials for all quaterions,
+## since point clouds are orthogonal, these should be zero.
+assert( sum( p_shifted ) < eps & sum( p_shifted ) < eps, "not orthogonal" );
+troika_p_1 = 0;
+troika_q_1 = 0;
+
+## b) second-order elementary symmetric polynomials,
+## (q1 * q2)_xyz = cross( q1_xyz, q2_xyz ) + q1_r * q2_xyz + q2_r * q1_xyz,
+## (q1 * q2)_r = q1_r * q2_r - dot( q1_xyz * q2_xyz ),
+## cross( a, a ) = 0, dot product is kummutative.
+## https://www.sciencedirect.com/topics/computer-science/quaternion-multiplication
+moment_2_p( :,2:4 ) = 2 * radii3_p .* p_orthogonal;
+moment_2_q( :,2:4 ) = 2 * radii3_q .* q_orthogonal;
+moment_2_p( :,1 ) = radii3_p .^ 2 - dot( p_orthogonal, p_orthogonal, 2 );
+moment_2_q( :,1 ) = radii3_q .^ 2 - dot( q_orthogonal, q_orthogonal, 2 ) ;
+
+## second-order elementary symmetric polynomials is equal to,
+## minus the second-order discrete moment for all quaterions.
+troika_p_2 = - sum( moment_2_p );
+troika_q_2 = - sum( moment_2_q );
+
+## c) third-order elementary symmetric polynomials,
+## which is equal to the third-order discrete moment for all quaterions.
+moment_3_p( :,2:4 ) = moment_2_p( :,1 ) .* p_orthogonal + radii3_p .* moment_2_p( :,2:4 );
+moment_3_q( :,2:4 ) = moment_2_q( :,1 ) .* q_orthogonal + radii3_q .* moment_2_q( :,2:4 );
+moment_3_p( :,1 ) = moment_2_p( :,1 ) .* radii3_p - dot( moment_2_p( :,2:4 ), p_orthogonal, 2 );
+moment_3_q( :,1 ) = moment_2_q( :,1 ) .* radii3_q - dot( moment_2_q( :,2:4 ), q_orthogonal, 2 );
+troika_p_3 = moment_3_p;
+troika_q_3 = moment_3_q;
+
+## horns algorithm s_ab = sum_k( p_a_k * p_b_k ), here k=(1),2,3
+s_xx = troika_p_2( 1 ) * troika_q_2( 1 ) + troika_p_3( 1 ) * troika_q_3( 1 ); # since troika_q_1 = 0
+s_xy = troika_p_2( 1 ) * troika_q_2( 2 ) + troika_p_3( 1 ) * troika_q_3( 2 );
+s_xz = troika_p_2( 1 ) * troika_q_2( 3 ) + troika_p_3( 1 ) * troika_q_3( 3 );
+s_yx = troika_p_2( 2 ) * troika_q_2( 1 ) + troika_p_3( 2 ) * troika_q_3( 1 ); # since troika_q_1 = 0
+s_yy = troika_p_2( 2 ) * troika_q_2( 2 ) + troika_p_3( 2 ) * troika_q_3( 2 );
+s_yz = troika_p_2( 2 ) * troika_q_2( 3 ) + troika_p_3( 2 ) * troika_q_3( 3 );
+s_zx = troika_p_2( 3 ) * troika_q_2( 1 ) + troika_p_3( 3 ) * troika_q_3( 1 ); # since troika_q_1 = 0
+s_zy = troika_p_2( 3 ) * troika_q_2( 2 ) + troika_p_3( 3 ) * troika_q_3( 2 );
+s_zz = troika_p_2( 3 ) * troika_q_2( 3 ) + troika_p_3( 3 ) * troika_q_3( 3 );
+
+## matrix of sums of products
+big_n( 1, 1 ) = s_xx + s_yy + s_zz;
+big_n( 1, 2 ) = s_yz - s_zy;
+big_n( 1, 3 ) = s_zx - s_xz;
+big_n( 1, 4 ) = s_xy - s_yx;
+big_n( 2, 1 ) = big_n( 1, 2 );
+big_n( 2, 2 ) = s_xx - s_yy - s_zz;
+big_n( 2, 3 ) = s_xy + s_yx;
+big_n( 2, 4 ) = s_zx + s_xz;
+big_n( 3, 1 ) = big_n( 1, 3 );
+big_n( 3, 2 ) = big_n( 2, 3 );
+big_n( 3, 3 ) = - s_xx + s_yy - s_zz;
+big_n( 3, 4 ) = s_yz + s_zy;
+big_n( 4, 1 ) = big_n( 1, 4 );
+big_n( 4, 2 ) = big_n( 2, 4 );
+big_n( 4, 3 ) = big_n( 3, 4 );
+big_n( 4, 4 ) = - s_xx - s_yy + s_zz;

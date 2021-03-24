@@ -16,9 +16,10 @@ global hd = "~/biophysics" # parent directory
 global wd = "data/210318_beads_2_colors_in_focus"
 global fn = "position"
 global nn = ""; # additional luminosity suffix  ( default: "" )
+method = "affine"; # /char, "rigid","affine", method to reconstruct
 global minpts = 10; # minimum number of points needed in its neighbourhood to consider it as a valid data(not noise). ( default: 3 )
-global eps = 300; #/nm, distance on which neighbourhood is calculated.( default: 200 )
-nmax = 15; #/num, maximum number of files analysed.( default: 10 )
+global dist = 300; #/nm, distance on which neighbourhood is calculated.( default: 200 )
+nmax = 1; #/num, maximum number of files analysed.( default: 10 )
 global verbose = true; # /bool, plot for error checking? ( default: true )
 exclude = [ 6, 7, 11 ]
 channel_order0 = [ 0, 1, 2 ];
@@ -45,8 +46,8 @@ global rf = fopen ( "kockpit.log", "w" );
 
 
 disp( 'cycle \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
-rs = nan( nmax, 3, 3 );
-ts = nan( nmax, 3 );
+rotations = nan( nmax, 3, 3 );
+translations = nan( nmax, 3 );
 for n = 1 : nmax
     if ( any( exclude == n ) )
         disp( sprintf( "    warning: skipping file positions%d.csv", n ) );
@@ -65,11 +66,11 @@ for n = 1 : nmax
     
     disp( '    analyse \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
     
-    [ centroid_red, centroid_blue_transformed, centroid_blue, red, blue, r, t ] = ampel( pos, channel_order( n, : ), n );
+    [ centroid_red, centroid_blue_transformed, centroid_blue, red, blue, rotation, translation ] = ampel( pos, channel_order( n, : ), n, method );
     
     ## save optimal rigid transform for comparison
-    rs( n, :, : ) = r;
-    ts( n, : ) = t;
+    rotations( n, :, : ) = rotation;
+    translations( n, : ) = translation;
     
     
     disp( 'plot \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
@@ -99,28 +100,28 @@ endfor
 # remove empty/corrupt lines for statistics
 n = 1
 while ( n <= nmax )
-    if ( any( isnan( rs( n, :, : ) ) ) )
-        rs( n, :, : ) = []
-        ts( n, : ) = []
+    if ( any( isnan( rotations( n, :, : ) ) ) )
+        rotations( n, :, : ) = []
+        translations( n, : ) = []
         nmax = nmax - 1;
     else
         n = n + 1;
     endif
 endwhile
 
-save rs.mat rs
-save ts.mat ts
+save rotations.mat rotations
+save translations.mat translations
 
-mean( rs )
-std( rs )
-median( rs )
+mean( rotations )
+std( rotations )
+median( rotations )
 figure;
-plot3( rs(:,1), rs(:,2), rs(:,3) )
+plot3( rotations(:,1), rotations(:,2), rotations(:,3) )
 
-mean( ts )
-std( ts )
-median( ts )
-plot3( ts(:,1), ts(:,2), ts(:,3) )
+mean( translations )
+std( translations )
+median( translations )
+plot3( translations(:,1), translations(:,2), translations(:,3) )
 
 
 disp( 'done \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );

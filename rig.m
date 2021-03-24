@@ -9,39 +9,38 @@
 ## Machine Intelligence, vol. PAMI-9, no. 5, pp. 698-700, Sept. 1987,
 ## doi: 10.1109/TPAMI.1987.4767965.
 ## moritz siegel @ 210322
-function [ r, t, s ] = rig( p, q )
+function [ rotation, translation, s ] = rig( p, q )
   assert( nargin == 2 && size( p ) == size( q ), ...
-          'need 2 identical input matrices' );
-  assert( size( p, 1 ) == 3, 'input matrix p must be 3xn' );
-  assert( size( q, 1 ) == 3, 'input matrix q must be 3xn' );
-  n = size( p, 2 );
-  assert( n > 2, 'need at least 3 points' );
+          "need 2 identical input matrices\n" );
+  assert( size( p, 2 ) == 3, "input matrix p must be nx3\n" );
+  assert( size( q, 2 ) == 3, "input matrix q must be nx3\n" );
+  n = size( p, 1 );
+  assert( n > 2, "need at least 3 points\n" );
   
   ## find centroids & shift there
-  centroid_p = mean( p, 2 );
-  centroid_q = mean( q, 2 );
-  p_shifted = p - repmat( centroid_p, 1, n );
-  q_shifted = q - repmat( centroid_q, 1, n );
+  centroid_p = mean( p, 1 );
+  centroid_q = mean( q, 1 );
+  p_shifted = p - repmat( centroid_p, n, 1 );
+  q_shifted = q - repmat( centroid_q, n, 1 );
   
   ## covariance matrix
-  h = p_shifted * q_shifted';
+  h = p_shifted' * q_shifted;
   
   ## singular value decomposition
   [ u, s, v ] = svd( h );
-  r = v * u';
+  rotation = v * u'
   
-  if ( det( r ) < 0 )
-    printf( "warning: det(r) < 0" );
-    if ( any( s(:) ) < 0 )
-      printf( "found reflection, correcting." );
-      v(:,3) = -v(:,3);
-      r = v*u';
+  if ( det( rotation ) < 0 )
+    printf( "warning: det(r) < 0\n" );
+    if ( any( s( : ) ) < 0 )
+      printf( "found reflection, correcting.\n" );
+      v( :, 3 ) = -v( :, 3 );
+      rotation = v * u';
     else
       printf( "error: single-value-decomposition failed! \
-provided data seems is too noisy for least-squares." );  
-      exit(1)
+provided data seems is too noisy for least-squares\n." );  
     endif
   endif
 
-  t = centroid_q - r * centroid_p;
+  translation = centroid_q - ( rotation * centroid_p' )';
 end

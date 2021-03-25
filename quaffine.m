@@ -1,6 +1,14 @@
 #!/bin/octave
 ## @ moritz siegel
-
+##
+## Berthold K. P. Horn, "Closed-form solution of absolute orientation
+## using unit quaternions," J. Opt. Soc. Am. A 4, 629-642 (1987)
+##
+## Qu J, Gong L, Yang L. A 3D point matching algorithm for affine
+## registration. Int J Comput Assist Radiol Surg. 2011
+## Mar;6(2):229-36. doi: 10.1007/s11548-010-0503-y. Epub 2010 Jul
+## 16. PMID: 20635158.
+##
 clear all
 close all
 clc

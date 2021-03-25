@@ -49,9 +49,9 @@ rigidly.
 Brief analysis leads to the conclusion that the transformation is
 somewhat euclidian, but to be honest; the spread (based on mean and
 standard deviation) is not too great:
-theta = 0.0007 +/- 0.0004 rad
-deltax = 34 +/- 8 nm
-deltay = 29 +/- 4 nm
+- theta = 0.0007 +/- 0.0004 rad
+- deltax = 34 +/- 8 nm
+- deltay = 29 +/- 4 nm
 
 # problems
 - variable illumination order has to be adjusted manually unless fixed

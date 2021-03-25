@@ -1,0 +1,10 @@
+# Created by Octave 6.2.0, Thu Mar 25 19:56:34 2021 CET <m@archaeopteryx>
+# name: rotation
+# type: matrix
+# rows: 3
+# columns: 3
+ 0.99999981141284766 -0.00061414515322671948 0
+ 0.00061414515322671948 0.99999981141284766 0
+ 0 0 1
+
+

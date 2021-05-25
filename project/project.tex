@@ -1,0 +1,742 @@
+% arara: pdflatex: { shell: true, interaction: nonstopmode }
+% arara: bibtex
+% arara: makeglossaries
+% arara: makeindex
+% arara: pdflatex: { shell: true, interaction: nonstopmode }
+% arara: pdflatex: { shell: true, interaction: nonstopmode }
+\documentclass[11pt, a4paper, oneside, twocolumn]{report}
+% .  ___   ___        ___  ___  ___   ___  ___  ___   ___              ___         ___   ___   ___ 
+% . |   |=|_.'   .'|=|_.' `._|=|   |=|_.' `._|=|   |=|_.'   .'|   .'| |   |   .'|=|_.'  |   |=|_.' 
+% . `.  |      .'  |  ___      |   |           |   |      .'  | .'  |\|   | .'  |___    `.  |      
+% .   `.|=|`.  |   |=|_.'      |   |           |   |      |   | |   | |   | |   |`._|=.   `.|=|`.  
+% .  ___  |  `.|   |  ___      `.  |           `.  |      |   | |   | |  .' `.  |  __||  ___  |  `.
+% .  `._|=|___||___|=|_.'        `.|             `.|      |___| |___| |.'     `.|=|_.''  `._|=|___|
+% .                                                                                                
+%% packages --------------------------------------------------------------------
+\usepackage{hyphenations} % thats my own hyphenation list
+% \usepackage[english]{babel}
+\usepackage[font={it}]{caption}
+\usepackage[noend]{algpseudocode}
+\usepackage[chapter]{mytodo} % thats my own todo package based on easy-todo
+\usepackage{
+  amsmath,
+  amssymb,
+  graphicx,
+  hhline,
+  hyphenat,
+  ifdraft,
+  listings,
+  makeidx,
+  pdfpages,
+  pgfplots,
+  siunitx,
+  subcaption,
+  tabularx,
+  tikzinput,
+  xcolor}
+\usepackage[nottoc]{tocbibind} % hide toc itself from toc
+\usepackage[hidelinks]{hyperref} % always load last!
+\usepackage[acronym,nomain,toc]{glossaries} % always load after hyperref!
+%% settings --------------------------------------------------------------------
+\pgfplotsset{%
+  width  = \textwidth,
+  height = \textwidth,
+  compat = 1.17,
+  colormap name = viridis,
+  cycle list name = exotic,
+} % TikZ doesnt know the twocolumn thing
+%\usetikzlibrary{external}
+%\tikzexternalize[optimize=true,prefix=tikz/] % externalize tikz, much faster, many conflicts!
+\setcounter{secnumdepth}{2} % set level of depth for numbering
+\graphicspath{{figures/}}
+\input{listingsrc.tex} % a lot of listing options
+\renewcommand{\arraystretch}{1.2} % streches row heigth in arrays (and tables)
+%% makros ----------------------------------------------------------------------
+\renewcommand{\b}{\textbf}
+\renewcommand{\u}{\underline}
+\renewcommand{\tt}{\texttt}
+\renewcommand{\t}{\todo}
+\newcommand{\e}{\emph}
+\newcommand{\n}{\textnormal}
+\newcommand{\m}{\mathrm}
+\newcommand{\x}[1]{#1\index{#1}}
+% .  ___  ___   ___        ___  ___   ___                   ___ 
+% . `._|=|   |=|_.'   .'| `._|=|   |=|_.'   .'|        .'|=|_.' 
+% .      |   |      .'  |      |   |      .'  |      .'  |  ___ 
+% .      |   |      |   |      |   |      |   |      |   |=|_.' 
+% .      `.  |      |   |      `.  |      |   |  ___ |   |  ___ 
+% .        `.|      |___|        `.|      |___|=|_.' |___|=|_.' 
+% .                                                            
+\begin{document}
+\begin{titlepage}
+  \onecolumn
+  \centering
+  \large
+  a\\
+  \vspace{.5cm}
+  {\Large \textsc{ Projektarbeit / Student Project}}\\
+  \vspace{1cm}
+  {\Huge \textsc{ Dual Channel Single Molecule Localisation Microscopy}}\\
+  \vspace{1cm}
+  concluded at the\\
+  \vspace{.5cm}
+  {\Large \textsc{Technische Universit\"at (Tu) Wien}}\\
+  \vspace{.5cm}
+  advised by\\
+  \vspace{.5cm}
+  {\Large \textsc{Lukas Velas}}\\
+  \vspace{.5cm}
+  of\\
+  \vspace{.5cm}
+  {\Large \textsc{Moritz Siegel}}\\
+  \vfill
+  \includegraphics[scale=.5]{npc/npc256.png}\\
+  \vfill
+  Vienna\\
+  \today\\
+  \vspace{.5cm}
+  \small{\href{mailto:moritz.siegel@tuwien.ac.at}{moritz.siegel@tuwien.ac.at}}\\
+  \small{\url{https://github.com/imrahilias/biophysics}}\\
+\end{titlepage}
+% .                    _    ___   ___  ___  ___   ___        __                     ___  ___  ___   ___ 
+% .   .'|=|`.     .'|=| `. |   |=|_.' `._|=|   |=|_.'   .'|=|  |   .'|=|`.     .'|=|_.' `._|=|   |=|_.' 
+% . .'  | |  `. .'  | | .' `.  |           |   |      .'  | |  | .'  | |  `. .'  |           |   |      
+% . |   |=|   | |   |=|'.    `.|=|`.       |   |      |   |=|.'  |   |=|   | |   |           |   |      
+% . |   | |   | |   | |  |  ___  |  `.     `.  |      |   |  |`. |   | |   | `.  |  ___      `.  |      
+% . |___| |___| |___|=|_.'  `._|=|___|       `.|      |___|  |_| |___| |___|   `.|=|_.'        `.|      
+% .
+% \clearpage \onecolumn \chapter*{Abstract}
+% asdf
+%
+% \vfill
+%
+% \section*{Keywords}
+% asdf\\
+% .  ___  ___   ___                    ___ 
+% . `._|=|   |=|_.'   .'|=|`.     .'|=|_.' 
+% .      |   |      .'  | |  `. .'  |      
+% .      |   |      |   | |   | |   |      
+% .      `.  |      `.  | |  .' `.  |  ___ 
+% .        `.|        `.|=|.'     `.|=|_.' 
+% .                                        
+\clearpage \tableofcontents
+%\clearpage \listoftodos % conflict: comment out \listoftodos when externalizing tikz, or use "\tikzexternalize[optimize=false"
+% .              ___   ___  ___   ___        __              
+% .   .'|   .'| |   | `._|=|   |=|_.'   .'|=|  |   .'|=|`.   
+% . .'  | .'  |\|   |      |   |      .'  | |  | .'  | |  `. 
+% . |   | |   | |   |      |   |      |   |=|.'  |   | |   | 
+% . |   | |   | |  .'      `.  |      |   |  |`. `.  | |  .' 
+% . |___| |___| |.'          `.|      |___|  |_|   `.|=|.'   
+% .
+\clearpage\chapter{Introduction}
+
+Single Molecule Localisation Microscopy (SMLM) is a technique of
+fitting a full Point Spread Functions (PSF) to a stack of images
+containing reasonably spaced fluorescence signals.\\
+
+To be able to accurately estimate the 3 dimensional location of the
+fluorescent molecule, the PSF must be known quite well. Simply put: If
+one knows the shape of a point source in varying degrees of defocus,
+one can guess the defocus and thus the z coordinate of the
+fluorescence molecule.\\
+
+
+
+\clearpage\chapter{Results}
+
+
+\section{Phase Retrieval}
+
+It is possible to use different excitations to simultaneously measure
+different fluorescence markers, but for that the Point Spread
+Functions (PSF) has to known for each wavelength. So the PSFs are
+estimated both for red and blue laser light, with the Phase Retrieval
+program by [Jesacher et al 21?]; each on a stack of 50000 STORM images
+of 100~nm beads stained with fluorescence dyes for both red (645~nm)
+and blue (488~nm) laser light.\\
+
+To further complicate things, the new Olympus 1.5~NA objective comes
+with a Correction Collar to compensate for aberrations---which
+naturally vary slightly for both color channels. In order to find the
+best Correction Collar setting of the Olympus 1.5~NA objective for
+SMLM, the Point Point Spread Functions (PSF) is computed for each of
+the three settings of the correction collar $\{0.13,0.17,0.19\}$;
+using the program by [Jesacher et al 21?].\\
+
+The Zernike modes of the PSF are shown for each of the three
+correction collar settings $\{0.13,0.17,0.19\}$, each for blue channel
+respective red channel in Figure~\ref{f:zernblue} respective
+Figure~\ref{f:zernred}.\\
+
+For convenience the same results are additionally shown grouped by the
+the three correction collar settings $\{0.13,0.17,0.19\}$, now for
+both red and blue channel in Figure~\ref{f:zern013},
+Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
+
+% \begin{figure*}[!t]
+%   \begin{tikzpicture}
+%     \begin{axis}[
+%       % enlargelimits=false,
+%       smooth,
+%       grid=both,
+%       grid style=dashed,
+%       xlabel={Zernike mode number},
+%       % xticklabels={,,},
+%       ylabel={Aberration / au},
+%       % grid=major,
+%       legend entries={0.13 X,0.13 X,0.13 X},
+%       % legend pos = north west,
+%       ybar = 1pt,% configures `bar shift'
+%       bar width = 1pt,
+%       % nodes near coords,
+%       % point meta = y*1e2, % the displayed number
+%       xmin = 0,
+%       xmax = 57,
+%       ymin = -0.1,
+%       ymax = 0.1,
+%       ]
+%       \addplot+ [ ybar, color=teal ]
+%       table [ x=modes, y=0.13blue, col sep=comma ] {figures/crlb/zernikes.csv};
+%       \addplot+ [ ybar, color=orange ]
+%       table [ x=modes, y=0.17blue, col sep=comma ] {figures/crlb/zernikes.csv};
+%       \addplot+ [ ybar, color=purple ]
+%       table [ x=modes, y=0.19blue, col sep=comma ] {figures/crlb/zernikes.csv};
+%     \end{axis}
+%   \end{tikzpicture}
+%   \caption{ asdf }
+%   \label{f:axes}
+% \end{figure*}
+
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      height = 1.3\textwidth,
+      witdh = \textwidth,
+      % enlargelimits=false,
+      smooth,
+      grid=both,
+      grid style=dashed,
+      ylabel={Zernike mode number},
+      % xticklabels={,,},
+      xlabel={Aberration / au},
+      % grid=major,
+      legend entries={0.13 blue, 0.17 blue, 0.19 blue},
+      % legend pos = north west,
+      xbar = 1pt,% configures `bar shift'
+      bar width = 1pt,
+      % nodes near coords,
+      % point meta = y*1e2, % the displayed number
+      ymin = 0,
+      ymax = 57,
+      xmin = -0.1,
+      xmax = 0.1,
+      ]
+      \addplot+ [ xbar, color=teal ]
+      table [ y=modes, x=0.13blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      \addplot+ [ xbar, color=orange ]
+      table [ y=modes, x=0.17blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      \addplot+ [ xbar, color=purple ]
+      table [ y=modes, x=0.19blue, col sep=comma ] {figures/crlb/zernikes.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{ Blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
+    model via phase retrieval, for all three correction collar settings
+    (0.13, 0.17, 0.19).}
+  \label{f:zernblue}
+\end{figure*}
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      height = 1.3\textwidth,
+      witdh = \textwidth,
+      % enlargelimits=false,
+      smooth,
+      grid=both,
+      grid style=dashed,
+      ylabel={Zernike mode number},
+      % xticklabels={,,},
+      xlabel={Aberration / au},
+      % grid=major,
+      legend entries={0.13 red, 0.17 red, 0.19 red},
+      % legend pos = north west,
+      xbar = 1pt,% configures `bar shift'
+      bar width = 1pt,
+      % nodes near coords,
+      % point meta = y*1e2, % the displayed number
+      ymin = 0,
+      ymax = 57,
+      xmin = -0.1,
+      xmax = 0.1,
+      ]
+      \addplot+ [ xbar, color=teal ]
+      table [ y=modes, x=0.13red, col sep=comma ] {figures/crlb/zernikes.csv};
+      \addplot+ [ xbar, color=orange ]
+      table [ y=modes, x=0.17red, col sep=comma ] {figures/crlb/zernikes.csv};
+      \addplot+ [ xbar, color=purple ]
+      table [ y=modes, x=0.19red, col sep=comma ] {figures/crlb/zernikes.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{ Red channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
+    model via phase retrieval, for all three correction collar settings
+    (0.13, 0.17, 0.19).}
+  \label{f:zernred}
+\end{figure*}
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      height = 1.3\textwidth,
+      witdh = \textwidth,
+      % enlargelimits=false,
+      smooth,
+      grid=both,
+      grid style=dashed,
+      ylabel={Zernike mode number},
+      % xticklabels={,,},
+      xlabel={Aberration / au},
+      % grid=major,
+      legend entries={0.13 blue, 0.13 red},
+      % legend pos = north west,
+      xbar = 1pt,% configures `bar shift'
+      bar width = 1pt,
+      % nodes near coords,
+      % point meta = y*1e2, % the displayed number
+      ymin = 0,
+      ymax = 57,
+      xmin = -0.1,
+      xmax = 0.1,
+      ]
+      \addplot+ [ xbar, color=cyan ]
+      table [ y=modes, x=0.13blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      \addplot+ [ xbar, color=purple ]
+      table [ y=modes, x=0.13red, col sep=comma ] {figures/crlb/zernikes.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
+    model via phase retrieval, for correction collar setting of 0.13.}
+  \label{f:zern013}
+\end{figure*}
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      height = 1.3\textwidth,
+      witdh = \textwidth,
+      % enlargelimits=false,
+      smooth,
+      grid=both,
+      grid style=dashed,
+      ylabel={Zernike mode number},
+      % xticklabels={,,},
+      xlabel={Aberration / au},
+      % grid=major,
+      legend entries={0.17 blue, 0.17 red},
+      % legend pos = north west,
+      xbar = 1pt,% configures `bar shift'
+      bar width = 1pt,
+      % nodes near coords,
+      % point meta = y*1e2, % the displayed number
+      ymin = 0,
+      ymax = 57,
+      xmin = -0.1,
+      xmax = 0.1,
+      ]
+      \addplot+ [ xbar, color=cyan ]
+      table [ y=modes, x=0.17blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      \addplot+ [ xbar, color=purple ]
+      table [ y=modes, x=0.17red, col sep=comma ] {figures/crlb/zernikes.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
+    model via phase retrieval, for correction collar setting of 0.17.}
+  \label{f:zern017}
+\end{figure*}
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      height = 1.3\textwidth,
+      witdh = \textwidth,
+      % enlargelimits=false,
+      smooth,
+      grid=both,
+      grid style=dashed,
+      ylabel={Zernike mode number},
+      % xticklabels={,,},
+      xlabel={Aberration / au},
+      % grid=major,
+      legend entries={0.19 blue, 0.19 red},
+      % legend pos = north west,
+      xbar = 1pt,% configures `bar shift'
+      bar width = 1pt,
+      % nodes near coords,
+      % point meta = y*1e2, % the displayed number
+      ymin = 0,
+      ymax = 57,
+      xmin = -0.1,
+      xmax = 0.1,
+      ]
+      \addplot+ [ xbar, color=cyan ]
+      table [ y=modes, x=0.19blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      \addplot+ [ xbar, color=purple ]
+      table [ y=modes, x=0.19red, col sep=comma ] {figures/crlb/zernikes.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
+    model via phase retrieval, for correction collar setting of 0.19.}
+  \label{f:zern019}
+\end{figure*}
+
+
+\clearpage\section{Cramer Rao Lower Bound}
+
+In order to find the best Correction Collar setting of the Olympus
+1.5~NA objective for SMLM, the Cramer Rao Lower Bound (CRLB) is
+computed using the program by [Jesacher et al 21?], with prior
+estimated Point Spread Functions (PSF) via phase retrieval [Jesacher
+et al 21?].\\
+
+All CRLBs are computed at a defocus position of -500~nm, in steps of
+5~nm from 0 to 500 nm. For all Estimations we assume identical
+arbitrary signal strength (2500) respective background (100).\\
+
+The Estimated Cramer Rao Lower Bound for different correction Collar
+settings (variing linestyles for 0.13, 0.17, 0.19) of the Olympus
+1.5~NA objective; for X, Y and Z axis (top, middle, and bottom); for
+both red and blue channel (colors) is shown in
+Figure~\ref{f:all}.\\
+
+Additionally plots grouped by X, Y and Z axis are shown in
+Figure~\ref{f:axes}, as well as grouped by different correction Collar
+settings in Figure~\ref{f:collar}.\\
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      % xmin=0,
+      % xmax=10,
+      ymin=0,
+      ymax=60,
+      % cycle list name = exotic,
+      % cycle list name=linestyles*,
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={Z Position / \n{nm}},
+      ylabel={X,Y,Z Cramer Rao Lower Bound / \n{nm}},
+      grid=major,
+      legend entries={X 0.13 blue, X 0.17 blue, X 0.19 blue, X 0.13 red, X 0.17 red, X 0.19 red,
+        Y 0.13 blue, Y 0.17 blue, Y 0.19 blue, Y 0.13 red, Y 0.17 red, Y 0.19 red,
+        Z 0.13 blue, Z 0.17 blue, Z 0.19 blue, Z 0.13 red, Z 0.17 red, Z 0.19 red },
+      legend pos = north west,
+      ]
+      \addplot[ color=cyan ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan, dotted, very thick ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan, densely dotted, very thick ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=purple, loosely dotted, very thick ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=purple, dashed, very thick ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=purple, densely dashed, very thick ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+      \addplot[color=cyan, loosely dashed, very thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan, dashdotted, very thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan,densely dashdotted, very thick  ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=purple, loosely dashdotted, very thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=purple, dashdotdotted, very thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=purple, densely dashdotdotted, very thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+      \addplot[color=cyan, loosely dashdotdotted, very thick ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan, dotted, very thick ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=purple, densely dotted, very thick ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=purple, loosely dotted, very thick ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=purple, loosely dotted, very thick ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Estimated Cramer Rao Lower Bound for different correction
+    Collar settings (variing linestyles for 0.13, 0.17, 0.19) of the
+    Olympus 1.5~NA objective; for X, Y and Z axis (top, middle, and
+    bottom); for both red and blue channel (colors).}
+  \label{f:all}
+\end{figure*}
+~ % dirty hack
+
+%
+\begin{figure}[!t]
+  \begin{subfigure}[t!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 X,0.13 X,0.13 X},
+        %legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.17 Y,0.17 Y,0.17 Y},
+        %legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        xlabel={Z Position / \n{nm}},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.19 Z,0.19 Z,0.19 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \caption{ Estimated Cramer Rao Lower Bound for different correction
+    Collar settings (teal: 0.13, orange: 0.17, purple: 0.19) of the
+    Olympus 1.5~NA objective; grouped by X, Y and Z axis (top, middle, and
+    bottom).}
+  \label{f:axes}
+\end{figure}
+%
+\begin{figure}[!t]
+  \begin{subfigure}[t!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        ymin=0,
+        ymax=60,        
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 X,0.13 Y,0.13 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        ymin=0,
+        ymax=60,
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.17 X,0.17 Y,0.17 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        ymin=0,
+        ymax=60,
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        xlabel={Z Position / \n{nm}},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.19 X,0.19 Y,0.19 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \caption{ Estimated Cramer Rao Lower Bound for X, Y and Z axis
+(teal, orange and purple lines); grouped by different correction
+Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the Olympus
+1.5~NA objective.}
+  \label{f:collar}
+\end{figure}
+
+
+\clearpage\chapter{Discussion}
+
+
+\section{Phase Retrieval}
+
+The image stacks look ok, even if not all are perfectly
+symmetrical--some errors are to be expected.\\
+
+The estimated zernike modes of the PSF are mostly plausible; based on
+the modes and the order of magnitude.\\
+
+This is further backed by the comparison of the results grouped by the
+three correction collar settings $\{0.13,0.17,0.19\}$, in
+Figure~\ref{f:zern013}, Figure~\ref{f:zern017} and
+Figure~\ref{f:zern019}. It is quite obvious, that the results for both
+red and blue channel are in the same order of magnitude---if not quite
+similar---for most of the Zernike modes, as suspected by theory!?\\
+
+Yet the phase Retrieval program gave the error \i{high residual error}
+for both the red and the blue channel when using the correction collar
+settings $\{0.17,0.19\}$, is this a serious problem?\\
+
+how can we avoid it?
+
+
+\section{Correction Collar}
+
+Based on the Figures~\ref{f:axes} and Figure~\ref{f:collar}, and
+considering the fact---that we are interested in moderately defocusing
+(up to say 250~nm)---one might conclude, that the most preferable
+setting for the correction collar is 0.13.\\
+
+Yet the recommended setting for our microscope setup is 0.17! Which is
+backed by Lukas, based on the PSF stacks: One would have guessed the
+0.17 is more sensitive to z since it changes much more with different
+z positions than 0.13.\\
+
+Which is the one we should use?\\
+
+
+
+% .        _                _   
+% .   .'|=| `.   .'|   .'|=| `. 
+% . .'  | | .' .'  | .'  | | .' 
+% . |   |=|'.  |   | |   |=|'.  
+% . |   | |  | |   | |   | |  | 
+% . |___|=|_.' |___| |___|=|_.' 
+% . 
+
+%\clearpage \bibliography{bibliography}
+
+%\bibliographystyle{apalike} % 'alpha' for 3 letters + year
+
+
+% .                   ___   ___  ___  ___   ___  ___   ___ 
+% .   .'|        .'| |   |=|_.' `._|=|   |=|_.' |   |=|_.' 
+% . .'  |      .'  | `.  |           |   |      `.  |      
+% . |   |      |   |   `.|=|`.       |   |        `.|=|`.  
+% . |   |  ___ |   |  ___  |  `.     `.  |       ___  |  `.
+% . |___|=|_.' |___|  `._|=|___|       `.|       `._|=|___|
+% .
+
+\clearpage \listoffigures
+
+
+% .        ___                          ___   ___  ___   ___                    __   ___   ___  
+% .   .'|=|_.'    .'|        .'|=|`.   |   |=|_.' |   |=|_.'   .'|=|`.     .'|=|  | |   | |   | 
+% . .'  |___    .'  |      .'  | |  `. `.  |      `.  |      .'  | |  `. .'  | |  | `.  |_|  .' 
+% . |   |`._|=. |   |      |   | |   |   `.|=|`.    `.|=|`.  |   |=|   | |   |=|.'    `.   .'   
+% . `.  |  __|| |   |  ___ `.  | |  .'  ___  |  `. ___  |  `.|   | |   | |   |  |`.    |   |    
+% .   `.|=|_.'' |___|=|_.'   `.|=|.'    `._|=|___| `._|=|___||___| |___| |___|  |_|    |___|    
+% . 
+
+%\glsaddallunused % add all unused terms to the glossary without including a phantom page number
+%\clearpage \printacronyms
+
+
+% .              ___                     ___  ___   ___  
+% .   .'|   .'| |   |   .'|=|`.     .'|=|_.' |   | |   | 
+% . .'  | .'  |\|   | .'  | |  `. .'  |  ___ `.  | |  .' 
+% . |   | |   | |   | |   | |   | |   |=|_.'  .` |=| `.  
+% . |   | |   | |  .' |   | |  .' |   |  ___ |   | |   | 
+% . |___| |___| |.'   |___|=|.'   |___|=|_.' |___| |___| 
+% . 
+
+%\clearpage \printindex
+
+
+% .  ___  ___   ___                    ___           ___        ___              
+% . `._|=|   |=|_.'   .'| |`.     .'|=|_.'      .'|=|_.'   .'| |   |   .'|=|`.   
+% .      |   |      .'  | |  `. .'  |  ___    .'  |  ___ .'  |\|   | .'  | |  `. 
+% .      |   |      |   |=|   | |   |=|_.'    |   |=|_.' |   | |   | |   | |   | 
+% .      `.  |      |   | |   | |   |  ___    |   |  ___ |   | |  .' |   | |  .' 
+% .        `.|      |___| |___| |___|=|_.'    |___|=|_.' |___| |.'   |___|=|.'   
+% . 
+
+\end{document}

@@ -1,0 +1,396 @@
+% arara: pdflatex: { shell: true, interaction: nonstopmode }
+% arara: bibtex
+% arara: makeglossaries
+% arara: makeindex
+% arara: pdflatex: { shell: true, interaction: nonstopmode }
+% arara: pdflatex: { shell: true, interaction: nonstopmode }
+\documentclass[11pt, a4paper, oneside, twocolumn]{report}
+% .  ___   ___        ___  ___  ___   ___  ___  ___   ___              ___         ___   ___   ___ 
+% . |   |=|_.'   .'|=|_.' `._|=|   |=|_.' `._|=|   |=|_.'   .'|   .'| |   |   .'|=|_.'  |   |=|_.' 
+% . `.  |      .'  |  ___      |   |           |   |      .'  | .'  |\|   | .'  |___    `.  |      
+% .   `.|=|`.  |   |=|_.'      |   |           |   |      |   | |   | |   | |   |`._|=.   `.|=|`.  
+% .  ___  |  `.|   |  ___      `.  |           `.  |      |   | |   | |  .' `.  |  __||  ___  |  `.
+% .  `._|=|___||___|=|_.'        `.|             `.|      |___| |___| |.'     `.|=|_.''  `._|=|___|
+% .                                                                                                
+%% packages --------------------------------------------------------------------
+\usepackage{pgfplots}
+%% settings --------------------------------------------------------------------
+\pgfplotsset{%
+  width  = \textwidth,
+  height = \textwidth,
+  compat = 1.17,
+  colormap name = viridis,
+  cycle list name = exotic,
+} % tikz doesnt know the twocolumn thing
+%\usetikzlibrary{external}
+%\tikzexternalize[optimize=true,prefix=tikz/] % externalize tikz, much faster, many conflicts!
+\setcounter{secnumdepth}{2} % set level of depth for numbering
+\graphicspath{{figures/}}
+\renewcommand{\arraystretch}{1.2} % streches row heigth in arrays (and tables)
+%% makros ----------------------------------------------------------------------
+\renewcommand{\b}{\textbf}
+\renewcommand{\u}{\underline}
+\renewcommand{\tt}{\texttt}
+\renewcommand{\t}{\todo}
+\newcommand{\e}{\emph}
+\newcommand{\n}{\textnormal}
+\newcommand{\m}{\mathrm}
+\newcommand{\x}[1]{#1\index{#1}}
+\begin{document}
+
+\newpage
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      enlargelimits=false,
+      grid=both, grid style=dashed,
+      xlabel={$z position / nm$ },
+      ylabel={$cramer rao lower bound / nm$ },
+      grid=major
+      %legend entries={0.13 blue,0.17 blue,0.19 blue,0.13 red,0.17 red,0.19 red},
+      ]
+      \addplot[color=blue,]
+      table [ x=n, y=x, col sep=comma ] {crall_013_blue2.csv };
+      \addplot[color=blue, dashed ]
+      table [ x=n, y=x, col sep=comma ] {crall_017_blue2.csv};
+      \addplot[color=blue, dotted, thick ]
+      table [ x=n, y=x, col sep=comma ] {crall_019_blue2.csv};
+      \addplot[color=red,]
+      table [ x=n, y=x, col sep=comma ] {crall_013_red2.csv};
+      \addplot[color=red, dashed ]
+      table [ x=n, y=x, col sep=comma ] {crall_017_red2.csv};
+      \addplot[color=red, dotted, thick ]
+      table [ x=n, y=x, col sep=comma ] {crall_019_red2.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{  of the concentric spiral created (teal), bright
+    field region (orange) for all 961 LEDs of the panel. }
+  \label{f:spiral}
+\end{figure*}
+~ % dirty hack
+
+\clearpage\section{All}
+
+asdf
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      %xmin=0,
+      %xmax=10,
+      ymin=0,
+      ymax=60,
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={Z Position / \n{nm}},
+      ylabel={X,Y,Z Cramer Rao Lower Bound / \n{nm}},
+      grid=major,
+      legend entries={X 0.13 blue, X 0.17 blue, X 0.19 blue, X 0.13 red, X 0.17 red, X 0.19 red,
+        Y 0.13 blue, Y 0.17 blue, Y 0.19 blue, Y 0.13 red, Y 0.17 red, Y 0.19 red,
+        Z 0.13 blue, Z 0.17 blue, Z 0.19 blue, Z 0.13 red, Z 0.17 red, Z 0.19 red },
+      legend pos = north west,
+      ]
+      \addplot[color=cyan]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=magenta ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=magenta ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=magenta ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+      \addplot[color=cyan, dotted, thick]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan, dotted, thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan, dotted, thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=magenta, dotted, thick]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=magenta, dotted, thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=magenta, dotted, thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+      \addplot[color=cyan, dashed]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan, dashed  ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan, dashed ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=magenta, dashed]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=magenta, dashed ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=magenta, dashed ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{  of the concentric spiral created (teal), bright
+    field region (orange) for all 961 LEDs of the panel. }
+  \label{f:spiral}
+\end{figure*}
+~ % dirty hack
+
+
+\clearpage\section{By Axis}
+
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={Z Position / \n{nm}},
+      ylabel={X Cramer Rao Lower Bound / \n{nm}},
+      grid=major,
+      legend entries={0.13 blue,0.17 blue,0.19 blue,0.13 red,0.17 red,0.19 red},
+      ]
+      \addplot[color=cyan]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan, dashed ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan, dotted, thick ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=magenta]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=magenta, dashed ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=magenta, dotted, thick ]
+      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{  of the concentric spiral created (teal), bright
+    field region (orange) for all 961 LEDs of the panel. }
+  \label{f:spiral}
+\end{figure*}
+~ % dirty hack
+
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={Z Position / \n{nm}},
+      ylabel={Y Cramer Rao Lower Bound / \n{nm}},
+      grid=major,
+      legend entries={0.13 blue,0.17 blue,0.19 blue,0.13 red,0.17 red,0.19 red},
+      ]
+      \addplot[color=cyan]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan, dashed ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan, dotted, thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=magenta]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=magenta, dashed ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=magenta, dotted, thick ]
+      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{  of the concentric spiral created (teal), bright
+    field region (orange) for all 961 LEDs of the panel. }
+  \label{f:spiral}
+\end{figure*}
+~ % dirty hack
+
+\begin{figure*}[!t]
+  \begin{tikzpicture}
+    \begin{axis}[
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={Z Position / \n{nm}},
+      ylabel={Z Cramer Rao Lower Bound / \n{nm}},
+      grid=major,
+      legend entries={0.13 blue,0.17 blue,0.19 blue,0.13 red,0.17 red,0.19 red},
+      legend pos = north west,
+      ]
+      \addplot[color=cyan]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      \addplot[color=cyan, dashed ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \addplot[color=cyan, dotted, thick ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \addplot[color=magenta]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      \addplot[color=magenta, dashed ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      \addplot[color=magenta, dotted, thick ]
+      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{  of the concentric spiral created (teal), bright
+    field region (orange) for all 961 LEDs of the panel. }
+  \label{f:spiral}
+\end{figure*}
+~ % dirty hack
+
+adfg
+%
+\begin{figure}[!t]
+  \begin{subfigure}[t!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 X,0.13 Y,0.13 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.17 X,0.17 Y,0.17 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        xlabel={Z Position / \n{nm}},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.19 X,0.19 Y,0.19 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \caption{ Estimated Cramer Rao Lower Bound for different correction
+    Collar settings (teal: 0.13, orange: 0.17, purple: 0.19) of the
+    Olympus 1.5~NA objective; for X, Y and Z axis (top, middle, and
+    bottom).}
+  \label{f:spiral}
+\end{figure}
+
+\clearpage\section{By Correction Collar}
+adfg
+%
+\begin{figure}[!t]
+  \begin{subfigure}[t!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 X,0.13 Y,0.13 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.17 X,0.17 Y,0.17 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        xlabel={Z Position / \n{nm}},
+        ylabel={Cramer Rao Lower Bound / \n{nm}},
+        grid=major,
+        legend entries={0.19 X,0.19 Y,0.19 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \caption{ Estimated Cramer Rao Lower Bound for different correction
+    Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the Olympus
+    1.5~NA objective; for X, Y and Z axis (teal, orange and purple
+    lines). }
+  \label{f:spiral}
+\end{figure}
+
+\end{document}

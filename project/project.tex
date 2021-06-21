@@ -44,13 +44,17 @@
   compat = 1.17,
   colormap name = viridis,
   cycle list name = exotic,
+  table/search path={data},
 } % TikZ doesnt know the twocolumn thing
-%\usetikzlibrary{external}
-%\tikzexternalize[optimize=true,prefix=tikz/] % externalize tikz, much faster, many conflicts!
+\usetikzlibrary{external}
+\usetikzlibrary{calc}
+\tikzexternalize[optimize=true,prefix=tikz/] % externalize tikz, much faster, many conflicts!
 \setcounter{secnumdepth}{2} % set level of depth for numbering
 \graphicspath{{figures/}}
 \input{listingsrc.tex} % a lot of listing options
 \renewcommand{\arraystretch}{1.2} % streches row heigth in arrays (and tables)
+\DeclareSIUnit\molar{\mole\per\cubic\deci\metre}
+\DeclareSIUnit\Molar{\textsc{m}}
 %% makros ----------------------------------------------------------------------
 \renewcommand{\b}{\textbf}
 \renewcommand{\u}{\underline}
@@ -130,6 +134,8 @@
 % .
 \clearpage\chapter{Introduction}
 
+\t{we want two color dyed SMLM data in sync, how to get there?}
+
 Single Molecule Localisation Microscopy (SMLM) is a technique of
 fitting a full Point Spread Functions (PSF) to a stack of images
 containing reasonably spaced fluorescence signals.\\
@@ -142,18 +148,150 @@ fluorescence molecule.\\
 
 
 
+\section{Flouro}
+
+\t{Flouro}
+
+
+% .                     ___  ___  ___   ___                                      ___   ___ 
+% .   .'|\/|`.     .'|=|_.' `._|=|   |=|_.'   .'| |`.     .'|=|`.     .'|=|`.   |   |=|_.' 
+% . .'  |  |  `. .'  |  ___      |   |      .'  | |  `. .'  | |  `. .'  | |  `. `.  |      
+% . |   |  |   | |   |=|_.'      |   |      |   |=|   | |   | |   | |   | |   |   `.|=|`.  
+% . |   |  |   | |   |  ___      `.  |      |   | |   | `.  | |  .' |   | |  .'  ___  |  `.
+% . |___|  |___| |___|=|_.'        `.|      |___| |___|   `.|=|.'   |___|=|.'    `._|=|___|
+% .                                                                                     
+\clearpage\chapter{Methods}
+
+
+\section{SMLM}
+
+\t{SMLM}
+
+
+\section{TIRF}
+
+\t{TIRF}
+
+
+\section{dSTORM}
+\t{dSTORM}
+
+\subsection{Gloxy Buffer}
+
+Single channel SMLM may employ the same buffer for both excitation
+wavelengths, in our case at \SI{645}{\nm} (red) respective at
+\SI{488}{\nm} (blue). After its central ingredients glucose and
+oxidase, the buffer we used throughout this paper for all single
+channel measurements unless noted otherwise is called Gloxy buffer:
+
+\subsubsection{Gloxy buffer concentration}
+\begin{itemize}
+\item 50 \si{\milli\mol} $\beta$-MercaptoEthylamine hydrochloride (MEA, Sigma-Aldrich).
+\item 10~vol\% of a \SI{250}{\g\per\L} solution of glucose.
+\item \SI{0.5}{\mg\per\ml} glucose oxidase.
+\item \SI{40}{\mg\per\ml} catalase (Sigma-Aldrich).
+\item in PBS, pH 7.6 .
+\end{itemize}
+
+\subsection{OxEA Buffer}
+
+Dual channel Fluorescence microscopy poses novel challenges to find a
+proper dSTORM buffer, that works for both excitation
+wavelengths---thus two distinct fluorophores AF647 and AF488. The
+buffer composition we used is based on \t{cit}, and called OxEA after its main ingredients OxyFlour and ($\beta$-Mercapto)Ethylamine:
+
+\subsubsection{OxEA buffer concentration}
+\begin{itemize}
+\item 50 \si{\milli\mol} $\beta$-MercaptoEthylamine hydrochloride (MEA, Sigma-Aldrich).
+\item 3~vol\% OxyFlourTM (Oxyrase Inc., Mansfield, Ohio, U.S.A.).
+\item 20~vol\% of \todo{60\%} sodium DL-lactate solution (L1375, Sigma-Aldrich).
+\item in PBS, pH adjusted to 8–8.5 with NaOH.
+\end{itemize}
+
+\subsubsection{OxEA buffer protocol}
+
+For about 1~\si{\milli\liter} of OxEA buffer we used the amounts shown
+in Table~\ref{t:oxea}, to obtain above listed concentrations.
+
+\begin{table}[!htb]
+  \caption{Ingredients used for preparation of OxEA buffer for dual channel dSTORM
+    buffer.} \label{t:oxea}
+  \begin{tabularx}{.5\textwidth}{l X l r}
+    \hhline{====}
+    Order & Ingredient & Store & Vol / \si{\micro\liter} \\
+    \hline
+    1 & Ultra pure H$_2$O & & 600 \\
+    2 & \SI{10}{\Molar} NaOH & & 20 \\
+    3 & 10$\times$ PBS & & 100 \\
+    4 & 60\% DL-lactate & fridge & 200 \\
+    5 & \SI{1}{\Molar} MEA & freezer & 50 \\
+    6 & OxyFluor & freezer & 30 \\
+    \hhline{====}
+  \end{tabularx}
+\end{table}
+
+\subsubsection{pH}
+
+The pH of the OxEA buffer is checked using both broad range pH testing
+strips, and a digital pH meter, to be between pH~7 and pH~8.
+
+
+    
+\section{PSF}
+
+\t{PSF}
+
+
+\section{Zernike}
+
+\t{zern}
+
+
+\section{NPC Analysis}
+
+\t{analysis}
+
+
+\section{Dual Channel Transforms}
+
+\t{transform}
+
+
+
+
+% . 
+% .        __         ___  ___   ___  ___                    ___  ___   ___  ___   ___ 
+% .   .'|=|  |   .'|=|_.' |   |=|_.' |   | |`.     .'|      `._|=|   |=|_.' |   |=|_.' 
+% . .'  | |  | .'  |  ___ `.  |      |   | |  `. .'  |           |   |      `.  |      
+% . |   |=|.'  |   |=|_.'   `.|=|`.  |   | |   | |   |           |   |        `.|=|`.  
+% . |   |  |`. |   |  ___  ___  |  `.`.  | |   | |   |  ___      `.  |       ___  |  `.
+% . |___|  |_| |___|=|_.'  `._|=|___|  `.|=|___| |___|=|_.'        `.|       `._|=|___|
+% .                           
 \clearpage\chapter{Results}
 
 
-\section{Phase Retrieval}
+\section{Flouro}
+
+\t{sample image}
+
+
+\subsection{dSTORM}
+
+\t{2d npc images}
+
+
+\section{Single Molecule Localisation}
 
 It is possible to use different excitations to simultaneously measure
 different fluorescence markers, but for that the Point Spread
 Functions (PSF) has to known for each wavelength. So the PSFs are
 estimated both for red and blue laser light, with the Phase Retrieval
-program by [Jesacher et al 21?]; each on a stack of 50000 STORM images
-of 100~nm beads stained with fluorescence dyes for both red (645~nm)
-and blue (488~nm) laser light.\\
+program by [Jesacher et al 21?]; each on a stack of 50000~STORM images
+of \SI{100}{\nm} \t{100nm?} beads stained with fluorescence dyes for
+both red (\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser light.\\
+
+
+\subsection{Correction Collar}
 
 To further complicate things, the new Olympus 1.5~NA objective comes
 with a Correction Collar to compensate for aberrations---which
@@ -162,6 +300,9 @@ best Correction Collar setting of the Olympus 1.5~NA objective for
 SMLM, the Point Point Spread Functions (PSF) is computed for each of
 the three settings of the correction collar $\{0.13,0.17,0.19\}$;
 using the program by [Jesacher et al 21?].\\
+
+
+\subsection{Zernike Modes}
 
 The Zernike modes of the PSF are shown for each of the three
 correction collar settings $\{0.13,0.17,0.19\}$, each for blue channel
@@ -196,11 +337,11 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
 %       ymax = 0.1,
 %       ]
 %       \addplot+ [ ybar, color=teal ]
-%       table [ x=modes, y=0.13blue, col sep=comma ] {figures/crlb/zernikes.csv};
+%       table [ x=modes, y=0.13blue, col sep=comma ] {crlb/Zernikes.csv};
 %       \addplot+ [ ybar, color=orange ]
-%       table [ x=modes, y=0.17blue, col sep=comma ] {figures/crlb/zernikes.csv};
+%       table [ x=modes, y=0.17blue, col sep=comma ] {crlb/Zernikes.csv};
 %       \addplot+ [ ybar, color=purple ]
-%       table [ x=modes, y=0.19blue, col sep=comma ] {figures/crlb/zernikes.csv};
+%       table [ x=modes, y=0.19blue, col sep=comma ] {crlb/Zernikes.csv};
 %     \end{axis}
 %   \end{tikzpicture}
 %   \caption{ asdf }
@@ -233,11 +374,11 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       xmax = 0.1,
       ]
       \addplot+ [ xbar, color=teal ]
-      table [ y=modes, x=0.13blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.13blue, col sep=comma ] {crlb/Zernikes.csv};
       \addplot+ [ xbar, color=orange ]
-      table [ y=modes, x=0.17blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.17blue, col sep=comma ] {crlb/Zernikes.csv};
       \addplot+ [ xbar, color=purple ]
-      table [ y=modes, x=0.19blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.19blue, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{ Blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
@@ -271,11 +412,11 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       xmax = 0.1,
       ]
       \addplot+ [ xbar, color=teal ]
-      table [ y=modes, x=0.13red, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.13red, col sep=comma ] {crlb/Zernikes.csv};
       \addplot+ [ xbar, color=orange ]
-      table [ y=modes, x=0.17red, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.17red, col sep=comma ] {crlb/Zernikes.csv};
       \addplot+ [ xbar, color=purple ]
-      table [ y=modes, x=0.19red, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.19red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{ Red channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
@@ -309,9 +450,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       xmax = 0.1,
       ]
       \addplot+ [ xbar, color=cyan ]
-      table [ y=modes, x=0.13blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.13blue, col sep=comma ] {crlb/Zernikes.csv};
       \addplot+ [ xbar, color=purple ]
-      table [ y=modes, x=0.13red, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.13red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
@@ -344,9 +485,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       xmax = 0.1,
       ]
       \addplot+ [ xbar, color=cyan ]
-      table [ y=modes, x=0.17blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.17blue, col sep=comma ] {crlb/Zernikes.csv};
       \addplot+ [ xbar, color=purple ]
-      table [ y=modes, x=0.17red, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.17red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
@@ -379,9 +520,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       xmax = 0.1,
       ]
       \addplot+ [ xbar, color=cyan ]
-      table [ y=modes, x=0.19blue, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.19blue, col sep=comma ] {crlb/Zernikes.csv};
       \addplot+ [ xbar, color=purple ]
-      table [ y=modes, x=0.19red, col sep=comma ] {figures/crlb/zernikes.csv};
+      table [ y=modes, x=0.19red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
@@ -390,7 +531,7 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
 \end{figure*}
 
 
-\clearpage\section{Cramer Rao Lower Bound}
+\clearpage\subsection{Cramer Rao Lower Bound}
 
 In order to find the best Correction Collar setting of the Olympus
 1.5~NA objective for SMLM, the Cramer Rao Lower Bound (CRLB) is
@@ -432,41 +573,41 @@ settings in Figure~\ref{f:collar}.\\
       legend pos = north west,
       ]
       \addplot[ color=cyan ]
-      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      table [ x=n, y=x, col sep=comma ] {crlb/crall_013_blue2.csv };
       \addplot[color=cyan, dotted, very thick ]
-      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      table [ x=n, y=x, col sep=comma ] {crlb/crall_017_blue2.csv};
       \addplot[color=cyan, densely dotted, very thick ]
-      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      table [ x=n, y=x, col sep=comma ] {crlb/crall_019_blue2.csv};
       \addplot[color=purple, loosely dotted, very thick ]
-      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      table [ x=n, y=x, col sep=comma ] {crlb/crall_013_red2.csv};
       \addplot[color=purple, dashed, very thick ]
-      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      table [ x=n, y=x, col sep=comma ] {crlb/crall_017_red2.csv};
       \addplot[color=purple, densely dashed, very thick ]
-      table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+      table [ x=n, y=x, col sep=comma ] {crlb/crall_019_red2.csv};
       \addplot[color=cyan, loosely dashed, very thick ]
-      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      table [ x=n, y=y, col sep=comma ] {crlb/crall_013_blue2.csv };
       \addplot[color=cyan, dashdotted, very thick ]
-      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      table [ x=n, y=y, col sep=comma ] {crlb/crall_017_blue2.csv};
       \addplot[color=cyan,densely dashdotted, very thick  ]
-      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      table [ x=n, y=y, col sep=comma ] {crlb/crall_019_blue2.csv};
       \addplot[color=purple, loosely dashdotted, very thick ]
-      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      table [ x=n, y=y, col sep=comma ] {crlb/crall_013_red2.csv};
       \addplot[color=purple, dashdotdotted, very thick ]
-      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      table [ x=n, y=y, col sep=comma ] {crlb/crall_017_red2.csv};
       \addplot[color=purple, densely dashdotdotted, very thick ]
-      table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+      table [ x=n, y=y, col sep=comma ] {crlb/crall_019_red2.csv};
       \addplot[color=cyan, loosely dashdotdotted, very thick ]
-      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+      table [ x=n, y=z, col sep=comma ] {crlb/crall_013_blue2.csv };
       \addplot[color=cyan ]
-      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+      table [ x=n, y=z, col sep=comma ] {crlb/crall_017_blue2.csv};
       \addplot[color=cyan, dotted, very thick ]
-      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+      table [ x=n, y=z, col sep=comma ] {crlb/crall_019_blue2.csv};
       \addplot[color=purple, densely dotted, very thick ]
-      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_red2.csv};
+      table [ x=n, y=z, col sep=comma ] {crlb/crall_013_red2.csv};
       \addplot[color=purple, loosely dotted, very thick ]
-      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_red2.csv};
+      table [ x=n, y=z, col sep=comma ] {crlb/crall_017_red2.csv};
       \addplot[color=purple, loosely dotted, very thick ]
-      table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_red2.csv};
+      table [ x=n, y=z, col sep=comma ] {crlb/crall_019_red2.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{Estimated Cramer Rao Lower Bound for different correction
@@ -495,11 +636,11 @@ settings in Figure~\ref{f:collar}.\\
         %legend pos = north west,
         ]
         \addplot[color=teal]
-        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_013_blue2.csv };
         \addplot[color=orange ]
-        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_017_blue2.csv};
         \addplot[color=violet ]
-        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_019_blue2.csv};
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
@@ -519,11 +660,11 @@ settings in Figure~\ref{f:collar}.\\
         %legend pos = north west,
         ]
         \addplot[color=teal]
-        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_013_blue2.csv };
         \addplot[color=orange ]
-        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_017_blue2.csv};
         \addplot[color=violet ]
-        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_019_blue2.csv};
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
@@ -542,11 +683,11 @@ settings in Figure~\ref{f:collar}.\\
         legend pos = north west,
         ]
         \addplot[color=teal]
-        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_013_blue2.csv };
         \addplot[color=orange ]
-        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_017_blue2.csv};
         \addplot[color=violet ]
-        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_019_blue2.csv};
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
@@ -576,11 +717,11 @@ settings in Figure~\ref{f:collar}.\\
         legend pos = north west,
         ]
         \addplot[color=teal]
-        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_013_blue2.csv };
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_013_blue2.csv };
         \addplot[color=orange ]
-        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_013_blue2.csv};
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_013_blue2.csv};
         \addplot[color=violet ]
-        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_013_blue2.csv};
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_013_blue2.csv};
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
@@ -602,11 +743,11 @@ settings in Figure~\ref{f:collar}.\\
         legend pos = north west,
         ]
         \addplot[color=teal]
-        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_017_blue2.csv };
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_017_blue2.csv };
         \addplot[color=orange ]
-        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_017_blue2.csv};
         \addplot[color=violet ]
-        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_017_blue2.csv};
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_017_blue2.csv};
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
@@ -627,22 +768,267 @@ settings in Figure~\ref{f:collar}.\\
         legend pos = north west,
         ]
         \addplot[color=teal]
-        table [ x=n, y=x, col sep=comma ] {figures/crlb/crall_019_blue2.csv };
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_019_blue2.csv };
         \addplot[color=orange ]
-        table [ x=n, y=y, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_019_blue2.csv};
         \addplot[color=violet ]
-        table [ x=n, y=z, col sep=comma ] {figures/crlb/crall_019_blue2.csv};
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_019_blue2.csv};
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
   \caption{ Estimated Cramer Rao Lower Bound for X, Y and Z axis
-(teal, orange and purple lines); grouped by different correction
-Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the Olympus
-1.5~NA objective.}
+    (teal, orange and purple lines); grouped by different correction
+    Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the Olympus
+    1.5~NA objective.}
   \label{f:collar}
 \end{figure}
 
 
+\clearpage\section{Dual Channel Simulations}
+
+\begin{figure*}[!t]
+  \vspace{-3em}
+  \rotatebox{90}{\b{Shift}}
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \b{Rigid Recovery}
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        %label shift = -10pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_shift/q.dat};
+        \addplot3[magenta, only marks, mark=x] table {sim_rigid_rec_shift/pr.dat};
+        \addplot3[magenta, mark=x] table {sim_rigid_rec_shift/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_shift/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \b{Affine Recovery}
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        %label shift = -10pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_shift/q.dat};
+        \addplot3[magenta, only marks, mark=x] table {sim_affine_rec_shift/pr.dat};
+        \addplot3[magenta, mark=x] table {sim_affine_rec_shift/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_shift/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \\
+  \rotatebox{90}{\b{Rigid}}
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -15pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_rigid/q.dat};
+        \addplot3[magenta, only marks, mark=x] table {sim_rigid_rec_rigid/pr.dat};
+        \addplot3[magenta, mark=x] table {sim_rigid_rec_rigid/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_rigid/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -15pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_rigid/q.dat};
+        \addplot3[magenta, mark=x] table {sim_affine_rec_rigid/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_rigid/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \\
+  \rotatebox{90}{\b{Affine}}
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -5pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-2,
+        xmax=2,
+        ymin=-2,
+        ymax=2,
+        grid=major
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_affine/q.dat};
+        \addplot3[magenta, mark=x] table {sim_rigid_rec_affine/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_affine/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -5pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-2,
+        xmax=2,
+        ymin=-2,
+        ymax=2,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_affine/q.dat};
+        \addplot3[magenta, mark=x] table {sim_affine_rec_affine/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_affine/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  %
+  \caption{Demonstration of the recovery of rigid (left) respective
+    affine (right) transformations, via recovering localisations of
+    simulated two channel SMLM data; transformation (magenta) from red
+    channel (violet) to blue channel (cyan); for the use cases of
+    translation (top), rigid transformation (middle) and affine
+    transformation (bottom). Obviously a rigid transformation may not
+    correctly reconstruct an affine transformed data set (bottom
+    left).}
+  \label{f:transim}
+\end{figure*}
+
+
+\clearpage\section{Dual Channel: NPC}
+
+\begin{figure*}[!t]
+  \vspace{-5em}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.7\textwidth,
+      height=0.7\textwidth,
+      name=ax1
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={X Position / \n{nm}},
+      ylabel={Y Position / \n{nm}},
+      xmin=0,
+      xmax=2e4,
+      ymin=0,
+      ymax=2e4,
+      grid=major,
+      thick,
+      mark size=8pt,
+      legend entries={blue channel, red channel, rigid transformation},
+      ]
+      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
+      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
+      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
+      % define coordinates at bottom left and top left of rectangle
+      \coordinate (c1) at (axis cs:0.5e4,0.5e4);
+      \coordinate (c2) at (axis cs:0.5e4,0.85e4);
+      \coordinate (c3) at (axis cs:0.85e4,0.85e4);
+      % draw a rectangle
+      \draw (c1) rectangle (axis cs:0.85e4,0.85e4);
+    \end{axis}
+    \begin{axis}[
+      width=0.7\textwidth,
+      height=0.7\textwidth,
+      name=ax2,
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={X Position / \n{nm}},
+      ylabel={Y Position / \n{nm}},
+      % place second axis relative to first one anchor is south west
+      at={($(ax1.south east)-(0,11cm)$)},
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xmin=0.5e4,
+      xmax=0.85e4,
+      ymin=0.5e4,
+      ymax=0.851e4,
+      grid=major,
+      thick,
+      mark size=8pt,
+      ]
+      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
+      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
+      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
+    \end{axis}
+    % draw dashed lines from rectangle in first axis to corners of second
+    \draw [dashed] (c2) -- (ax2.north west);
+    \draw [dashed] (c3) -- (ax2.north east);
+  \end{tikzpicture}
+  \caption{Demonstration of a rigid transformation of the
+    localisations (magenta $\circ$) from blue channel (blue
+    $\times$) to red channel (violet $+$); the transformed blue
+    channel localisations mostly align well with the red channel
+    localisations.}
+  \label{f:npc_rigid}
+\end{figure*}
+
+
+% .                    ___   ___        ___  ___         ___   ___  ___   ___                          ___  
+% .   .'|=|`.     .'| |   |=|_.'   .'|=|_.' |   | |`.   |   |=|_.' |   |=|_.'   .'|   .'|=|`.     .'| |   | 
+% . .'  | |  `. .'  | `.  |      .'  |      |   | |  `. `.  |      `.  |      .'  | .'  | |  `. .'  |\|   | 
+% . |   | |   | |   |   `.|=|`.  |   |      |   | |   |   `.|=|`.    `.|=|`.  |   | |   | |   | |   | |   | 
+% . |   | |  .' |   |  ___  |  `.`.  |  ___ `.  | |   |  ___  |  `. ___  |  `.|   | `.  | |  .' |   | |  .' 
+% . |___|=|.'   |___|  `._|=|___|  `.|=|_.'   `.|=|___|  `._|=|___| `._|=|___||___|   `.|=|.'   |___| |.'   
+% .                   
 \clearpage\chapter{Discussion}
 
 
@@ -651,7 +1037,7 @@ Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the Olympus
 The image stacks look ok, even if not all are perfectly
 symmetrical--some errors are to be expected.\\
 
-The estimated zernike modes of the PSF are mostly plausible; based on
+The estimated Zernike modes of the PSF are mostly plausible; based on
 the modes and the order of magnitude.\\
 
 This is further backed by the comparison of the results grouped by the
@@ -659,7 +1045,8 @@ three correction collar settings $\{0.13,0.17,0.19\}$, in
 Figure~\ref{f:zern013}, Figure~\ref{f:zern017} and
 Figure~\ref{f:zern019}. It is quite obvious, that the results for both
 red and blue channel are in the same order of magnitude---if not quite
-similar---for most of the Zernike modes, as suspected by theory!?\\
+similar---for most of the Zernike modes, as suspected by theory
+\t{zern}.\\
 
 Yet the phase Retrieval program gave the error \i{high residual error}
 for both the red and the blue channel when using the correction collar
@@ -682,7 +1069,29 @@ z positions than 0.13.\\
 
 Which is the one we should use?\\
 
+% .        ___                    ___         ___             ___         ___   ___                          ___  
+% .   .'|=|_.'   .'|=|`.     .'| |   |   .'|=|_.'   .'|      |   | |`.   |   |=|_.'   .'|   .'|=|`.     .'| |   | 
+% . .'  |      .'  | |  `. .'  |\|   | .'  |      .'  |      |   | |  `. `.  |      .'  | .'  | |  `. .'  |\|   | 
+% . |   |      |   | |   | |   | |   | |   |      |   |      |   | |   |   `.|=|`.  |   | |   | |   | |   | |   | 
+% . `.  |  ___ `.  | |  .' |   | |  .' `.  |  ___ |   |  ___ `.  | |   |  ___  |  `.|   | `.  | |  .' |   | |  .' 
+% .   `.|=|_.'   `.|=|.'   |___| |.'     `.|=|_.' |___|=|_.'   `.|=|___|  `._|=|___||___|   `.|=|.'   |___| |.'   
+% .       
+\chapter{Conclusion}
 
+\section{Phase Retrieval}
+
+The Zernike modes for both red and blue channel are estimated via
+phase retrieval of in-focus measurements of beads at various
+depths. This yields a full PSF model to be used for de-focus 3d SMLM.
+
+
+\section{Correction Collar}
+
+The best setting of the Correction Collar for the Olympus 1.5~NA
+objective is shown to be 0.17. Here we find the preferable compromise between x,y precision and z precision, in the regime between about 0 and 250~\si{\micro\meter}.
+
+
+\section{dSTORTM Buffer}
 
 % .        _                _   
 % .   .'|=| `.   .'|   .'|=| `. 

@@ -19,7 +19,7 @@ global hd = "~/biophysics" # parent directory
 global wd = "data/210318_beads_2_colors_in_focus"
 global fn = "position"
 global nn = ""; # additional luminosity suffix  ( default: "" )
-method = "rigid"; # /char, "rigid","affine", method to reconstruct
+method = "affine"; # /char, "rigid","affine", method to reconstruct
 global minpts = 10; # minimum number of points needed in its neighbourhood to consider it as a valid data(not noise). ( default: 3 )
 global dist = 300; #/nm, distance on which neighbourhood is calculated.( default: 200 )
 nmax = 15; #/num, maximum number of files analysed.( default: 10 )
@@ -84,7 +84,7 @@ for n = 1 : nmax
     else
       clear fh0
     endif     
-    fh1 = scatter( blue( :, 3 ), blue( :, 4 ), '.b');
+    fh1 = scatter( blue( :, 3 ), blue( :, 4 ), '.b.');
     hold on
     fh2 = scatter( red( :, 3 ), red( :, 4 ), '.r');
     fh3 = plot3( centroid_blue(:,1),...
@@ -100,7 +100,7 @@ for n = 1 : nmax
   
 endfor
 
-                           # remove empty/corrupt lines for statistics
+# remove empty/corrupt lines for statistics
 n = 1;
 while ( n <= nmax )
   if ( any( isnan( rotations( n, :, : ) ) ) )

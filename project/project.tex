@@ -56,6 +56,7 @@
 \renewcommand{\arraystretch}{1.2} % streches row heigth in arrays (and tables)
 \DeclareSIUnit\molar{\mole\per\cubic\deci\metre}
 \DeclareSIUnit\Molar{\textsc{m}}
+\DeclareSIUnit\NA{\textsc{na}}
 %% makros ----------------------------------------------------------------------
 \renewcommand{\b}{\textbf}
 \renewcommand{\u}{\underline}
@@ -112,9 +113,9 @@
 % .
 % \clearpage \onecolumn \chapter*{Abstract}
 % asdf
-%
+% 
 % \vfill
-%
+% 
 % \section*{Keywords}
 % asdf\\
 % .  ___  ___   ___                    ___ 
@@ -125,7 +126,7 @@
 % .        `.|        `.|=|.'     `.|=|_.' 
 % .                                        
 \clearpage \tableofcontents
-%\clearpage \listoftodos % conflict: comment out \listoftodos when externalizing tikz, or use "\tikzexternalize[optimize=false"
+% \clearpage \listoftodos % conflict: comment out \listoftodos when externalizing tikz, or use "\tikzexternalize[optimize=false"
 % .              ___   ___  ___   ___        __              
 % .   .'|   .'| |   | `._|=|   |=|_.'   .'|=|  |   .'|=|`.   
 % . .'  | .'  |\|   |      |   |      .'  | |  | .'  | |  `. 
@@ -237,7 +238,7 @@ The pH of the OxEA buffer is checked using both broad range pH testing
 strips, and a digital pH meter, to be between pH~7 and pH~8.
 
 
-    
+
 \section{PSF}
 
 \t{PSF}
@@ -313,20 +314,20 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
 % \begin{figure*}[!t]
 %   \begin{tikzpicture}
 %     \begin{axis}[
-%       % enlargelimits=false,
+%       %       enlargelimits=false,
 %       smooth,
 %       grid=both,
 %       grid style=dashed,
 %       xlabel={Zernike mode number},
-%       % xticklabels={,,},
+%       %       xticklabels={,,},
 %       ylabel={Aberration / au},
-%       % grid=major,
+%       %       grid=major,
 %       legend entries={0.13 X,0.13 X,0.13 X},
-%       % legend pos = north west,
+%       %       legend pos = north west,
 %       ybar = 1pt,% configures `bar shift'
 %       bar width = 1pt,
-%       % nodes near coords,
-%       % point meta = y*1e2, % the displayed number
+%       %       nodes near coords,
+%       %       point meta = y*1e2, % the displayed number
 %       xmin = 0,
 %       xmax = 57,
 %       ymin = -0.1,
@@ -617,7 +618,7 @@ settings in Figure~\ref{f:collar}.\\
 \end{figure*}
 ~ % dirty hack
 
-%
+% 
 \begin{figure}[!t]
   \begin{subfigure}[t!]{0.5\textwidth}
     \centering
@@ -632,7 +633,7 @@ settings in Figure~\ref{f:collar}.\\
         ylabel={Cramer Rao Lower Bound / \n{nm}},
         grid=major,
         legend entries={0.13 X,0.13 X,0.13 X},
-        %legend pos = north west,
+        % legend pos = north west,
         ]
         \addplot[color=teal]
         table [ x=n, y=x, col sep=comma ] {crlb/crall_013_blue2.csv };
@@ -656,7 +657,7 @@ settings in Figure~\ref{f:collar}.\\
         ylabel={Cramer Rao Lower Bound / \n{nm}},
         grid=major,
         legend entries={0.17 Y,0.17 Y,0.17 Y},
-        %legend pos = north west,
+        % legend pos = north west,
         ]
         \addplot[color=teal]
         table [ x=n, y=y, col sep=comma ] {crlb/crall_013_blue2.csv };
@@ -696,7 +697,7 @@ settings in Figure~\ref{f:collar}.\\
     and bottom).}
   \label{f:axes}
 \end{figure}
-%
+% 
 \begin{figure}[!t]
   \begin{subfigure}[t!]{0.5\textwidth}
     \centering
@@ -783,7 +784,9 @@ settings in Figure~\ref{f:collar}.\\
 \end{figure}
 
 
-\clearpage\section{Dual Channel Transformation}
+\clearpage\section{Dual Channel: Simulation}
+
+\t{Dual Channel: Simulation}
 
 \begin{figure*}[!t]
   \vspace{-3em}
@@ -798,7 +801,7 @@ settings in Figure~\ref{f:collar}.\\
         xlabel={x / $\mu$m},
         ylabel={y / $\mu$m},
         zlabel={z / $\mu$m},
-        %label shift = -10pt,
+        % label shift = -10pt,
         % legend entries={blue channel, transformed red channel, red channel},
         xmin=-1,
         xmax=1,
@@ -824,7 +827,7 @@ settings in Figure~\ref{f:collar}.\\
         xlabel={x / $\mu$m},
         ylabel={y / $\mu$m},
         zlabel={z / $\mu$m},
-        %label shift = -10pt,
+        % label shift = -10pt,
         % legend entries={blue channel, transformed red channel, red channel},
         xmin=-1,
         xmax=1,
@@ -938,7 +941,7 @@ settings in Figure~\ref{f:collar}.\\
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
-  %
+  % 
   \caption{Demonstration of the recovery of rigid (left) respective
     affine (right) transformations, via recovering localisations of
     simulated two channel SMLM data; transformation (magenta) from red
@@ -953,6 +956,8 @@ settings in Figure~\ref{f:collar}.\\
 
 \clearpage\section{Dual Channel: NPC}
 
+\t{Dual Channel: NPC}
+
 \begin{figure*}[!t]
   \vspace{-5em}
   \centering
@@ -961,6 +966,30 @@ settings in Figure~\ref{f:collar}.\\
       width=0.7\textwidth,
       height=0.7\textwidth,
       name=ax1,
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={X Position / \n{nm}},
+      ylabel={Y Position / \n{nm}},
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xmin=0.5e4,
+      xmax=0.85e4,
+      ymin=0.5e4,
+      ymax=0.851e4,
+      grid=major,
+      thick,
+      mark size=8pt,
+      ]
+      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
+      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
+      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
+    \end{axis}
+    \begin{axis}[
+      width=0.7\textwidth,
+      height=0.7\textwidth,
+      name=ax2,
+      % place second axis relative to first one anchor is south west
+      at={($(ax1.north west)+(0,1.5cm)$)},
       enlargelimits=false, smooth,
       grid=both, grid style=dashed,
       xlabel={X Position / \n{nm}},
@@ -984,33 +1013,9 @@ settings in Figure~\ref{f:collar}.\\
       % draw a rectangle
       \draw (c1) rectangle (axis cs:0.85e4,0.85e4);
     \end{axis}
-    \begin{axis}[
-      width=0.7\textwidth,
-      height=0.7\textwidth,
-      name=ax2,
-      enlargelimits=false, smooth,
-      grid=both, grid style=dashed,
-      xlabel={X Position / \n{nm}},
-      ylabel={Y Position / \n{nm}},
-      % place second axis relative to first one anchor is south west
-      at={($(ax1.south east)-(0,11cm)$)},
-      enlargelimits=false, smooth,
-      grid=both, grid style=dashed,
-      xmin=0.5e4,
-      xmax=0.85e4,
-      ymin=0.5e4,
-      ymax=0.851e4,
-      grid=major,
-      thick,
-      mark size=8pt,
-      ]
-      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
-      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
-      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
-    \end{axis}
     % draw dashed lines from rectangle in first axis to corners of second
-    \draw [dashed] (c2) -- (ax2.north west);
-    \draw [dashed] (c3) -- (ax2.north east);
+    \draw [dashed] (c2) -- (ax1.north west);
+    \draw [dashed] (c3) -- (ax1.north east);
   \end{tikzpicture}
   \caption{Demonstration of a rigid transformation of the
     localisations (magenta $\circ$) from blue channel (blue $\times$)
@@ -1020,7 +1025,8 @@ settings in Figure~\ref{f:collar}.\\
   \label{f:npc_rigid}
 \end{figure*}
 
-\section{SMLM Analysis}
+
+\clearpage\section{SMLM Analysis}\label{s:r:ana}
 
 Applying the SMLM described in Section~\t{sec} for the stack of
 microscopy images, one obtains a list of localisations comprised of
@@ -1043,109 +1049,114 @@ This analysis is performed in \e{Python}, and is freely available in
 my Git repository \t{git}; both as a plain python file (.py) as well
 as in the format of a \e{Jupyter Notebook} (.ipynb).
 
+For the sake of readability we omit the code sections generating the
+shown plots, as they are mostly redundant. Of course the full code is
+available online.
+
 \t{npc image}
 
-\onecolumn
+\t{appendix}
 
-
-\usemintedstyle{
-  manni,
-  linenos = true,
-  frame = single,
-}
+% \usemintedstyle{
+%   manni,
+%   linenos = true,
+%   frame = single,
+% }
 
 \subsection{Import}
 
 Here we import the used packages and the data file we obtain from
 running the SMLM algorithm.
 
-\begin{minted}{python}
-#@markdown ##import core
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-import matplotlib as mpl
-from mpl_toolkits.mplot3d import Axes3D
-import scipy.io
-from sklearn.cluster import DBSCAN
-from sklearn import metrics
-from sklearn.datasets import make_blobs
-from sklearn.preprocessing import StandardScaler
+% \begin{minted}{python}
+%   #@markdown ##import core
+%   import pandas as pd
+%   import matplotlib.pyplot as plt
+%   import numpy as np
+%   import matplotlib as mpl
+%   from mpl_toolkits.mplot3d import Axes3D
+%   import scipy.io
+%   from sklearn.cluster import DBSCAN
+%   from sklearn import metrics
+%   from sklearn.datasets import make_blobs
+%   from sklearn.preprocessing import StandardScaler
 
-#@markdown ##import jupyter
-#%matplotlib ipympl
-#%matplotlib widget
-#%matplotlib interactive
-%matplotlib inline
-import trackpy
-#import sdt
-#from sdt import io, chromatic, multicolor, brightness
-    
-## local
-wd = 'data/210422_npc_red_defocus/'
-data = pd.read_csv( wd + 'cell1_tr1000_def500.csv',
-                   header = None,
-                   names=["x", "y", "z", "n", "bg","fit","id","frame"] )
-\end{minted}
+%   #@markdown ##import jupyter
+%   #%matplotlib ipympl
+%   #%matplotlib widget
+%   #%matplotlib interactive
+%   % matplotlib inline
+%   import trackpy
+%   #import sdt
+%   #from sdt import io, chromatic, multicolor, brightness
+  
+%   ## local
+%   wd = 'data/210422_npc_red_defocus/'
+%   data = pd.read_csv( wd + 'cell1_tr1000_def500.csv',
+%   header = None,
+%   names=["x", "y", "z", "n", "bg","fit","id","frame"] )
+% \end{minted}
 
 \subsection{Drift Correction}
 
 The \e{drift} of the setup over time can be estimated using
-\e{ImageJ}, and is then imported as \tt{drift} \t{drift}. in the
+\e{ImageJ}, and is then imported as \tt{drift} \t{drift}. In the
 following block the drift correction is applied to all the 130k
-localisations.
+localisations, shown in Figure~\ref{f:2_drift} as 3d plot of all the
+initial 370k drift corrected localisations.
 
-\begin{minted}{python}
-#@markdown ## import & scale drift
-#@markdown > set **magnification** via factor in drift.
+% \begin{minted}{python}
+%   #@markdown ## import & scale drift
+%   #@markdown > set **magnification** via factor in drift.
 
-drift = pd.read_csv( wd + 'day2_cell1_driftValues.csv')
+%   drift = pd.read_csv( wd + 'day2_cell1_driftValues.csv')
 
-drift['Y2']=drift['Y2']*146.6
-drift['Y3']=drift['Y3']*146.6
-drift['X2']=np.round(drift['X2'])
-drift['X3']=np.round(drift['X3'])
+%   drift['Y2']=drift['Y2']*146.6
+%   drift['Y3']=drift['Y3']*146.6
+%   drift['X2']=np.round(drift['X2'])
+%   drift['X3']=np.round(drift['X3'])
 
-#@markdown ## apply drift correction
+%   #@markdown ## apply drift correction
 
-for i in range(len(drift)-1):
-    fr=data[(data['frame']>=drift['X2'].iloc[i]) &
-            (data['frame']<drift['X2'].iloc[i+1])]
-    fr['y']=fr['y']-drift['Y2'].iloc[i]
-    fr['x']=fr['x']-drift['Y3'].iloc[i]
-    data[(data['frame']>=drift['X2'].iloc[i]) &
-         (data['frame']<drift['X2'].iloc[i+1])]=fr
-\end{minted}
+%   for i in range(len(drift)-1):
+%   fr=data[(data['frame']>=drift['X2'].iloc[i]) &
+%   (data['frame']<drift['X2'].iloc[i+1])]
+%   fr['y']=fr['y']-drift['Y2'].iloc[i]
+%   fr['x']=fr['x']-drift['Y3'].iloc[i]
+%   data[(data['frame']>=drift['X2'].iloc[i]) &
+%   (data['frame']<drift['X2'].iloc[i+1])]=fr
+% \end{minted}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7\textwidth]{2_drift.png}
+  \includegraphics[width=0.5\textwidth]{2_drift.png}
   \caption{3d plot of all 370148 drift corrected localisations, color
     coded by photon count.}
   \label{f:2_drift}
 \end{figure}
 
 
-\subsection{Check Photon Counts}
+\subsection{Photon Counts}
 
 As a preliminary step it might prove useful to look at the photon
-count statistic. Here we can easily see what the supposed intensity of
-a single molecule is, in our case about 2000. Those below can be
-considered noise, those far above are probably overlapping molecules,
+count statistics, shown in Figure~\ref{f:3_photons}. Here we can easily
+see what the supposed intensity of a single molecule is; the peak, in
+our case about 2000. Those localisations below may be considered
+noise, those far above are probably overlapping or stacked molecules,
 so their intensities add up.
 
-\begin{minted}{python}
-#@markdown ## Check: photon counts
-#@markdown > set `max_photons` accordingly (default: 10000).
-max_photons = 10000 #@param {type:"slider", min:0, max:40000, step:1000}
- 
-fig = plt.figure()
-plt.hist( data['n'], bins=50, range=( 0, max_photons ) )
-\end{minted}
+% \begin{minted}{python}
+%   #@markdown ## Check: photon counts
+%   #@markdown > set `max_photons` accordingly (default: 10000).
+%   max_photons = 10000 #@param {type:"slider", min:0, max:40000, step:1000}
+  
+%   fig = plt.figure()
+%   plt.hist( data['n'], bins=50, range=( 0, max_photons ) )
+% \end{minted}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{3_photons.png}
+  \includegraphics[width=0.5\textwidth]{3_photons.png}
   \caption{histogram of the photon count for the localisations.}
   \label{f:3_photons}
 \end{figure}
@@ -1162,27 +1173,31 @@ and thus need to be discarded as unplausible. The dataset could be
 filtered by \tt{min\_fit}, but to our findings this does not contribute
 much.
 
-\begin{minted}{python}
-#@markdown ## filter
-#@markdown > set `min_photons` and `max_photons` accordingly (default: 2000 < photons < 7000).\
-#@markdown > set `min_z` and `max_z` accordingly (default: 0 < z < 499).\
-#@markdown > set `min_fit` accordingly (default: 6e6).
-min_photons = 2000 #@param {type:"slider", min:0, max:40000, step:1000}
-max_photons = 7000 #@param {type:"slider", min:0, max:40000, step:1000}
-min_z = 0 #@param {type:"slider", min:0, max:500, step:1}
-max_z = 384 #@param {type:"slider", min:0, max:500, step:1}
-min_fit = 7192000 #@param {type:"slider", min:0, max:1e7, step:1000}
- 
-fdata = data[ ( data['n'] > min_photons ) &
-             ( data['n'] < max_photons ) & 
-             ( data['z'] > min_z ) &
-             ( data['z'] < max_z ) &
-             ( data['fit'] < min_fit ) ]
-\end{minted}
-           
+Figure~\ref{f:4_filter} shows a 3d plot of the remaining 154k
+localisations after we apply the filter, thus effectively shrinking
+down our exemplary data set by about 40\%.
+
+% \begin{minted}{python}
+%   #@markdown ## filter
+%   #@markdown > set `min_photons` and `max_photons` accordingly (default: 2000 < photons < 7000).\
+%   #@markdown > set `min_z` and `max_z` accordingly (default: 0 < z < 499).\
+%   #@markdown > set `min_fit` accordingly (default: 6e6).
+%   min_photons = 2000 #@param {type:"slider", min:0, max:40000, step:1000}
+%   max_photons = 7000 #@param {type:"slider", min:0, max:40000, step:1000}
+%   min_z = 0 #@param {type:"slider", min:0, max:500, step:1}
+%   max_z = 384 #@param {type:"slider", min:0, max:500, step:1}
+%   min_fit = 7192000 #@param {type:"slider", min:0, max:1e7, step:1000}
+  
+%   fdata = data[ ( data['n'] > min_photons ) &
+%   ( data['n'] < max_photons ) & 
+%   ( data['z'] > min_z ) &
+%   ( data['z'] < max_z ) &
+%   ( data['fit'] < min_fit ) ]
+% \end{minted}
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{4_filter.png}
+  \includegraphics[width=0.5\textwidth]{4_filter.png}
   \caption{3d plot of all 154237 filtered localisations, color coded
     by photon count.}
   \label{f:4_filter}
@@ -1191,72 +1206,112 @@ fdata = data[ ( data['n'] > min_photons ) &
 
 \subsection{Track Particles}
 
-\begin{minted}{python}
-#@markdown ## track all in x,y
-#@markdown > set `sr` to wanted search range (default: 50).\
-#@markdown > set `mem` to wanted memory (default: 10).
-sr = 50 #@param {type:"slider", min:0, max:100, step:1}
-mem = 10 #@param {type:"slider", min:0, max:100, step:1}
- 
- linkedxy = trackpy.link_df( fdata,
-                           pos_columns = ["x","y","z"],
-                           search_range = sr,
-                           memory = mem )
-                           
-particles = linkedxy.groupby( "particle" ).aggregate( np.mean )
-std_pos = linkedxy.groupby( "particle" ).aggregate( 'std' )
-particles["length"] = linkedxy.groupby( "particle" ).apply( len )
-particles["z_std"] = std_pos['z'].copy()
-particles["x_std"] = std_pos['x'].copy()
-particles["y_std"] = std_pos['y'].copy()
-\end{minted}
-           
+The 50k frames we analyse here are taken with exposure of
+\SI{20}{\m\s}, and \SI{10}{\m\s} between consecutive
+exposures. Depending on the laser intensity and the buffer composition
+the bright state has a specific half-life. This leads to one exemplary
+molecule being \e{on} for some \SI{30}{\m\s} (one frame) while some
+other is on for \SI{60}{\m\s}; and so appears in two consecutive
+frames. Since the molecule in those two frames essentially is the
+same, we can \e{track} it over time: effectively averaging the
+location if present in multiple frames, thus reducing the amount of
+localisations while at the same time increasing their precision.
+
+The parameters \tt{sr} denotes the \e{search range}, how far apart two
+consecutive localisations are still considered \e{one} particle, this
+has to be adjusted based on the physical setup considering vibrations
+and the like.
+
+Figure~\ref{f:5_tracking} shows a 3d plot of the remaining 98k
+localisations, after we track the particles. So the tracking step
+further shrinks down our exemplary data set by about 60\%.
+
+% \begin{minted}{python}
+%   #@markdown ## track all in x,y
+%   #@markdown > set `sr` to wanted search range (default: 50).\
+%   #@markdown > set `mem` to wanted memory (default: 10).
+%   sr = 50 #@param {type:"slider", min:0, max:100, step:1}
+%   mem = 10 #@param {type:"slider", min:0, max:100, step:1}
+  
+%   linkedxy = trackpy.link_df( fdata,
+%   pos_columns = ["x","y","z"],
+%   search_range = sr,
+%   memory = mem )
+  
+%   particles = linkedxy.groupby( "particle" ).aggregate( np.mean )
+%   std_pos = linkedxy.groupby( "particle" ).aggregate( 'std' )
+%   particles["length"] = linkedxy.groupby( "particle" ).apply( len )
+%   particles["z_std"] = std_pos['z'].copy()
+%   particles["x_std"] = std_pos['x'].copy()
+%   particles["y_std"] = std_pos['y'].copy()
+% \end{minted}
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{5_tracking.png}
+  \includegraphics[width=0.5\textwidth]{5_tracking.png}
   \caption{3d plot of all 98456 filtered localisations, color coded by
     photon count.}
   \label{f:5_tracking}
 \end{figure}
 
 
-\section{SMLM Analysis: NPC}
+\section{SMLM Analysis: NPC}\label{s:r:ananpc}
+
+We use NPCs as a test target for our method, thus we have some
+additional knowledge, like the geometry of each individual NPC: they
+comprise two stacked \t{tori}, each about \SI{150}{\n\m} diameter (in
+x,y direction), and \SI{150}{\n\m} apart (in z direction).
+
+Now we can group our dataset with close to 100 thousand localisations
+to clusters of roughly this size in x,y (set \tt{dim=2}). Note that
+for the sake of completeness, we include the possibility of clustering
+in 3d to spheres in x,y,z (set \tt{dim=3}), but mind that x,y and z
+precision most often greatly varies (see Section~\t{sec}).
+
+The parameter \tt{min\_samples} denotes the minimum amount of
+constituents a cluster must have to be considered such.
+
+Figure~\ref{f:5_tracking} shows a 3d plot of the localisations of 658
+identified clusters, omitting all the other 35489 localisations as
+noise. So the clustering step further shrinks down our exemplary data
+set by about 30\%.
+
 
 \subsection{Clustering}
 
-\begin{minted}{python}
-#@markdown ## compute dbscan
-#@markdown > set `dim = 2` for clustering in x and y (default:).\
-#@markdown > set `dim = 3` for experimental clustering in 3d; be aware that x,z and y precision probably vary!\
-#@markdown > set `eps` (default: 200).\
-#@markdown > set `min_samples` (default: 10).
-dim = "2" #@param [2, 3]
-eps = 100 #@param {type:"slider", min:0, max:500, step:10}
-min_samples = 50 #@param {type:"slider", min:1, max:100, step:1}
+% \begin{minted}{python}
+%   #@markdown ## compute dbscan
+%   #@markdown > set `dim = 2` for clustering in x and y (default:).\
+%   #@markdown > set `dim = 3` for experimental clustering in 3d; be aware that x,z and y precision probably vary!\
+%   #@markdown > set `eps` (default: 200).\
+%   #@markdown > set `min_samples` (default: 10).
+%   dim = "2" #@param [2, 3]
+%   eps = 100 #@param {type:"slider", min:0, max:500, step:10}
+%   min_samples = 50 #@param {type:"slider", min:1, max:100, step:1}
 
-alocalisations = localisations.to_numpy()
-alocalisations[ :, 0:2 ]
+%   alocalisations = localisations.to_numpy()
+%   alocalisations[ :, 0:2 ]
 
-db = DBSCAN( eps, min_samples ).fit( alocalisations[ :, 0:int( dim ) ] )
-core_samples_mask = np.zeros_like( db.labels_, dtype=bool )
-core_samples_mask[ db.core_sample_indices_ ] = True
-labels = db.labels_
-localisations[ "cluster" ] = labels
+%   db = DBSCAN( eps, min_samples ).fit( alocalisations[ :, 0:int( dim ) ] )
+%   core_samples_mask = np.zeros_like( db.labels_, dtype=bool )
+%   core_samples_mask[ db.core_sample_indices_ ] = True
+%   labels = db.labels_
+%   localisations[ "cluster" ] = labels
 
-# count clusters (ignore noise if present)
-n_clusters_ = len( set( labels ) ) - ( 1 if -1 in labels else 0 )
-n_noise_ = list( labels ).count( -1 )
+%   # count clusters (ignore noise if present)
+%   n_clusters_ = len( set( labels ) ) - ( 1 if -1 in labels else 0 )
+%   n_noise_ = list( labels ).count( -1 )
 
-#print('Estimated number of clusters: %d' % n_clusters_)
-#print('Estimated number of noise points: %d' % n_noise_)
+%   #print('Estimated number of clusters: %d' % n_clusters_)
+%   #print('Estimated number of noise points: %d' % n_noise_)
 
-nlocalisations = localisations.loc[ localisations['cluster'] == -1 ]
-clocalisations = localisations.loc[ localisations['cluster'] != -1 ]
-\end{minted}
-           
+%   nlocalisations = localisations.loc[ localisations['cluster'] == -1 ]
+%   clocalisations = localisations.loc[ localisations['cluster'] != -1 ]
+% \end{minted}
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{6_clustering.png}
+  \includegraphics[width=0.5\textwidth]{6_clustering.png}
   \caption{3d plot of the localisations of the 658 identified clusters
     (omitting 35489 localisations as noise, due to not belonging to a
     cluster), color coded by photon count.}
@@ -1266,60 +1321,84 @@ clocalisations = localisations.loc[ localisations['cluster'] != -1 ]
 
 \subsection{Cluster Analysis}
 
-\begin{minted}{python}
-#@markdown ## analyse clusters
-#@markdown > set `npc_radius` to NPC radius /nm (default: 50).\
-#@markdown > set `npc_radius` to NPC haight /nm (default: 150).
-npc_radius = 50 #@param {type:"slider", min:0, max:500, step:1}
-npc_height = 25 #@param {type:"slider", min:0, max:500, step:1}
+For all the localisations within each of these identified clusters, we
+now derive the centroid position (\tt{xmean,ymean,zmean}), with
+standard derivation (\tt{xvar,yvar,zvar}). This enables the
+classification of the within-cluster distribution of localisations,
+alas how well they represent the anticipated NPC geometry.
 
-clabels = set(labels)
-cnames = [ "counts", "xmean", "ymean", "zmean", "nmean", "xvar", "yvar", "zvar",
-          "nvar", "label", "ringness", "twofold" ]
-clusters = pd.DataFrame( index = clabels, columns = cnames, dtype="float64" )
-clusters[ "label" ] = clabels
+To obtain this \e{quality}, we compose both the quantity
+\tt{ringness}, denoting how well the cluster shapes a ring in x,y
+direction; as well as the quantity \tt{twofold}, denoting how well the
+cluster shapes two stacked tori in z direction, basically forming a
+camel-curve in z direction. To break this down to one scalar each, we
+compute the root mean square (RMS) of the deviations of each
+localisations radius from the cluster centre (in x,y direction) from
+the known NPC radius (Lines~20--24). The quantity \tt{twofold} is
+similarly comprised of a (RMS) deviation of each localisations z value
+from the cluster centre (in z direction) from the known NPC
+height. The mentioned parameters are thus called \tt{npc\_radius},
+respective \tt{npc\_height}.
 
-for k in clabels:
-  tmp = localisations.loc[ localisations['cluster'] == k ]
-  clusters.loc[ k, "counts" ] = len( tmp )
-  for label in [ "x", "y", "z", "n" ]:
-    clusters.loc[ k, label+"mean"  ] = np.mean( tmp.loc[ :, label ] )
-    clusters.loc[ k, label+"var"  ] = np.var( tmp.loc[ :, label ] )
+Figure~\ref{f:7_filtered_clusters} shows a broad overview of the
+location of the cluster centres (not the localisations within), color
+coded by photon count. This should be considered more of a short
+sanity check than a profound analysis.
 
-  ## xy: radius (distance to centroid)
-  rad = np.sqrt( ( tmp.loc[ :, "x" ] - clusters.loc[ k, "xmean" ] )**2 + 
-                ( tmp.loc[ :, "y" ] - clusters.loc[ k, "ymean" ] )**2 )
-  ## xy: radius rms deviation from NPC radius
-  clusters.loc[ k, "ringness"  ] = np.sqrt( sum( ( rad - npc_radius )**2 ) )
+% \begin{minted}{python}
+%   #@markdown ## analyse clusters
+%   #@markdown > set `npc_radius` to NPC radius /nm (default: 50).\
+%   #@markdown > set `npc_radius` to NPC haight /nm (default: 150).
+%   npc_radius = 50 #@param {type:"slider", min:0, max:500, step:1}
+%   npc_height = 25 #@param {type:"slider", min:0, max:500, step:1}
 
-  ## z: radius (distance to centroid)
-  rad = abs( tmp.loc[ :, "z" ] - clusters.loc[ k, "zmean" ] )
-  ## z: radius rms deviation from NPC radius
-  clusters.loc[ k, "twofold"  ] = np.sqrt( sum( ( rad - npc_height )**2 ) )
+%   clabels = set(labels)
+%   cnames = [ "counts", "xmean", "ymean", "zmean", "nmean", "xvar", "yvar", "zvar",
+%   "nvar", "label", "ringness", "twofold" ]
+%   clusters = pd.DataFrame( index = clabels, columns = cnames, dtype="float64" )
+%   clusters[ "label" ] = clabels
 
-#@markdown ## filter clusters
-#@markdown > set `count_threshold` to min elements (counts) in cluster (default: 30)\
-#@markdown > set `diameter_threshold` to max x,y (radius) deviation of cluster from NPC diameter (default: 200)\
-#@markdown > set `twofold_threshold` to max z (radius) deviation of cluster from NPC height (default: 200)\
-#@markdown > set `xyvar_threshold` to wanted x,y variance (default: 1e4)\
-#@markdown > set `zvar_threshold` to wanted z variance (default: 1e4)
-count_threshold = 100 #@param {type:"slider", min:0, max:200, step:1}
-diameter_threshold = 500 #@param {type:"slider", min:0, max:500, step:10}
-twofold_threshold = 1000 #@param {type:"slider", min:0, max:1000, step:10}
-xyvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
-zvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
+%   for k in clabels:
+%   tmp = localisations.loc[ localisations['cluster'] == k ]
+%   clusters.loc[ k, "counts" ] = len( tmp )
+%   for label in [ "x", "y", "z", "n" ]:
+%   clusters.loc[ k, label+"mean"  ] = np.mean( tmp.loc[ :, label ] )
+%   clusters.loc[ k, label+"var"  ] = np.var( tmp.loc[ :, label ] )
 
-fclusters = clusters[ ( clusters['counts'] < count_threshold ) &
-                     ( clusters['ringness'] < diameter_threshold ) &
-                     ( clusters['twofold'] < twofold_threshold ) &
-                     ( clusters['xvar'] < xyvar_threshold ) & 
-                     ( clusters['yvar'] < xyvar_threshold ) &
-                     ( clusters['zvar'] < zvar_threshold ) ]
-\end{minted}
-           
+%   ## xy: radius (distance to centroid)
+%   rad = np.sqrt( ( tmp.loc[ :, "x" ] - clusters.loc[ k, "xmean" ] )**2 + 
+%   ( tmp.loc[ :, "y" ] - clusters.loc[ k, "ymean" ] )**2 )
+%   ## xy: radius rms deviation from NPC radius
+%   clusters.loc[ k, "ringness"  ] = np.sqrt( sum( ( rad - npc_radius )**2 ) )
+
+%   ## z: radius (distance to centroid)
+%   rad = abs( tmp.loc[ :, "z" ] - clusters.loc[ k, "zmean" ] )
+%   ## z: radius rms deviation from NPC radius
+%   clusters.loc[ k, "twofold"  ] = np.sqrt( sum( ( rad - npc_height )**2 ) )
+
+%   #@markdown ## filter clusters
+%   #@markdown > set `count_threshold` to min elements (counts) in cluster (default: 30)\
+%   #@markdown > set `diameter_threshold` to max x,y (radius) deviation of cluster from NPC diameter (default: 200)\
+%   #@markdown > set `twofold_threshold` to max z (radius) deviation of cluster from NPC height (default: 200)\
+%   #@markdown > set `xyvar_threshold` to wanted x,y variance (default: 1e4)\
+%   #@markdown > set `zvar_threshold` to wanted z variance (default: 1e4)
+%   count_threshold = 100 #@param {type:"slider", min:0, max:200, step:1}
+%   diameter_threshold = 500 #@param {type:"slider", min:0, max:500, step:10}
+%   twofold_threshold = 1000 #@param {type:"slider", min:0, max:1000, step:10}
+%   xyvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
+%   zvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
+
+%   fclusters = clusters[ ( clusters['counts'] < count_threshold ) &
+%   ( clusters['ringness'] < diameter_threshold ) &
+%   ( clusters['twofold'] < twofold_threshold ) &
+%   ( clusters['xvar'] < xyvar_threshold ) & 
+%   ( clusters['yvar'] < xyvar_threshold ) &
+%   ( clusters['zvar'] < zvar_threshold ) ]
+% \end{minted}
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{7_filtered_clusters.png}
+  \includegraphics[width=0.5\textwidth]{7_filtered_clusters.png}
   \caption{3d plot of the positions of the 451 filtered clusters,
     color coded by photon count.}
   \label{f:7_filtered_clusters}
@@ -1328,92 +1407,114 @@ fclusters = clusters[ ( clusters['counts'] < count_threshold ) &
 
 \subsection{Select Clusters}
 
-\begin{minted}{python}
-#@markdown ## select best clusters & plot localisations
-#@markdown > set `show_clusters` to wanted number of best clusters (default: 100).\
-#@markdown > set `sort` to sort the best clusters (default: ringness + twofold).
-show_clusters = 10 #@param {type:"slider", min:0, max:1000, step:1}
-sort = 'ringness + twofold' #@param [ "ringness + twofold", "twofold", "ringness", "xyvar" , "xvar" ]
+Now we possess all the information needed to evaluate the list of
+clusters; for example to sort for the lets say 10 most \e{ringlike}
+clusters. Or, by setting \tt{sort = 'ringness + twofold'}, we may find
+the 10 \e{best} clusters in terms of both \tt{ringness} and
+\tt{twofold}---weighted equally---which would comprise the 10
+\e{overall best}, thus \e{most NPC like} clusters.
 
-if sort == "xvar": # sort by variance
-    sclusters = fclusters.sort_values( "xvar" )
-elif sort == "xyvar": # sort by x and y variance using least squares
-    sclusters = fclusters.loc[
-        ( fclusters.xvar ** 2 + fclusters.yvar ** 2 ).sort_values().index ]
-elif sort == "ringness": # sort by ringness (deviation to ringness)
-    sclusters = fclusters.sort_values( "ringness" )
-elif sort == "twofold": # sort by ringness (deviation to ringness)
-    sclusters = fclusters.sort_values( "twofold" )
-elif sort == "ringness + twofold": # sort by ringness (deviation to ringness)
-    sclusters = fclusters.loc[
-        ( fclusters.twofold ** 2 + fclusters.ringness ** 2 ).sort_values().index ]
+For sake of completeness we also include the x,y and z variances, even
+if they do not comprise a very meaningful parameter in the particular
+case due to the NPCs geometry.
 
-show_clusters = min( show_clusters, len( sclusters ) )
-selected_clusters = sclusters["label"].iloc[ 0:show_clusters ]
+Figure~\label{f:89_best_filtered_clusters} shows a 3d plot of the
+localisations within the 10 \e{best} clusters, color coded by photon
+count.
 
-fig = plt.figure()
-ax = fig.add_subplot( projection = '3d' )
-for clus in selected_clusters:
-  flocalisations = localisations[ ( localisations['cluster'] == clus ) ]
-  ff = ax.scatter( flocalisations['x'],
-                  flocalisations['y'],
-                  flocalisations['z'],
-                  s=1 ,c = flocalisations['n'] )
-\end{minted}
+% \begin{minted}{python}
+%   #@markdown ## select best clusters & plot localisations
+%   #@markdown > set `show_clusters` to wanted number of best clusters (default: 100).\
+%   #@markdown > set `sort` to sort the best clusters (default: ringness + twofold).
+%   show_clusters = 10 #@param {type:"slider", min:0, max:1000, step:1}
+%   sort = 'ringness + twofold' #@param [ "ringness + twofold", "twofold", "ringness", "xyvar" , "xvar" ]
+
+%   if sort == "xvar": # sort by variance
+%   sclusters = fclusters.sort_values( "xvar" )
+%   elif sort == "xyvar": # sort by x and y variance using least squares
+%   sclusters = fclusters.loc[
+%   ( fclusters.xvar ** 2 + fclusters.yvar ** 2 ).sort_values().index ]
+%   elif sort == "ringness": # sort by ringness (deviation to ringness)
+%   sclusters = fclusters.sort_values( "ringness" )
+%   elif sort == "twofold": # sort by ringness (deviation to ringness)
+%   sclusters = fclusters.sort_values( "twofold" )
+%   elif sort == "ringness + twofold": # sort by ringness (deviation to ringness)
+%   sclusters = fclusters.loc[
+%   ( fclusters.twofold ** 2 + fclusters.ringness ** 2 ).sort_values().index ]
+
+%   show_clusters = min( show_clusters, len( sclusters ) )
+%   selected_clusters = sclusters["label"].iloc[ 0:show_clusters ]
+
+%   fig = plt.figure()
+%   ax = fig.add_subplot( projection = '3d' )
+%   for clus in selected_clusters:
+%   flocalisations = localisations[ ( localisations['cluster'] == clus ) ]
+%   ff = ax.scatter( flocalisations['x'],
+%   flocalisations['y'],
+%   flocalisations['z'],
+%   s=1 ,c = flocalisations['n'] )
+% \end{minted}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\textwidth]{8_best_filtered_clusters.png}
-  %\includegraphics[width=0.5\textwidth]{9_best_filtered_clusters.png}
-  \caption{3d plot of the positions of the 451 filtered clusters,
-    color coded by photon count.}
+  \includegraphics[width=0.5\textwidth]{8_best_filtered_clusters.png}
+  % \includegraphics[width=0.5\textwidth]{9_best_filtered_clusters.png}
+  \caption{3d plot of the localisations within the 10 \e{best}
+    clusters, color coded by photon count.}
   % (top) respective color coded by cluster assignment (bottom)
   \label{f:89_best_filtered_clusters}
 \end{figure}
 
 
-\subsection{X,Y,Z Histograms}
+\subsection{X,Y,Z Histograms}\label{s:r:xyzhist}
 
-\begin{minted}{python}
-#@markdown ## Check: z distribution
-#@markdown > set `plot_cluster` to wanted cluster (default: 0).
-plot_cluster = 3  #@param {type:"slider", min:0, max:100, step:1}
-plot_cluster = min( plot_cluster, len( sclusters ) -1 )
+As a further sanity check, we plot the histograms for selected
+clusters (\tt{plot\_cluster}), in x,y and z direction; to figure out
+if the sorting did work effectively---thus the higher sorted clusters
+are indeed \e{better} examples of NPCs.
 
-tmp = localisations.loc[ localisations['cluster'] == 
-                        sclusters.loc[ sclusters.index[ plot_cluster ],
-                                      "label" ] ]
+Figure~\ref{f:10_xyz_best_filtered_clusters} shows exemplary
+histograms of the x,y (right) respective z distribution (left) of the
+localisations within the \e{best} cluster (top), the \e{worst}
+(bottom) and one in between.
 
-z = tmp.z - np.mean( tmp.z )
+% \begin{minted}{python}
+%   #@markdown ## Check: z distribution
+%   #@markdown > set `plot_cluster` to wanted cluster (default: 0).
+%   plot_cluster = 3  #@param {type:"slider", min:0, max:100, step:1}
+%   plot_cluster = min( plot_cluster, len( sclusters ) -1 )
 
-fig, axes = plt.subplots(2, 1, figsize=(4, 7) ) # figsize=(4, 12)
+%   tmp = localisations.loc[ localisations['cluster'] == 
+%   sclusters.loc[ sclusters.index[ plot_cluster ],
+%   "label" ] ]
 
-axes[0].hist( tmp.z - np.mean( tmp.z ) )
-axes[0].set_xlabel('z / nm')
-axes[0].set_ylabel('counts')
-#axes[0].set_title( 'z' )
+%   z = tmp.z - np.mean( tmp.z )
 
-axes[1].hist( tmp.x - np.mean( tmp.x ) )
-axes[1].hist( tmp.y - np.mean( tmp.y ) )
-axes[1].set_ylabel('counts')
-axes[1].set_xlabel('x, y / nm')
-#axes[1].set_title( 'x, y' )
-\end{minted}
+%   fig, axes = plt.subplots(2, 1, figsize=(4, 7) ) # figsize=(4, 12)
+
+%   axes[0].hist( tmp.z - np.mean( tmp.z ) )
+%   axes[0].set_xlabel('z / nm')
+%   axes[0].set_ylabel('counts')
+%   #axes[0].set_title( 'z' )
+
+%   axes[1].hist( tmp.x - np.mean( tmp.x ) )
+%   axes[1].hist( tmp.y - np.mean( tmp.y ) )
+% \end{minted}
 
 \begin{figure}[h!]
   \centering
-  %\rotatebox{90}{\hspace{7em} cluster 1}
+  % \rotatebox{90}{\hspace{7em} cluster 1}
   cluster 1\\
-  \includegraphics[width=0.9\textwidth]{10_histograms_1.png}\\
-  %\rotatebox{90}{\hspace{7em} cluster 10}
+  \includegraphics[width=0.5\textwidth]{10_histograms_1.png}\\
+  % \rotatebox{90}{\hspace{7em} cluster 10}
   cluster 10\\
-  \includegraphics[width=0.9\textwidth]{10_histograms_10.png}\\
+  \includegraphics[width=0.5\textwidth]{10_histograms_10.png}\\
   % \rotatebox{90}{\hspace{7em}cluster 450}
   cluster 450\\
-  \includegraphics[width=0.9\textwidth]{10_histograms_450.png}
+  \includegraphics[width=0.5\textwidth]{10_histograms_450.png}
   \caption{histogram of the x,y (right) respective z distribution
-    (left) of the localisations within the \i{best} cluster (top), the
-    \i{worst} (bottom) and one in between.}
+    (left) of the localisations within the \e{best} cluster (top), the
+    \e{worst} (bottom) and one in between.}
   \label{f:10_xyz_best_filtered_clusters}
 \end{figure}
 
@@ -1471,6 +1572,73 @@ z positions than 0.13.\\
 Which is the one we should use?\\
 
 
+\section{SMLM Analysis}
+
+The analysis performed in Section~\ref{s:r:ana} is well suited to
+greatly reduce the localisations, just by omitting unplausible data
+and noise; in our example from initially 370k to below 100k, or to
+about 26\%.
+
+
+\section{SMLM Analysis: NPC}~\label{s:d:ananpc}
+
+\subsection{Automation}
+  
+The fully automatic evaluation of the NPC \e{quality}, shown in
+Section~\ref{s:r:ananpc} surfaced mixed results. The key problems
+being for one, that there are quite many parameters involved; and
+secondly that the analysis proved very susceptible to changes of most
+of these parameters.
+
+A quick glance at the histograms in Section~\ref{s:r:xyzhist} shows,
+that the cluster considered to be the \e{best} does not look better in
+fact, than most of the other clusters. We may well consider this
+approach failed.
+
+Nevertheless we might have gained some valuable insight, into why this
+approach doesn't work. Reasons for this may be any and all of the
+following, for some of which we may suggest possible improvements.
+
+\begin{description}
+\item [numbers] The clusters consist of very few localisations each,
+  statistical analysis of so few elements have to be considered
+  shaky. More constituents within each cluster would probably make
+  this analysis more reliable.
+\item [quality] The definitions of the two quality entities
+  \e{ringness} and \e{twofold}, might not be derived well using RMS. A
+  more sophisticated approach to quantify the clusters deviations to
+  our known NPC geometry might work better, such as fitting the
+  histogram in z direction to a Gaussian.
+\item [weighting] The equal weighting of \e{ringness} and \e{twofold}
+  quantities are canceling each other; Some clusters might look very
+  \e{ringlike}, but are not at all stacked on top of each other, and
+  vica versa. Unequal weighting based on empirical fine tuning might
+  lesser this problem, but will most likely not solve it.
+\end{description}
+
+\subsection{Secondary Filter}
+
+Some of the results of the NPC analysis might still prove themselves
+useful as a secondary filters. In reducing the clusters until only a
+few remain, effectively also finds the \e{best}.
+
+\begin{description}
+\item [high variance] One might want to exclude clusters with an
+  overly high variance, as these might be in fact two NPCs too close
+  to each other to be accounted separately by the clustering
+  algorithm.
+\item [low variance] Quite similarly we might exclude those clusters
+  showing extremely low variance, under suspicion of being well
+  concentrated---yet noise, not representing a NPC at all.
+\item [spread] Likewise we may exclude clusters spreading far in z,
+  due to our knowledge of the NPC heigth, as well as in x,z due to the
+  NPCs well defined radius.
+\end{description}
+
+In the end, possessing a list of the clusters position allows for a
+much easier way to plot some of them manually, than to zoom in on a
+plot of thousands of localisations repeatedly.
+
 
 % .        ___                    ___         ___             ___         ___   ___                          ___  
 % .   .'|=|_.'   .'|=|`.     .'| |   |   .'|=|_.'   .'|      |   | |`.   |   |=|_.'   .'|   .'|=|`.     .'| |   | 
@@ -1490,11 +1658,291 @@ depths. This yields a full PSF model to be used for de-focus 3d SMLM.
 
 \section{Correction Collar}
 
-The best setting of the Correction Collar for the Olympus 1.5~NA
-objective is shown to be 0.17. Here we find the preferable compromise between x,y precision and z precision, in the regime between about 0 and 250~\si{\micro\meter}.
+The best setting of the Correction Collar for the Olympus \SI{1.5}{\NA}
+objective is shown to be 0.13. Here we find the preferable compromise
+between x,y precision and z precision, in the regime between about 0
+and \SI{250}{\micro\meter}.
 
 
 \section{dSTORTM Buffer}
+
+
+\appendix
+
+
+\section{SMLM Analysis: NPC}
+
+\onecolumn
+
+\usemintedstyle{
+  manni,
+  linenos = true,
+  frame = single,
+}
+
+\subsection{Import}
+
+\begin{minted}{python}
+  #@markdown ##import core
+  import pandas as pd
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import matplotlib as mpl
+  from mpl_toolkits.mplot3d import Axes3D
+  import scipy.io
+  from sklearn.cluster import DBSCAN
+  from sklearn import metrics
+  from sklearn.datasets import make_blobs
+  from sklearn.preprocessing import StandardScaler
+
+  #@markdown ##import jupyter
+  #%matplotlib ipympl
+  #%matplotlib widget
+  #%matplotlib interactive
+  % matplotlib inline
+  import trackpy
+  #import sdt
+  #from sdt import io, chromatic, multicolor, brightness
+  
+  ## local
+  wd = 'data/210422_npc_red_defocus/'
+  data = pd.read_csv( wd + 'cell1_tr1000_def500.csv',
+  header = None,
+  names=["x", "y", "z", "n", "bg","fit","id","frame"] )
+\end{minted}
+
+\subsection{Drift Correction}
+
+\begin{minted}{python}
+  #@markdown ## import & scale drift
+  #@markdown > set **magnification** via factor in drift.
+
+  drift = pd.read_csv( wd + 'day2_cell1_driftValues.csv')
+
+  drift['Y2']=drift['Y2']*146.6
+  drift['Y3']=drift['Y3']*146.6
+  drift['X2']=np.round(drift['X2'])
+  drift['X3']=np.round(drift['X3'])
+
+  #@markdown ## apply drift correction
+
+  for i in range(len(drift)-1):
+  fr=data[(data['frame']>=drift['X2'].iloc[i]) &
+  (data['frame']<drift['X2'].iloc[i+1])]
+  fr['y']=fr['y']-drift['Y2'].iloc[i]
+  fr['x']=fr['x']-drift['Y3'].iloc[i]
+  data[(data['frame']>=drift['X2'].iloc[i]) &
+  (data['frame']<drift['X2'].iloc[i+1])]=fr
+\end{minted}
+
+
+\subsection{Photon Counts}
+
+\begin{minted}{python}
+  #@markdown ## Check: photon counts
+  #@markdown > set `max_photons` accordingly (default: 10000).
+  max_photons = 10000 #@param {type:"slider", min:0, max:40000, step:1000}
+  
+  fig = plt.figure()
+  plt.hist( data['n'], bins=50, range=( 0, max_photons ) )
+\end{minted}
+
+
+\subsection{Filter}
+
+\begin{minted}{python}
+  #@markdown ## filter
+  #@markdown > set `min_photons` and `max_photons` accordingly (default: 2000 < photons < 7000).\
+  #@markdown > set `min_z` and `max_z` accordingly (default: 0 < z < 499).\
+  #@markdown > set `min_fit` accordingly (default: 6e6).
+  min_photons = 2000 #@param {type:"slider", min:0, max:40000, step:1000}
+  max_photons = 7000 #@param {type:"slider", min:0, max:40000, step:1000}
+  min_z = 0 #@param {type:"slider", min:0, max:500, step:1}
+  max_z = 384 #@param {type:"slider", min:0, max:500, step:1}
+  min_fit = 7192000 #@param {type:"slider", min:0, max:1e7, step:1000}
+  
+  fdata = data[ ( data['n'] > min_photons ) &
+  ( data['n'] < max_photons ) & 
+  ( data['z'] > min_z ) &
+  ( data['z'] < max_z ) &
+  ( data['fit'] < min_fit ) ]
+\end{minted}
+
+
+\subsection{Track Particles}
+
+\begin{minted}{python}
+  #@markdown ## track all in x,y
+  #@markdown > set `sr` to wanted search range (default: 50).\
+  #@markdown > set `mem` to wanted memory (default: 10).
+  sr = 50 #@param {type:"slider", min:0, max:100, step:1}
+  mem = 10 #@param {type:"slider", min:0, max:100, step:1}
+  
+  linkedxy = trackpy.link_df( fdata,
+  pos_columns = ["x","y","z"],
+  search_range = sr,
+  memory = mem )
+  
+  particles = linkedxy.groupby( "particle" ).aggregate( np.mean )
+  std_pos = linkedxy.groupby( "particle" ).aggregate( 'std' )
+  particles["length"] = linkedxy.groupby( "particle" ).apply( len )
+  particles["z_std"] = std_pos['z'].copy()
+  particles["x_std"] = std_pos['x'].copy()
+  particles["y_std"] = std_pos['y'].copy()
+\end{minted}
+
+
+\section{SMLM Analysis: NPC}
+
+\subsection{Clustering}
+
+\begin{minted}{python}
+  #@markdown ## compute dbscan
+  #@markdown > set `dim = 2` for clustering in x and y (default:).\
+  #@markdown > set `dim = 3` for experimental clustering in 3d; be aware that x,z and y precision probably vary!\
+  #@markdown > set `eps` (default: 200).\
+  #@markdown > set `min_samples` (default: 10).
+  dim = "2" #@param [2, 3]
+  eps = 100 #@param {type:"slider", min:0, max:500, step:10}
+  min_samples = 50 #@param {type:"slider", min:1, max:100, step:1}
+
+  alocalisations = localisations.to_numpy()
+  alocalisations[ :, 0:2 ]
+
+  db = DBSCAN( eps, min_samples ).fit( alocalisations[ :, 0:int( dim ) ] )
+  core_samples_mask = np.zeros_like( db.labels_, dtype=bool )
+  core_samples_mask[ db.core_sample_indices_ ] = True
+  labels = db.labels_
+  localisations[ "cluster" ] = labels
+
+  # count clusters (ignore noise if present)
+  n_clusters_ = len( set( labels ) ) - ( 1 if -1 in labels else 0 )
+  n_noise_ = list( labels ).count( -1 )
+
+  #print('Estimated number of clusters: %d' % n_clusters_)
+  #print('Estimated number of noise points: %d' % n_noise_)
+
+  nlocalisations = localisations.loc[ localisations['cluster'] == -1 ]
+  clocalisations = localisations.loc[ localisations['cluster'] != -1 ]
+\end{minted}
+
+
+\subsection{Cluster Analysis}
+
+\begin{minted}{python}
+  #@markdown ## analyse clusters
+  #@markdown > set `npc_radius` to NPC radius /nm (default: 50).\
+  #@markdown > set `npc_radius` to NPC haight /nm (default: 150).
+  npc_radius = 50 #@param {type:"slider", min:0, max:500, step:1}
+  npc_height = 25 #@param {type:"slider", min:0, max:500, step:1}
+
+  clabels = set(labels)
+  cnames = [ "counts", "xmean", "ymean", "zmean", "nmean", "xvar", "yvar", "zvar",
+  "nvar", "label", "ringness", "twofold" ]
+  clusters = pd.DataFrame( index = clabels, columns = cnames, dtype="float64" )
+  clusters[ "label" ] = clabels
+
+  for k in clabels:
+  tmp = localisations.loc[ localisations['cluster'] == k ]
+  clusters.loc[ k, "counts" ] = len( tmp )
+  for label in [ "x", "y", "z", "n" ]:
+  clusters.loc[ k, label+"mean"  ] = np.mean( tmp.loc[ :, label ] )
+  clusters.loc[ k, label+"var"  ] = np.var( tmp.loc[ :, label ] )
+
+  ## xy: radius (distance to centroid)
+  rad = np.sqrt( ( tmp.loc[ :, "x" ] - clusters.loc[ k, "xmean" ] )**2 + 
+  ( tmp.loc[ :, "y" ] - clusters.loc[ k, "ymean" ] )**2 )
+  ## xy: radius rms deviation from NPC radius
+  clusters.loc[ k, "ringness"  ] = np.sqrt( sum( ( rad - npc_radius )**2 ) )
+
+  ## z: radius (distance to centroid)
+  rad = abs( tmp.loc[ :, "z" ] - clusters.loc[ k, "zmean" ] )
+  ## z: radius rms deviation from NPC radius
+  clusters.loc[ k, "twofold"  ] = np.sqrt( sum( ( rad - npc_height )**2 ) )
+
+  #@markdown ## filter clusters
+  #@markdown > set `count_threshold` to min elements (counts) in cluster (default: 30)\
+  #@markdown > set `diameter_threshold` to max x,y (radius) deviation of cluster from NPC diameter (default: 200)\
+  #@markdown > set `twofold_threshold` to max z (radius) deviation of cluster from NPC height (default: 200)\
+  #@markdown > set `xyvar_threshold` to wanted x,y variance (default: 1e4)\
+  #@markdown > set `zvar_threshold` to wanted z variance (default: 1e4)
+  count_threshold = 100 #@param {type:"slider", min:0, max:200, step:1}
+  diameter_threshold = 500 #@param {type:"slider", min:0, max:500, step:10}
+  twofold_threshold = 1000 #@param {type:"slider", min:0, max:1000, step:10}
+  xyvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
+  zvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
+
+  fclusters = clusters[ ( clusters['counts'] < count_threshold ) &
+  ( clusters['ringness'] < diameter_threshold ) &
+  ( clusters['twofold'] < twofold_threshold ) &
+  ( clusters['xvar'] < xyvar_threshold ) & 
+  ( clusters['yvar'] < xyvar_threshold ) &
+  ( clusters['zvar'] < zvar_threshold ) ]
+\end{minted}
+
+
+\subsection{Select Clusters}
+
+\begin{minted}{python}
+  #@markdown ## select best clusters & plot localisations
+  #@markdown > set `show_clusters` to wanted number of best clusters (default: 100).\
+  #@markdown > set `sort` to sort the best clusters (default: ringness + twofold).
+  show_clusters = 10 #@param {type:"slider", min:0, max:1000, step:1}
+  sort = 'ringness + twofold' #@param [ "ringness + twofold", "twofold", "ringness", "xyvar" , "xvar" ]
+
+  if sort == "xvar": # sort by variance
+  sclusters = fclusters.sort_values( "xvar" )
+  elif sort == "xyvar": # sort by x and y variance using least squares
+  sclusters = fclusters.loc[
+  ( fclusters.xvar ** 2 + fclusters.yvar ** 2 ).sort_values().index ]
+  elif sort == "ringness": # sort by ringness (deviation to ringness)
+  sclusters = fclusters.sort_values( "ringness" )
+  elif sort == "twofold": # sort by ringness (deviation to ringness)
+  sclusters = fclusters.sort_values( "twofold" )
+  elif sort == "ringness + twofold": # sort by ringness (deviation to ringness)
+  sclusters = fclusters.loc[
+  ( fclusters.twofold ** 2 + fclusters.ringness ** 2 ).sort_values().index ]
+
+  show_clusters = min( show_clusters, len( sclusters ) )
+  selected_clusters = sclusters["label"].iloc[ 0:show_clusters ]
+
+  fig = plt.figure()
+  ax = fig.add_subplot( projection = '3d' )
+  for clus in selected_clusters:
+  flocalisations = localisations[ ( localisations['cluster'] == clus ) ]
+  ff = ax.scatter( flocalisations['x'],
+  flocalisations['y'],
+  flocalisations['z'],
+  s=1 ,c = flocalisations['n'] )
+\end{minted}
+
+
+\subsection{X,Y,Z Histograms}
+
+\begin{minted}{python}
+  #@markdown ## Check: z distribution
+  #@markdown > set `plot_cluster` to wanted cluster (default: 0).
+  plot_cluster = 3  #@param {type:"slider", min:0, max:100, step:1}
+  plot_cluster = min( plot_cluster, len( sclusters ) -1 )
+
+  tmp = localisations.loc[ localisations['cluster'] == 
+  sclusters.loc[ sclusters.index[ plot_cluster ],
+  "label" ] ]
+
+  z = tmp.z - np.mean( tmp.z )
+
+  fig, axes = plt.subplots(2, 1, figsize=(4, 7) ) # figsize=(4, 12)
+
+  axes[0].hist( tmp.z - np.mean( tmp.z ) )
+  axes[0].set_xlabel('z / nm')
+  axes[0].set_ylabel('counts')
+  #axes[0].set_title( 'z' )
+
+  axes[1].hist( tmp.x - np.mean( tmp.x ) )
+  axes[1].hist( tmp.y - np.mean( tmp.y ) )
+\end{minted}
+
+
 
 % .        _                _   
 % .   .'|=| `.   .'|   .'|=| `. 
@@ -1504,9 +1952,9 @@ objective is shown to be 0.17. Here we find the preferable compromise between x,
 % . |___|=|_.' |___| |___|=|_.' 
 % . 
 
-%\clearpage \bibliography{bibliography}
+% \clearpage \bibliography{bibliography}
 
-%\bibliographystyle{apalike} % 'alpha' for 3 letters + year
+% \bibliographystyle{apalike} % 'alpha' for 3 letters + year
 
 
 % .                   ___   ___  ___  ___   ___  ___   ___ 
@@ -1528,8 +1976,8 @@ objective is shown to be 0.17. Here we find the preferable compromise between x,
 % .   `.|=|_.'' |___|=|_.'   `.|=|.'    `._|=|___| `._|=|___||___| |___| |___|  |_|    |___|    
 % . 
 
-%\glsaddallunused % add all unused terms to the glossary without including a phantom page number
-%\clearpage \printacronyms
+% \glsaddallunused % add all unused terms to the glossary without including a phantom page number
+% \clearpage \printacronyms
 
 
 % .              ___                     ___  ___   ___  
@@ -1540,7 +1988,7 @@ objective is shown to be 0.17. Here we find the preferable compromise between x,
 % . |___| |___| |.'   |___|=|.'   |___|=|_.' |___| |___| 
 % . 
 
-%\clearpage \printindex
+% \clearpage \printindex
 
 
 % .  ___  ___   ___                    ___           ___        ___              

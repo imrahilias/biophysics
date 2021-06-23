@@ -42,12 +42,39 @@
 
 
 \begin{figure*}[!t]
+  \vspace{-5em}
   \centering
   \begin{tikzpicture}
     \begin{axis}[
       width=0.7\textwidth,
       height=0.7\textwidth,
-      name=ax1
+      name=ax1,
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={X Position / \n{nm}},
+      ylabel={Y Position / \n{nm}},
+      % place second axis relative to first one anchor is south west
+      %at={($(ax1.north west)+(0,2cm)$)},
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xmin=0.5e4,
+      xmax=0.85e4,
+      ymin=0.5e4,
+      ymax=0.851e4,
+      grid=major,
+      thick,
+      mark size=8pt,
+      ]
+      \addplot[cyan, only marks, mark=x] table {centroid_blue.mat};
+      \addplot[violet, only marks, mark=+] table {centroid_red.mat};
+      \addplot[magenta, only marks, mark=o] table {centroid_blue_transformed.mat};
+    \end{axis}
+    \begin{axis}[
+      width=0.7\textwidth,
+      height=0.7\textwidth,
+      name=ax2,
+      % place second axis relative to first one anchor is south west
+      at={($(ax1.north west)+(0,1.5cm)$)},
       enlargelimits=false, smooth,
       grid=both, grid style=dashed,
       xlabel={X Position / \n{nm}},
@@ -71,33 +98,9 @@
       % draw a rectangle
       \draw (c1) rectangle (axis cs:0.85e4,0.85e4);
     \end{axis}
-    \begin{axis}[
-      width=0.7\textwidth,
-      height=0.7\textwidth,
-      name=ax2,
-      enlargelimits=false, smooth,
-      grid=both, grid style=dashed,
-      xlabel={X Position / \n{nm}},
-      ylabel={Y Position / \n{nm}},
-      % place second axis relative to first one anchor is south west
-      at={($(ax1.south east)-(0,11cm)$)},
-      enlargelimits=false, smooth,
-      grid=both, grid style=dashed,
-      xmin=0.5e4,
-      xmax=0.85e4,
-      ymin=0.5e4,
-      ymax=0.851e4,
-      grid=major,
-      thick,
-      mark size=8pt,
-      ]
-      \addplot[cyan, only marks, mark=x] table {centroid_blue.mat};
-      \addplot[violet, only marks, mark=+] table {centroid_red.mat};
-      \addplot[magenta, only marks, mark=o] table {centroid_blue_transformed.mat};
-    \end{axis}
     % draw dashed lines from rectangle in first axis to corners of second
-    \draw [dashed] (c2) -- (ax2.north west);
-    \draw [dashed] (c3) -- (ax2.north east);
+    \draw [dashed] (c2) -- (ax1.north west);
+    \draw [dashed] (c3) -- (ax1.north east);
   \end{tikzpicture}
   \caption{Demonstration of a rigid transformation of the
     localisations (magenta $\circ$) from blue channel (blue $\times$)

@@ -1,9 +1,9 @@
-% arara: pdflatex: { shell: true, interaction: nonstopmode }
+% arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 % arara: bibtex
 % arara: makeglossaries
 % arara: makeindex
-% arara: pdflatex: { shell: true, interaction: nonstopmode }
-% arara: pdflatex: { shell: true, interaction: nonstopmode }
+% arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
+% arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 \documentclass[11pt, a4paper, oneside, twocolumn]{report}
 % .  ___   ___        ___  ___  ___   ___  ___  ___   ___              ___         ___   ___   ___ 
 % . |   |=|_.'   .'|=|_.' `._|=|   |=|_.' `._|=|   |=|_.'   .'|   .'| |   |   .'|=|_.'  |   |=|_.' 
@@ -27,6 +27,7 @@
   ifdraft,
   listings,
   makeidx,
+  minted,
   pdfpages,
   pgfplots,
   siunitx,
@@ -214,8 +215,8 @@ For about 1~\si{\milli\liter} of OxEA buffer we used the amounts shown
 in Table~\ref{t:oxea}, to obtain above listed concentrations.
 
 \begin{table}[!htb]
-  \caption{Ingredients used for preparation of OxEA buffer for dual channel dSTORM
-    buffer.} \label{t:oxea}
+  \caption{Ingredients used for preparation of OxEA buffer for dual
+    channel dSTORM buffer.} \label{t:oxea}
   \begin{tabularx}{.5\textwidth}{l X l r}
     \hhline{====}
     Order & Ingredient & Store & Vol / \si{\micro\liter} \\
@@ -245,11 +246,6 @@ strips, and a digital pH meter, to be between pH~7 and pH~8.
 \section{Zernike}
 
 \t{zern}
-
-
-\section{NPC Analysis}
-
-\t{analysis}
 
 
 \section{Dual Channel Transforms}
@@ -353,7 +349,7 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
   \begin{tikzpicture}
     \begin{axis}[
       height = 1.3\textwidth,
-      witdh = \textwidth,
+      width = \textwidth,
       % enlargelimits=false,
       smooth,
       grid=both,
@@ -381,9 +377,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       table [ y=modes, x=0.19blue, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
-  \caption{ Blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
-    model via phase retrieval, for all three correction collar settings
-    (0.13, 0.17, 0.19).}
+  \caption{ Blue channel Zernike modes $\{1\dots37,56\}$ versus
+    aberrations of PSF model via phase retrieval, for all three
+    correction collar settings (0.13, 0.17, 0.19).}
   \label{f:zernblue}
 \end{figure*}
 
@@ -391,7 +387,7 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
   \begin{tikzpicture}
     \begin{axis}[
       height = 1.3\textwidth,
-      witdh = \textwidth,
+      width = \textwidth,
       % enlargelimits=false,
       smooth,
       grid=both,
@@ -419,9 +415,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       table [ y=modes, x=0.19red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
-  \caption{ Red channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
-    model via phase retrieval, for all three correction collar settings
-    (0.13, 0.17, 0.19).}
+  \caption{ Red channel Zernike modes $\{1\dots37,56\}$ versus
+    aberrations of PSF model via phase retrieval, for all three
+    correction collar settings (0.13, 0.17, 0.19).}
   \label{f:zernred}
 \end{figure*}
 
@@ -429,7 +425,7 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
   \begin{tikzpicture}
     \begin{axis}[
       height = 1.3\textwidth,
-      witdh = \textwidth,
+      width = \textwidth,
       % enlargelimits=false,
       smooth,
       grid=both,
@@ -455,8 +451,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       table [ y=modes, x=0.13red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
-  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
-    model via phase retrieval, for correction collar setting of 0.13.}
+  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$
+    versus aberrations of PSF model via phase retrieval, for
+    correction collar setting of 0.13.}
   \label{f:zern013}
 \end{figure*}
 
@@ -464,7 +461,7 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
   \begin{tikzpicture}
     \begin{axis}[
       height = 1.3\textwidth,
-      witdh = \textwidth,
+      width = \textwidth,
       % enlargelimits=false,
       smooth,
       grid=both,
@@ -490,8 +487,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       table [ y=modes, x=0.17red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
-  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
-    model via phase retrieval, for correction collar setting of 0.17.}
+  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$
+    versus aberrations of PSF model via phase retrieval, for
+    correction collar setting of 0.17.}
   \label{f:zern017}
 \end{figure*}
 
@@ -499,7 +497,7 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
   \begin{tikzpicture}
     \begin{axis}[
       height = 1.3\textwidth,
-      witdh = \textwidth,
+      width = \textwidth,
       % enlargelimits=false,
       smooth,
       grid=both,
@@ -525,8 +523,9 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
       table [ y=modes, x=0.19red, col sep=comma ] {crlb/Zernikes.csv};
     \end{axis}
   \end{tikzpicture}
-  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$ versus aberrations of PSF
-    model via phase retrieval, for correction collar setting of 0.19.}
+  \caption{ Red and blue channel Zernike modes $\{1\dots37,56\}$
+    versus aberrations of PSF model via phase retrieval, for
+    correction collar setting of 0.19.}
   \label{f:zern019}
 \end{figure*}
 
@@ -693,8 +692,8 @@ settings in Figure~\ref{f:collar}.\\
   \end{subfigure}
   \caption{ Estimated Cramer Rao Lower Bound for different correction
     Collar settings (teal: 0.13, orange: 0.17, purple: 0.19) of the
-    Olympus 1.5~NA objective; grouped by X, Y and Z axis (top, middle, and
-    bottom).}
+    Olympus 1.5~NA objective; grouped by X, Y and Z axis (top, middle,
+    and bottom).}
   \label{f:axes}
 \end{figure}
 %
@@ -778,13 +777,13 @@ settings in Figure~\ref{f:collar}.\\
   \end{subfigure}
   \caption{ Estimated Cramer Rao Lower Bound for X, Y and Z axis
     (teal, orange and purple lines); grouped by different correction
-    Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the Olympus
-    1.5~NA objective.}
+    Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the
+    Olympus 1.5~NA objective.}
   \label{f:collar}
 \end{figure}
 
 
-\clearpage\section{Dual Channel Simulations}
+\clearpage\section{Dual Channel Transformation}
 
 \begin{figure*}[!t]
   \vspace{-3em}
@@ -961,7 +960,7 @@ settings in Figure~\ref{f:collar}.\\
     \begin{axis}[
       width=0.7\textwidth,
       height=0.7\textwidth,
-      name=ax1
+      name=ax1,
       enlargelimits=false, smooth,
       grid=both, grid style=dashed,
       xlabel={X Position / \n{nm}},
@@ -1014,12 +1013,412 @@ settings in Figure~\ref{f:collar}.\\
     \draw [dashed] (c3) -- (ax2.north east);
   \end{tikzpicture}
   \caption{Demonstration of a rigid transformation of the
-    localisations (magenta $\circ$) from blue channel (blue
-    $\times$) to red channel (violet $+$); the transformed blue
-    channel localisations mostly align well with the red channel
+    localisations (magenta $\circ$) from blue channel (blue $\times$)
+    to red channel (violet $+$); the transformed blue channel
+    localisations mostly align well with the red channel
     localisations.}
   \label{f:npc_rigid}
 \end{figure*}
+
+\section{SMLM Analysis}
+
+Applying the SMLM described in Section~\t{sec} for the stack of
+microscopy images, one obtains a list of localisations comprised of
+position (\tt{x,y,z}), photon count (\tt{n}), and a fit parameter
+(\tt{fit}). Where the \tt{sans serif} typeset letters refer to the
+variables in the code listed in this chapter.
+
+In this section I want to describe our data analysis pipeline, in
+order to cut down the massive amount of initial localisations---in our
+example case over 130k---to distill it to the most meaningful
+conclusions.
+
+As a proof of work we used NPCs as sort of a well defined biological
+test target. As these are used frequently for the purpose of
+validating a new method, it would be nice to quickly evaluate of
+\e{how good are the NPCs resolved}. The Section \t{sec} is thus
+dedicated to find some metric for \e{best resolved} NPCs.
+
+This analysis is performed in \e{Python}, and is freely available in
+my Git repository \t{git}; both as a plain python file (.py) as well
+as in the format of a \e{Jupyter Notebook} (.ipynb).
+
+\t{npc image}
+
+\onecolumn
+
+
+\usemintedstyle{
+  manni,
+  linenos = true,
+  frame = single,
+}
+
+\subsection{Import}
+
+Here we import the used packages and the data file we obtain from
+running the SMLM algorithm.
+
+\begin{minted}{python}
+#@markdown ##import core
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+from mpl_toolkits.mplot3d import Axes3D
+import scipy.io
+from sklearn.cluster import DBSCAN
+from sklearn import metrics
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+
+#@markdown ##import jupyter
+#%matplotlib ipympl
+#%matplotlib widget
+#%matplotlib interactive
+%matplotlib inline
+import trackpy
+#import sdt
+#from sdt import io, chromatic, multicolor, brightness
+    
+## local
+wd = 'data/210422_npc_red_defocus/'
+data = pd.read_csv( wd + 'cell1_tr1000_def500.csv',
+                   header = None,
+                   names=["x", "y", "z", "n", "bg","fit","id","frame"] )
+\end{minted}
+
+\subsection{Drift Correction}
+
+The \e{drift} of the setup over time can be estimated using
+\e{ImageJ}, and is then imported as \tt{drift} \t{drift}. in the
+following block the drift correction is applied to all the 130k
+localisations.
+
+\begin{minted}{python}
+#@markdown ## import & scale drift
+#@markdown > set **magnification** via factor in drift.
+
+drift = pd.read_csv( wd + 'day2_cell1_driftValues.csv')
+
+drift['Y2']=drift['Y2']*146.6
+drift['Y3']=drift['Y3']*146.6
+drift['X2']=np.round(drift['X2'])
+drift['X3']=np.round(drift['X3'])
+
+#@markdown ## apply drift correction
+
+for i in range(len(drift)-1):
+    fr=data[(data['frame']>=drift['X2'].iloc[i]) &
+            (data['frame']<drift['X2'].iloc[i+1])]
+    fr['y']=fr['y']-drift['Y2'].iloc[i]
+    fr['x']=fr['x']-drift['Y3'].iloc[i]
+    data[(data['frame']>=drift['X2'].iloc[i]) &
+         (data['frame']<drift['X2'].iloc[i+1])]=fr
+\end{minted}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{2_drift.png}
+  \caption{3d plot of all 370148 drift corrected localisations, color
+    coded by photon count.}
+  \label{f:2_drift}
+\end{figure}
+
+
+\subsection{Check Photon Counts}
+
+As a preliminary step it might prove useful to look at the photon
+count statistic. Here we can easily see what the supposed intensity of
+a single molecule is, in our case about 2000. Those below can be
+considered noise, those far above are probably overlapping molecules,
+so their intensities add up.
+
+\begin{minted}{python}
+#@markdown ## Check: photon counts
+#@markdown > set `max_photons` accordingly (default: 10000).
+max_photons = 10000 #@param {type:"slider", min:0, max:40000, step:1000}
+ 
+fig = plt.figure()
+plt.hist( data['n'], bins=50, range=( 0, max_photons ) )
+\end{minted}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{3_photons.png}
+  \caption{histogram of the photon count for the localisations.}
+  \label{f:3_photons}
+\end{figure}
+
+
+\subsection{Filter}
+
+In this first filter we limit the dataset to the more meaningful
+points; like those with intensities between 2k and 7k. Also since we
+de-focussed for \SI{500}{\n\m}, only those \tt{z} values between 0 and 499 can
+be considered realistic. Here 0 means directly attached to the glass
+substrate, so negative values would be \e{inside} the glass substrate;
+and thus need to be discarded as unplausible. The dataset could be
+filtered by \tt{min\_fit}, but to our findings this does not contribute
+much.
+
+\begin{minted}{python}
+#@markdown ## filter
+#@markdown > set `min_photons` and `max_photons` accordingly (default: 2000 < photons < 7000).\
+#@markdown > set `min_z` and `max_z` accordingly (default: 0 < z < 499).\
+#@markdown > set `min_fit` accordingly (default: 6e6).
+min_photons = 2000 #@param {type:"slider", min:0, max:40000, step:1000}
+max_photons = 7000 #@param {type:"slider", min:0, max:40000, step:1000}
+min_z = 0 #@param {type:"slider", min:0, max:500, step:1}
+max_z = 384 #@param {type:"slider", min:0, max:500, step:1}
+min_fit = 7192000 #@param {type:"slider", min:0, max:1e7, step:1000}
+ 
+fdata = data[ ( data['n'] > min_photons ) &
+             ( data['n'] < max_photons ) & 
+             ( data['z'] > min_z ) &
+             ( data['z'] < max_z ) &
+             ( data['fit'] < min_fit ) ]
+\end{minted}
+           
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{4_filter.png}
+  \caption{3d plot of all 154237 filtered localisations, color coded
+    by photon count.}
+  \label{f:4_filter}
+\end{figure}
+
+
+\subsection{Track Particles}
+
+\begin{minted}{python}
+#@markdown ## track all in x,y
+#@markdown > set `sr` to wanted search range (default: 50).\
+#@markdown > set `mem` to wanted memory (default: 10).
+sr = 50 #@param {type:"slider", min:0, max:100, step:1}
+mem = 10 #@param {type:"slider", min:0, max:100, step:1}
+ 
+ linkedxy = trackpy.link_df( fdata,
+                           pos_columns = ["x","y","z"],
+                           search_range = sr,
+                           memory = mem )
+                           
+particles = linkedxy.groupby( "particle" ).aggregate( np.mean )
+std_pos = linkedxy.groupby( "particle" ).aggregate( 'std' )
+particles["length"] = linkedxy.groupby( "particle" ).apply( len )
+particles["z_std"] = std_pos['z'].copy()
+particles["x_std"] = std_pos['x'].copy()
+particles["y_std"] = std_pos['y'].copy()
+\end{minted}
+           
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{5_tracking.png}
+  \caption{3d plot of all 98456 filtered localisations, color coded by
+    photon count.}
+  \label{f:5_tracking}
+\end{figure}
+
+
+\section{SMLM Analysis: NPC}
+
+\subsection{Clustering}
+
+\begin{minted}{python}
+#@markdown ## compute dbscan
+#@markdown > set `dim = 2` for clustering in x and y (default:).\
+#@markdown > set `dim = 3` for experimental clustering in 3d; be aware that x,z and y precision probably vary!\
+#@markdown > set `eps` (default: 200).\
+#@markdown > set `min_samples` (default: 10).
+dim = "2" #@param [2, 3]
+eps = 100 #@param {type:"slider", min:0, max:500, step:10}
+min_samples = 50 #@param {type:"slider", min:1, max:100, step:1}
+
+alocalisations = localisations.to_numpy()
+alocalisations[ :, 0:2 ]
+
+db = DBSCAN( eps, min_samples ).fit( alocalisations[ :, 0:int( dim ) ] )
+core_samples_mask = np.zeros_like( db.labels_, dtype=bool )
+core_samples_mask[ db.core_sample_indices_ ] = True
+labels = db.labels_
+localisations[ "cluster" ] = labels
+
+# count clusters (ignore noise if present)
+n_clusters_ = len( set( labels ) ) - ( 1 if -1 in labels else 0 )
+n_noise_ = list( labels ).count( -1 )
+
+#print('Estimated number of clusters: %d' % n_clusters_)
+#print('Estimated number of noise points: %d' % n_noise_)
+
+nlocalisations = localisations.loc[ localisations['cluster'] == -1 ]
+clocalisations = localisations.loc[ localisations['cluster'] != -1 ]
+\end{minted}
+           
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{6_clustering.png}
+  \caption{3d plot of the localisations of the 658 identified clusters
+    (omitting 35489 localisations as noise, due to not belonging to a
+    cluster), color coded by photon count.}
+  \label{f:6_clustering}
+\end{figure}
+
+
+\subsection{Cluster Analysis}
+
+\begin{minted}{python}
+#@markdown ## analyse clusters
+#@markdown > set `npc_radius` to NPC radius /nm (default: 50).\
+#@markdown > set `npc_radius` to NPC haight /nm (default: 150).
+npc_radius = 50 #@param {type:"slider", min:0, max:500, step:1}
+npc_height = 25 #@param {type:"slider", min:0, max:500, step:1}
+
+clabels = set(labels)
+cnames = [ "counts", "xmean", "ymean", "zmean", "nmean", "xvar", "yvar", "zvar",
+          "nvar", "label", "ringness", "twofold" ]
+clusters = pd.DataFrame( index = clabels, columns = cnames, dtype="float64" )
+clusters[ "label" ] = clabels
+
+for k in clabels:
+  tmp = localisations.loc[ localisations['cluster'] == k ]
+  clusters.loc[ k, "counts" ] = len( tmp )
+  for label in [ "x", "y", "z", "n" ]:
+    clusters.loc[ k, label+"mean"  ] = np.mean( tmp.loc[ :, label ] )
+    clusters.loc[ k, label+"var"  ] = np.var( tmp.loc[ :, label ] )
+
+  ## xy: radius (distance to centroid)
+  rad = np.sqrt( ( tmp.loc[ :, "x" ] - clusters.loc[ k, "xmean" ] )**2 + 
+                ( tmp.loc[ :, "y" ] - clusters.loc[ k, "ymean" ] )**2 )
+  ## xy: radius rms deviation from NPC radius
+  clusters.loc[ k, "ringness"  ] = np.sqrt( sum( ( rad - npc_radius )**2 ) )
+
+  ## z: radius (distance to centroid)
+  rad = abs( tmp.loc[ :, "z" ] - clusters.loc[ k, "zmean" ] )
+  ## z: radius rms deviation from NPC radius
+  clusters.loc[ k, "twofold"  ] = np.sqrt( sum( ( rad - npc_height )**2 ) )
+
+#@markdown ## filter clusters
+#@markdown > set `count_threshold` to min elements (counts) in cluster (default: 30)\
+#@markdown > set `diameter_threshold` to max x,y (radius) deviation of cluster from NPC diameter (default: 200)\
+#@markdown > set `twofold_threshold` to max z (radius) deviation of cluster from NPC height (default: 200)\
+#@markdown > set `xyvar_threshold` to wanted x,y variance (default: 1e4)\
+#@markdown > set `zvar_threshold` to wanted z variance (default: 1e4)
+count_threshold = 100 #@param {type:"slider", min:0, max:200, step:1}
+diameter_threshold = 500 #@param {type:"slider", min:0, max:500, step:10}
+twofold_threshold = 1000 #@param {type:"slider", min:0, max:1000, step:10}
+xyvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
+zvar_threshold = 100000 #@param {type:"slider", min:0, max:1e5, step:1e3}
+
+fclusters = clusters[ ( clusters['counts'] < count_threshold ) &
+                     ( clusters['ringness'] < diameter_threshold ) &
+                     ( clusters['twofold'] < twofold_threshold ) &
+                     ( clusters['xvar'] < xyvar_threshold ) & 
+                     ( clusters['yvar'] < xyvar_threshold ) &
+                     ( clusters['zvar'] < zvar_threshold ) ]
+\end{minted}
+           
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{7_filtered_clusters.png}
+  \caption{3d plot of the positions of the 451 filtered clusters,
+    color coded by photon count.}
+  \label{f:7_filtered_clusters}
+\end{figure}
+
+
+\subsection{Select Clusters}
+
+\begin{minted}{python}
+#@markdown ## select best clusters & plot localisations
+#@markdown > set `show_clusters` to wanted number of best clusters (default: 100).\
+#@markdown > set `sort` to sort the best clusters (default: ringness + twofold).
+show_clusters = 10 #@param {type:"slider", min:0, max:1000, step:1}
+sort = 'ringness + twofold' #@param [ "ringness + twofold", "twofold", "ringness", "xyvar" , "xvar" ]
+
+if sort == "xvar": # sort by variance
+    sclusters = fclusters.sort_values( "xvar" )
+elif sort == "xyvar": # sort by x and y variance using least squares
+    sclusters = fclusters.loc[
+        ( fclusters.xvar ** 2 + fclusters.yvar ** 2 ).sort_values().index ]
+elif sort == "ringness": # sort by ringness (deviation to ringness)
+    sclusters = fclusters.sort_values( "ringness" )
+elif sort == "twofold": # sort by ringness (deviation to ringness)
+    sclusters = fclusters.sort_values( "twofold" )
+elif sort == "ringness + twofold": # sort by ringness (deviation to ringness)
+    sclusters = fclusters.loc[
+        ( fclusters.twofold ** 2 + fclusters.ringness ** 2 ).sort_values().index ]
+
+show_clusters = min( show_clusters, len( sclusters ) )
+selected_clusters = sclusters["label"].iloc[ 0:show_clusters ]
+
+fig = plt.figure()
+ax = fig.add_subplot( projection = '3d' )
+for clus in selected_clusters:
+  flocalisations = localisations[ ( localisations['cluster'] == clus ) ]
+  ff = ax.scatter( flocalisations['x'],
+                  flocalisations['y'],
+                  flocalisations['z'],
+                  s=1 ,c = flocalisations['n'] )
+\end{minted}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{8_best_filtered_clusters.png}
+  %\includegraphics[width=0.5\textwidth]{9_best_filtered_clusters.png}
+  \caption{3d plot of the positions of the 451 filtered clusters,
+    color coded by photon count.}
+  % (top) respective color coded by cluster assignment (bottom)
+  \label{f:89_best_filtered_clusters}
+\end{figure}
+
+
+\subsection{X,Y,Z Histograms}
+
+\begin{minted}{python}
+#@markdown ## Check: z distribution
+#@markdown > set `plot_cluster` to wanted cluster (default: 0).
+plot_cluster = 3  #@param {type:"slider", min:0, max:100, step:1}
+plot_cluster = min( plot_cluster, len( sclusters ) -1 )
+
+tmp = localisations.loc[ localisations['cluster'] == 
+                        sclusters.loc[ sclusters.index[ plot_cluster ],
+                                      "label" ] ]
+
+z = tmp.z - np.mean( tmp.z )
+
+fig, axes = plt.subplots(2, 1, figsize=(4, 7) ) # figsize=(4, 12)
+
+axes[0].hist( tmp.z - np.mean( tmp.z ) )
+axes[0].set_xlabel('z / nm')
+axes[0].set_ylabel('counts')
+#axes[0].set_title( 'z' )
+
+axes[1].hist( tmp.x - np.mean( tmp.x ) )
+axes[1].hist( tmp.y - np.mean( tmp.y ) )
+axes[1].set_ylabel('counts')
+axes[1].set_xlabel('x, y / nm')
+#axes[1].set_title( 'x, y' )
+\end{minted}
+
+\begin{figure}[h!]
+  \centering
+  %\rotatebox{90}{\hspace{7em} cluster 1}
+  cluster 1\\
+  \includegraphics[width=0.9\textwidth]{10_histograms_1.png}\\
+  %\rotatebox{90}{\hspace{7em} cluster 10}
+  cluster 10\\
+  \includegraphics[width=0.9\textwidth]{10_histograms_10.png}\\
+  % \rotatebox{90}{\hspace{7em}cluster 450}
+  cluster 450\\
+  \includegraphics[width=0.9\textwidth]{10_histograms_450.png}
+  \caption{histogram of the x,y (right) respective z distribution
+    (left) of the localisations within the \i{best} cluster (top), the
+    \i{worst} (bottom) and one in between.}
+  \label{f:10_xyz_best_filtered_clusters}
+\end{figure}
+
+
+\twocolumn
 
 
 % .                    ___   ___        ___  ___         ___   ___  ___   ___                          ___  
@@ -1031,8 +1430,10 @@ settings in Figure~\ref{f:collar}.\\
 % .                   
 \clearpage\chapter{Discussion}
 
+\section{SMLM}
 
-\section{Phase Retrieval}
+
+\subsection{Phase Retrieval}
 
 The image stacks look ok, even if not all are perfectly
 symmetrical--some errors are to be expected.\\
@@ -1048,14 +1449,14 @@ red and blue channel are in the same order of magnitude---if not quite
 similar---for most of the Zernike modes, as suspected by theory
 \t{zern}.\\
 
-Yet the phase Retrieval program gave the error \i{high residual error}
+Yet the phase Retrieval program gave the error \e{high residual error}
 for both the red and the blue channel when using the correction collar
 settings $\{0.17,0.19\}$, is this a serious problem?\\
 
 how can we avoid it?
 
 
-\section{Correction Collar}
+\subsection{Correction Collar}
 
 Based on the Figures~\ref{f:axes} and Figure~\ref{f:collar}, and
 considering the fact---that we are interested in moderately defocusing
@@ -1068,6 +1469,8 @@ backed by Lukas, based on the PSF stacks: One would have guessed the
 z positions than 0.13.\\
 
 Which is the one we should use?\\
+
+
 
 % .        ___                    ___         ___             ___         ___   ___                          ___  
 % .   .'|=|_.'   .'|=|`.     .'| |   |   .'|=|_.'   .'|      |   | |`.   |   |=|_.'   .'|   .'|=|`.     .'| |   | 

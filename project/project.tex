@@ -80,9 +80,9 @@
   \large
   a\\
   \vspace{.5cm}
-  {\Large \textsc{ Projektarbeit / Student Project}}\\
+  {\Large \textsc{Projektarbeit / Student Project}}\\
   \vspace{1cm}
-  {\Huge \textsc{ Dual Channel Single Molecule Localisation Microscopy}}\\
+  {\Huge \textsc{Three Dimensional Dual Channel Single Molecule Localisation Microscopy}}\\
   \vspace{1cm}
   concluded at the\\
   \vspace{.5cm}
@@ -144,7 +144,7 @@ containing reasonably spaced fluorescence signals.\\
 
 To be able to accurately estimate the 3 dimensional location of the
 fluorescent molecule, the PSF must be known quite well. Simply put: If
-one knows the shape of a point source in varying degrees of defocus,
+one knows the shape of a point source in varying degrees of de-focus,
 one can guess the defocus and thus the z coordinate of the
 fluorescence molecule.\\
 
@@ -153,6 +153,21 @@ fluorescence molecule.\\
 \section{Flouro}
 
 \t{Flouro}
+
+
+\section{2dSMLM}
+
+\t{SMLM}
+
+
+\section{3dSMLM}
+
+\t{SMLM}
+
+
+\section{dSTORM}
+
+\t{dSTORM}
 
 
 % .                     ___  ___  ___   ___                                      ___   ___ 
@@ -165,9 +180,14 @@ fluorescence molecule.\\
 \clearpage\chapter{Methods}
 
 
-\section{SMLM}
+\section{PSF}
 
-\t{SMLM}
+\t{PSF}
+
+
+\section{Zernike}
+
+\t{zern}
 
 
 \section{TIRF}
@@ -176,7 +196,9 @@ fluorescence molecule.\\
 
 
 \section{dSTORM}
+
 \t{dSTORM}
+
 
 \subsection{Gloxy Buffer}
 
@@ -200,7 +222,8 @@ channel measurements unless noted otherwise is called Gloxy buffer:
 Dual channel Fluorescence microscopy poses novel challenges to find a
 proper dSTORM buffer, that works for both excitation
 wavelengths---thus two distinct fluorophores AF647 and AF488. The
-buffer composition we used is based on \t{cit}, and called OxEA after its main ingredients OxyFlour and ($\beta$-Mercapto)Ethylamine:
+buffer composition we used is based on \t{cit}, and called OxEA after
+its main ingredients OxyFlour and ($\beta$-Mercapto)Ethylamine:
 
 \subsubsection{OxEA buffer concentration}
 \begin{itemize}
@@ -238,22 +261,90 @@ The pH of the OxEA buffer is checked using both broad range pH testing
 strips, and a digital pH meter, to be between pH~7 and pH~8.
 
 
+\section{Dual Channel 3dSMLM}
 
-\section{PSF}
-
-\t{PSF}
-
-
-\section{Zernike}
-
-\t{zern}
-
-
-\section{Dual Channel Transforms}
-
-\t{transform}
+It is possible to use different excitations to simultaneously measure
+different fluorescence markers, but for that the Point Spread
+Functions (PSF) has to known for each wavelength. So the PSFs are
+estimated both for red and blue laser light, with the Phase Retrieval
+program by [Jesacher et al 21?]; each on a stack of 50000~dSTORM
+images of \SI{100}{\nm} \t{100nm?} beads stained with fluorescence
+dyes for both red (\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser
+light.\\
 
 
+\subsection{Correction Collar}
+
+To further complicate things, the new Olympus \SI{1.5}{\NA} objective
+comes with a Correction Collar to compensate for aberrations---which
+naturally vary slightly for both color channels. In order to find the
+best Correction Collar setting of the Olympus \SI{1.5}{\NA} objective
+for SMLM, the Point Spread Functions (PSF) is computed for each of the
+three settings of the correction collar $\{0.13,0.17,0.19\}$; using
+the program by [Jesacher et al 21?].\\
+
+
+\subsection{Cramer Rao Lower Bound}
+
+In order to find the best Correction Collar setting of the Olympus
+\SI{1.5}{\NA} objective for SMLM, the Cramer Rao Lower Bound (CRLB) is
+computed using the program by [Jesacher et al 21?], with prior
+estimated Point Spread Functions (PSF) via phase retrieval [Jesacher
+et al 21?].\\
+
+All CRLBs are computed at a defocus position of -500~nm, in steps of
+5~nm from 0 to 500 nm. For all Estimations we assume identical
+arbitrary signal strength (2500) respective background (100).\\
+
+
+
+\section{Dual Channel Projections}
+
+The ultimate goal of this thesis was to facilitate dual channel SMLM,
+by alternating excitation with different lasers. The alternation
+ensures the comparability of the two sets of images; so that they are
+affected by drift over time, bleaching, etc. in the same way.
+
+The generated image stacks are then split and fed separately through
+the SMLM algorithm, since the PSF model depends on the emitted
+wavelength---and thus on the excitation. Ideally, the obtained two
+data sets with localisations for both channels are then analysed
+together.
+
+
+\subsection{Rigid Transform}\label{r:rig}
+
+In first order approximation, this offset may be thought as linear, so
+the two sets are related via a \e{rigid} transform; thus by rotation
+and translation. Such a transformation can be solved easily via linear
+algebra, The solution used here is one of the many known ways, using
+least squares and single-value-decomposition (SVD) based on \t{cit}.
+In this quick overview, the Lines refer to the the function \tt{rig()}
+shown in Section~\ref{a:rig}, where the full code is
+listed. Basically, one first calculates the centroids of the two sets
+of points \tt{p},\tt{q}, and shifts both sets to their respective
+centres, thus eliminating translation (block 1 at Lines~24--28). As a
+second step the \e{best} (least squares) transform that \e{rotates}
+the set p to the set q is found via SVD (block 2 at Lines~30--51). As
+a last step the translation between set p and q is computed using the
+known rotation (block 3 at line 53).
+
+
+\subsection{Affine Transform}\label{r:affine}
+
+The next more complex approach includes
+other---nonlinear---transformations like \e{shearing} or \e{scaling},
+called an \e{affine} transform. Our approach is based on \t{cit}, and
+can be viewed as a more complex variant of the rigid transform shown
+in Section~\ref{r:rig}, still using least squares and
+single-value-decomposition (SVD) to find the optimal affine transform
+in 3-dimensional euclidean space. Between centering and SVD, which
+follow the rigid transform, a \e{orthogonal reduction} is performed
+(block 2 Lines~37--60). Here the covariance matrices of both sets
+\tt{p} and \tt{q} are computed, to form their inverse via a Choleski
+decomposition (Lines~44--49). The already centred sets \tt{p} and
+\tt{q} are subsequently orthogonalised (Lines~51--56); so that \tt{p}
+and \tt{q} are now solely related by a rotational matrix.
 
 
 % . 
@@ -275,28 +366,6 @@ strips, and a digital pH meter, to be between pH~7 and pH~8.
 \subsection{dSTORM}
 
 \t{2d npc images}
-
-
-\section{Single Molecule Localisation}
-
-It is possible to use different excitations to simultaneously measure
-different fluorescence markers, but for that the Point Spread
-Functions (PSF) has to known for each wavelength. So the PSFs are
-estimated both for red and blue laser light, with the Phase Retrieval
-program by [Jesacher et al 21?]; each on a stack of 50000~STORM images
-of \SI{100}{\nm} \t{100nm?} beads stained with fluorescence dyes for
-both red (\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser light.\\
-
-
-\subsection{Correction Collar}
-
-To further complicate things, the new Olympus 1.5~NA objective comes
-with a Correction Collar to compensate for aberrations---which
-naturally vary slightly for both color channels. In order to find the
-best Correction Collar setting of the Olympus 1.5~NA objective for
-SMLM, the Point Point Spread Functions (PSF) is computed for each of
-the three settings of the correction collar $\{0.13,0.17,0.19\}$;
-using the program by [Jesacher et al 21?].\\
 
 
 \subsection{Zernike Modes}
@@ -533,20 +602,10 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
 
 \clearpage\subsection{Cramer Rao Lower Bound}
 
-In order to find the best Correction Collar setting of the Olympus
-1.5~NA objective for SMLM, the Cramer Rao Lower Bound (CRLB) is
-computed using the program by [Jesacher et al 21?], with prior
-estimated Point Spread Functions (PSF) via phase retrieval [Jesacher
-et al 21?].\\
-
-All CRLBs are computed at a defocus position of -500~nm, in steps of
-5~nm from 0 to 500 nm. For all Estimations we assume identical
-arbitrary signal strength (2500) respective background (100).\\
-
 The Estimated Cramer Rao Lower Bound for different correction Collar
 settings (variing linestyles for 0.13, 0.17, 0.19) of the Olympus
-1.5~NA objective; for X, Y and Z axis (top, middle, and bottom); for
-both red and blue channel (colors) is shown in
+\SI{1.5}{\NA} objective; for X, Y and Z axis (top, middle, and
+bottom); for both red and blue channel (colors) is shown in
 Figure~\ref{f:all}.\\
 
 Additionally plots grouped by X, Y and Z axis are shown in
@@ -612,8 +671,8 @@ settings in Figure~\ref{f:collar}.\\
   \end{tikzpicture}
   \caption{Estimated Cramer Rao Lower Bound for different correction
     Collar settings (variing linestyles for 0.13, 0.17, 0.19) of the
-    Olympus 1.5~NA objective; for X, Y and Z axis (top, middle, and
-    bottom); for both red and blue channel (colors).}
+    Olympus \SI{1.5}{\NA} objective; for X, Y and Z axis (top, middle,
+    and bottom); for both red and blue channel (colors).}
   \label{f:all}
 \end{figure*}
 ~ % dirty hack
@@ -693,8 +752,8 @@ settings in Figure~\ref{f:collar}.\\
   \end{subfigure}
   \caption{ Estimated Cramer Rao Lower Bound for different correction
     Collar settings (teal: 0.13, orange: 0.17, purple: 0.19) of the
-    Olympus 1.5~NA objective; grouped by X, Y and Z axis (top, middle,
-    and bottom).}
+    Olympus \SI{1.5}{\NA} objective; grouped by X, Y and Z axis (top,
+    middle, and bottom).}
   \label{f:axes}
 \end{figure}
 % 
@@ -779,254 +838,12 @@ settings in Figure~\ref{f:collar}.\\
   \caption{ Estimated Cramer Rao Lower Bound for X, Y and Z axis
     (teal, orange and purple lines); grouped by different correction
     Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the
-    Olympus 1.5~NA objective.}
+    Olympus \SI{1.5}{\NA} objective.}
   \label{f:collar}
 \end{figure}
 
 
-\clearpage\section{Dual Channel: Simulation}
-
-\t{Dual Channel: Simulation}
-
-\begin{figure*}[!t]
-  \vspace{-3em}
-  \rotatebox{90}{\b{Shift}}
-  \begin{subfigure}[t!]{0.44\textwidth}
-    \centering
-    \b{Rigid Recovery}
-    \begin{tikzpicture}
-      \begin{axis}[
-        enlargelimits=false, smooth,
-        grid=both, grid style=dashed,
-        xlabel={x / $\mu$m},
-        ylabel={y / $\mu$m},
-        zlabel={z / $\mu$m},
-        % label shift = -10pt,
-        % legend entries={blue channel, transformed red channel, red channel},
-        xmin=-1,
-        xmax=1,
-        ymin=-1,
-        ymax=1,
-        grid=major,
-        ]
-        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_shift/q.dat};
-        \addplot3[magenta, only marks, mark=x] table {sim_rigid_rec_shift/pr.dat};
-        \addplot3[magenta, mark=x] table {sim_rigid_rec_shift/netz.dat};
-        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_shift/p.dat};
-      \end{axis}
-    \end{tikzpicture}
-  \end{subfigure}
-  ~
-  \begin{subfigure}[t!]{0.44\textwidth}
-    \centering
-    \b{Affine Recovery}
-    \begin{tikzpicture}
-      \begin{axis}[
-        enlargelimits=false, smooth,
-        grid=both, grid style=dashed,
-        xlabel={x / $\mu$m},
-        ylabel={y / $\mu$m},
-        zlabel={z / $\mu$m},
-        % label shift = -10pt,
-        % legend entries={blue channel, transformed red channel, red channel},
-        xmin=-1,
-        xmax=1,
-        ymin=-1,
-        ymax=1,
-        grid=major,
-        ]
-        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_shift/q.dat};
-        \addplot3[magenta, only marks, mark=x] table {sim_affine_rec_shift/pr.dat};
-        \addplot3[magenta, mark=x] table {sim_affine_rec_shift/netz.dat};
-        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_shift/p.dat};
-      \end{axis}
-    \end{tikzpicture}
-  \end{subfigure}
-  \\
-  \rotatebox{90}{\b{Rigid}}
-  \begin{subfigure}[t!]{0.44\textwidth}
-    \centering
-    \begin{tikzpicture}
-      \begin{axis}[
-        enlargelimits=false, smooth,
-        grid=both, grid style=dashed,
-        xlabel={x / $\mu$m},
-        ylabel={y / $\mu$m},
-        zlabel={z / $\mu$m},
-        label shift = -15pt,
-        % legend entries={blue channel, transformed red channel, red channel},
-        xmin=-1,
-        xmax=1,
-        ymin=-1,
-        ymax=1,
-        grid=major,
-        ]
-        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_rigid/q.dat};
-        \addplot3[magenta, only marks, mark=x] table {sim_rigid_rec_rigid/pr.dat};
-        \addplot3[magenta, mark=x] table {sim_rigid_rec_rigid/netz.dat};
-        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_rigid/p.dat};
-      \end{axis}
-    \end{tikzpicture}
-  \end{subfigure}
-  ~
-  \begin{subfigure}[t!]{0.44\textwidth}
-    \centering
-    \begin{tikzpicture}
-      \begin{axis}[
-        enlargelimits=false, smooth,
-        grid=both, grid style=dashed,
-        xlabel={x / $\mu$m},
-        ylabel={y / $\mu$m},
-        zlabel={z / $\mu$m},
-        label shift = -15pt,
-        % legend entries={blue channel, transformed red channel, red channel},
-        xmin=-1,
-        xmax=1,
-        ymin=-1,
-        ymax=1,
-        grid=major,
-        ]
-        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_rigid/q.dat};
-        \addplot3[magenta, mark=x] table {sim_affine_rec_rigid/netz.dat};
-        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_rigid/p.dat};
-      \end{axis}
-    \end{tikzpicture}
-  \end{subfigure}
-  \\
-  \rotatebox{90}{\b{Affine}}
-  \begin{subfigure}[t!]{0.44\textwidth}
-    \centering
-    \begin{tikzpicture}
-      \begin{axis}[
-        enlargelimits=false, smooth,
-        grid=both, grid style=dashed,
-        xlabel={x / $\mu$m},
-        ylabel={y / $\mu$m},
-        zlabel={z / $\mu$m},
-        label shift = -5pt,
-        % legend entries={blue channel, transformed red channel, red channel},
-        xmin=-2,
-        xmax=2,
-        ymin=-2,
-        ymax=2,
-        grid=major
-        ]
-        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_affine/q.dat};
-        \addplot3[magenta, mark=x] table {sim_rigid_rec_affine/netz.dat};
-        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_affine/p.dat};
-      \end{axis}
-    \end{tikzpicture}
-  \end{subfigure}
-  ~
-  \begin{subfigure}[t!]{0.44\textwidth}
-    \centering
-    \begin{tikzpicture}
-      \begin{axis}[
-        enlargelimits=false, smooth,
-        grid=both, grid style=dashed,
-        xlabel={x / $\mu$m},
-        ylabel={y / $\mu$m},
-        zlabel={z / $\mu$m},
-        label shift = -5pt,
-        % legend entries={blue channel, transformed red channel, red channel},
-        xmin=-2,
-        xmax=2,
-        ymin=-2,
-        ymax=2,
-        grid=major,
-        ]
-        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_affine/q.dat};
-        \addplot3[magenta, mark=x] table {sim_affine_rec_affine/netz.dat};
-        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_affine/p.dat};
-      \end{axis}
-    \end{tikzpicture}
-  \end{subfigure}
-  % 
-  \caption{Demonstration of the recovery of rigid (left) respective
-    affine (right) transformations, via recovering localisations of
-    simulated two channel SMLM data; transformation (magenta) from red
-    channel (violet) to blue channel (cyan); for the use cases of
-    translation (top), rigid transformation (middle) and affine
-    transformation (bottom). Obviously a rigid transformation may not
-    correctly reconstruct an affine transformed data set (bottom
-    left).}
-  \label{f:transim}
-\end{figure*}
-
-
-\clearpage\section{Dual Channel: NPC}
-
-\t{Dual Channel: NPC}
-
-\begin{figure*}[!t]
-  \vspace{-5em}
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-      width=0.7\textwidth,
-      height=0.7\textwidth,
-      name=ax1,
-      enlargelimits=false, smooth,
-      grid=both, grid style=dashed,
-      xlabel={X Position / \n{nm}},
-      ylabel={Y Position / \n{nm}},
-      enlargelimits=false, smooth,
-      grid=both, grid style=dashed,
-      xmin=0.5e4,
-      xmax=0.85e4,
-      ymin=0.5e4,
-      ymax=0.851e4,
-      grid=major,
-      thick,
-      mark size=8pt,
-      ]
-      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
-      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
-      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
-    \end{axis}
-    \begin{axis}[
-      width=0.7\textwidth,
-      height=0.7\textwidth,
-      name=ax2,
-      % place second axis relative to first one anchor is south west
-      at={($(ax1.north west)+(0,1.5cm)$)},
-      enlargelimits=false, smooth,
-      grid=both, grid style=dashed,
-      xlabel={X Position / \n{nm}},
-      ylabel={Y Position / \n{nm}},
-      xmin=0,
-      xmax=2e4,
-      ymin=0,
-      ymax=2e4,
-      grid=major,
-      thick,
-      mark size=8pt,
-      legend entries={blue channel, red channel, rigid transformation},
-      ]
-      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
-      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
-      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
-      % define coordinates at bottom left and top left of rectangle
-      \coordinate (c1) at (axis cs:0.5e4,0.5e4);
-      \coordinate (c2) at (axis cs:0.5e4,0.85e4);
-      \coordinate (c3) at (axis cs:0.85e4,0.85e4);
-      % draw a rectangle
-      \draw (c1) rectangle (axis cs:0.85e4,0.85e4);
-    \end{axis}
-    % draw dashed lines from rectangle in first axis to corners of second
-    \draw [dashed] (c2) -- (ax1.north west);
-    \draw [dashed] (c3) -- (ax1.north east);
-  \end{tikzpicture}
-  \caption{Demonstration of a rigid transformation of the
-    localisations (magenta $\circ$) from blue channel (blue $\times$)
-    to red channel (violet $+$); the transformed blue channel
-    localisations mostly align well with the red channel
-    localisations.}
-  \label{f:npc_rigid}
-\end{figure*}
-
-
-\clearpage\section{SMLM Analysis}\label{s:r:ana}
+\clearpage\section{3d SMLM Analysis}\label{s:r:ana}
 
 Applying the SMLM described in Section~\t{sec} for the stack of
 microscopy images, one obtains a list of localisations comprised of
@@ -1058,9 +875,9 @@ available online.
 \t{appendix}
 
 % \usemintedstyle{
-%   manni,
-%   linenos = true,
-%   frame = single,
+% manni,
+% linenos = true,
+% frame = single,
 % }
 
 \subsection{Import}
@@ -1085,11 +902,11 @@ running the SMLM algorithm.
 %   #%matplotlib ipympl
 %   #%matplotlib widget
 %   #%matplotlib interactive
-%   % matplotlib inline
+%   %   matplotlib inline
 %   import trackpy
 %   #import sdt
 %   #from sdt import io, chromatic, multicolor, brightness
-  
+
 %   ## local
 %   wd = 'data/210422_npc_red_defocus/'
 %   data = pd.read_csv( wd + 'cell1_tr1000_def500.csv',
@@ -1149,7 +966,7 @@ so their intensities add up.
 %   #@markdown ## Check: photon counts
 %   #@markdown > set `max_photons` accordingly (default: 10000).
 %   max_photons = 10000 #@param {type:"slider", min:0, max:40000, step:1000}
-  
+
 %   fig = plt.figure()
 %   plt.hist( data['n'], bins=50, range=( 0, max_photons ) )
 % \end{minted}
@@ -1187,7 +1004,7 @@ down our exemplary data set by about 40\%.
 %   min_z = 0 #@param {type:"slider", min:0, max:500, step:1}
 %   max_z = 384 #@param {type:"slider", min:0, max:500, step:1}
 %   min_fit = 7192000 #@param {type:"slider", min:0, max:1e7, step:1000}
-  
+
 %   fdata = data[ ( data['n'] > min_photons ) &
 %   ( data['n'] < max_photons ) & 
 %   ( data['z'] > min_z ) &
@@ -1232,12 +1049,12 @@ further shrinks down our exemplary data set by about 60\%.
 %   #@markdown > set `mem` to wanted memory (default: 10).
 %   sr = 50 #@param {type:"slider", min:0, max:100, step:1}
 %   mem = 10 #@param {type:"slider", min:0, max:100, step:1}
-  
+
 %   linkedxy = trackpy.link_df( fdata,
 %   pos_columns = ["x","y","z"],
 %   search_range = sr,
 %   memory = mem )
-  
+
 %   particles = linkedxy.groupby( "particle" ).aggregate( np.mean )
 %   std_pos = linkedxy.groupby( "particle" ).aggregate( 'std' )
 %   particles["length"] = linkedxy.groupby( "particle" ).apply( len )
@@ -1255,7 +1072,7 @@ further shrinks down our exemplary data set by about 60\%.
 \end{figure}
 
 
-\section{SMLM Analysis: NPC}\label{s:r:ananpc}
+\section{3d SMLM Analysis: NPC}\label{s:r:ananpc}
 
 We use NPCs as a test target for our method, thus we have some
 additional knowledge, like the geometry of each individual NPC: they
@@ -1519,6 +1336,542 @@ localisations within the \e{best} cluster (top), the \e{worst}
 \end{figure}
 
 
+\clearpage\section{Dual Channel 3d SMLM}\label{r:dc}
+
+In order to perform two-colour SMLM we marked NPC and bead samples
+with an equal amount of both AF488 and AF647 fluorescence dyes.\\
+
+A first measurement using the Gloxy buffer worked well for the red
+channel (for which the Gloxy buffer is designed) but did not lead to a
+good SNR in the blue channel.\\
+
+Using the OxEA buffer described in Section~\t{sec}, we got both
+channels working ok, but the overall SNR proved to be not good enough
+for drift analysis via ImageJ, or even particle tracking. There is no
+way we could try to recover the 3d transformation relating those data
+sets under this noisy conditions.  
+
+
+\section{Dual Channel 3d Projection}\label{r:3dp}
+
+Lacking proper 3d dual channel SMLM data, we choose to use
+two-dimensional Thunderstorm SMLM data for a proof of work. A close
+look on such generated sets already shows interesting behaviour: the
+two sets are \e{shifted}. Obviously by utilising different wavelength
+regimes in a highly wavelength dependent process (optical path,
+refraction, objective, PSF, etc), one will eventually face some
+offset.
+
+
+\subsection{Dual Channel: Simulation}\label{r:dcsim}
+
+As a proof of concept,we performed both a rigid and an affine recovery
+on simulated data. First, each simulation creates a cylinder-shaped
+pseudo-random point cloud \tt{p}, and deducts some projection to get a
+second set \tt{q}, related to \tt{p} by either a rigid or an affine
+transformation.
+
+In the first and second simulation the transformation relating both
+sets simply is a translation, respective a rotation and translation
+(rigid). Examples of sets related in such a way are shown in
+Figure~\ref{f:transim} as purple and cyan dots on the top row for
+solely shifted and in the middle row for shifted and rotated sets
+(rigid). In a third simulation, the two sets are related by an affine
+transform adding shearing, reflection and scaling, shown in
+Figure~\ref{f:transim} as purple and cyan dots on the bottom row.
+
+All three simulations are now evaluated by both the algorithms
+\tt{rig()} and \tt{affine()} assuming a rigid respective an affine
+transformation. The resulting transformation, thus the projection from
+one set to the other is shown as magenta lines in all six sub figures
+of Figure~\ref{f:transim}.
+
+\begin{figure*}[!t]
+  \vspace{-3em}
+  \rotatebox{90}{\b{Shift}}
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \b{Rigid Projection}
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        % label shift = -10pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_shift/q.dat};
+        \addplot3[magenta, only marks, mark=x] table {sim_rigid_rec_shift/pr.dat};
+        \addplot3[magenta, mark=x] table {sim_rigid_rec_shift/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_shift/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \b{Affine Projection}
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        % label shift = -10pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_shift/q.dat};
+        \addplot3[magenta, only marks, mark=x] table {sim_affine_rec_shift/pr.dat};
+        \addplot3[magenta, mark=x] table {sim_affine_rec_shift/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_shift/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \\
+  \rotatebox{90}{\b{Rigid}}
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -15pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_rigid/q.dat};
+        \addplot3[magenta, only marks, mark=x] table {sim_rigid_rec_rigid/pr.dat};
+        \addplot3[magenta, mark=x] table {sim_rigid_rec_rigid/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_rigid/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -15pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-1,
+        xmax=1,
+        ymin=-1,
+        ymax=1,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_rigid/q.dat};
+        \addplot3[magenta, mark=x] table {sim_affine_rec_rigid/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_rigid/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \\
+  \rotatebox{90}{\b{Affine}}
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -5pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-2,
+        xmax=2,
+        ymin=-2,
+        ymax=2,
+        grid=major
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_rigid_rec_affine/q.dat};
+        \addplot3[magenta, mark=x] table {sim_rigid_rec_affine/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_rigid_rec_affine/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t!]{0.44\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false, smooth,
+        grid=both, grid style=dashed,
+        xlabel={x / $\mu$m},
+        ylabel={y / $\mu$m},
+        zlabel={z / $\mu$m},
+        label shift = -5pt,
+        % legend entries={blue channel, transformed red channel, red channel},
+        xmin=-2,
+        xmax=2,
+        ymin=-2,
+        ymax=2,
+        grid=major,
+        ]
+        \addplot3[cyan, only marks, mark=*] table {sim_affine_rec_affine/q.dat};
+        \addplot3[magenta, mark=x] table {sim_affine_rec_affine/netz.dat};
+        \addplot3[violet, only marks, mark=*] table {sim_affine_rec_affine/p.dat};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  % 
+  \caption{Demonstration of the recovery of rigid (left) respective
+    affine (right) transformations, via recovering localisations of
+    simulated two channel SMLM data; transformation (magenta) from red
+    channel (violet) to blue channel (cyan); for the use cases of
+    translation (top), rigid transformation (middle) and affine
+    transformation (bottom). Obviously a rigid transformation may not
+    correctly reconstruct an affine transformed data set (bottom
+    left).}
+  \label{f:transim}
+\end{figure*}
+
+The rigid recovery correctly estimates the rigid transforms of the
+first two simulations (top and middle row), but fails completely if
+the point clouds are actually \e{not} related by a rigid transform
+(bottom row)!
+
+To test the algorithms stability to noise, the simulations are
+additionally salted slightly (additive noise to \tt{q}). Due to the
+salt; and the fact, that the positions are pseudo-random points, the
+resulting transformations are slightly different for every simulation.
+The below shown comparison should be understood as an example---yet
+well suited to highlighting common problems.
+
+\subsubsection{Shift Projection}
+
+For the first simulation (top row), the initially (true) translation
+vector $\b{t}_s^t$ and rotation matrix $\b{R}_s^t$ is:
+\begin{equation}
+  \b{t}_s^t=
+  \begin{pmatrix}
+    0 \\
+    0.005 \\
+    0.003 \\
+  \end{pmatrix}
+  ,  \b{R}_s^t=
+  \begin{pmatrix}
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+  \end{pmatrix}
+\end{equation}
+
+The under rigid assumption (left) recovered translation vector
+$\b{t}_s^r$ and rotation matrix $\b{R}_s^r$ is:
+\begin{equation}
+  \b{t}_s^r=
+  \begin{pmatrix}
+    0.0047 \\
+    0.0104 \\
+    0.0030 \\
+  \end{pmatrix}
+  ,  \b{R}_s^r=
+  \begin{pmatrix}
+    0.999 & 0.000 & 0.000 \\
+    0.000 & 0.999 & 0.000 \\
+    0.000 & 0.000 & 0.999
+  \end{pmatrix}
+\end{equation}
+
+\t{t vec?}
+
+The under affine assumption (right) recovered translation vector
+$\b{t}_s^a$ and rotation matrix $\b{R}_s^a$ is:
+\begin{equation}
+  \b{t}_s^a=
+  \begin{pmatrix}
+    0.0050 \\
+    0.0108 \\
+    0.0030 \\
+  \end{pmatrix}
+  ,  \b{R}_s^a=
+  \begin{pmatrix}
+    1.000 & 0.000 & 0.301 \\
+    0.000 & 0.999 & -0.148 \\
+    0.000 & 0.000 & 1.001
+  \end{pmatrix}
+\end{equation}
+
+\subsubsection{Rigid Projection}
+
+For the first simulation (top row), the initially (true) translation
+vector $\b{t}_r^t$ and rotation matrix $\b{R}_r^t$ is:
+\begin{equation}
+  \b{t}_r^t=
+  \begin{pmatrix}
+    0 \\
+    0.005 \\
+    0.003 \\
+  \end{pmatrix}
+  ,  \b{R}_r^t=
+  \begin{pmatrix}
+    0.342 & 0 & -0.940 \\
+    0 & 1 & 0 \\
+    0.940 & 0 & 0.342
+  \end{pmatrix}
+\end{equation}
+
+The under rigid assumption (left) recovered translation vector
+$\b{t}_r^r$ and rotation matrix $\b{R}_r^r$ is:
+\begin{equation}
+  \b{t}_r^r=
+  \begin{pmatrix}
+    0.0017 \\
+    0.0103 \\
+    0.0077 \\
+  \end{pmatrix}
+  ,  \b{R}_r^r=
+  \begin{pmatrix}
+    0.342 & 0.000 & -0.940 \\
+    0.000 & 9.999 & 0.000 \\
+    0.940 & 0.000 & 0.342
+  \end{pmatrix}
+\end{equation}
+
+\t{t vec?}
+
+The under affine assumption (right) recovered translation vector
+$\b{t}_r^a$ and rotation matrix $\b{R}_r^a$ is:
+\begin{equation}
+  \b{t}_r^a=
+  \begin{pmatrix}
+    0.0014 \\
+    0.0093 \\
+    0.0069 \\
+  \end{pmatrix}
+  ,  \b{R}_r^a=
+  \begin{pmatrix}
+    0.3420 & 0.000 & -0.614 \\
+    0.000 & 9.999 & 1.014 \\
+    0.940 & 0.000 & 1.235
+  \end{pmatrix}
+\end{equation}
+
+\subsubsection{Affine Projection}
+
+For the first simulation (top row), the initially (true) translation
+vector $\b{t}_a^t$ and rotation matrix $\b{R}_a^t$ is:
+\begin{equation}
+  \b{t}_a^t=
+  \begin{pmatrix}
+    0 \\
+    0.005 \\
+    0.003 \\
+  \end{pmatrix}
+  ,  \b{R}_a^t=
+  \begin{pmatrix}
+    -0.684 & -0.342 & -0.940 \\
+    0.000 & 1.000 & 0.000 \\
+    -1.879 & -0.940 & 0.342
+  \end{pmatrix}
+\end{equation}
+
+The under rigid assumption (left) recovered translation vector
+$\b{t}_a^r$ and rotation matrix $\b{R}_a^r$ is:
+\begin{equation}
+  \b{t}_a^r=
+  \begin{pmatrix}
+    0.0113 \\
+    0.0059 \\
+    0.0341 \\
+  \end{pmatrix}
+  ,  \b{R}_a^r=
+  \begin{pmatrix}
+    -0.325 & -0.106 & -0.940 \\
+    -0.309 & 0.951 & 0.000 \\
+    -0.894 & -0.290 & 0.342
+  \end{pmatrix}
+\end{equation}
+
+\t{t vec?}
+
+The under affine assumption (right) recovered translation vector
+$\b{t}_a^a$ and rotation matrix $\b{R}_a^a$ is:
+\begin{equation}
+  \b{t}_a^a=
+  \begin{pmatrix}
+    -0.0058 \\
+    0.0110 \\
+    -0.0129 \\
+  \end{pmatrix}
+  ,  \b{R}_a^a=
+  \begin{pmatrix}
+    -0.684 & -0.342 & -0.566 \\
+    0.000 & 1.000 & -0.319 \\
+    -1.879 & -0.940 & 1.364
+  \end{pmatrix}
+\end{equation}
+
+\clearpage\subsection{Dual Channel: NPC}\label{r:dcnpc}
+
+As a second proof of work, we tested both rigid and affine recovery on
+several real dual channel SMLM data sets of NPCs of two-color in focus
+measurements of different cells successively recorded in the same
+sample. The fluorescence images are analysed with \e{Thunderstorm}, a
+dSTORM plugin for ImageJ, to obtain 2d localisations based on Gaussian
+fits.
+
+Since these data sets are two dimensional, we added an empty z
+component, so both sets are projected onto the z plane for analysis.
+
+
+\subsubsection{Rigid Projection}\label{r:dcnpcr}
+
+The rigid recovery worked quite flawlessly, the mean rotation matrix
+$\overline{\b{R}}_r$ is almost unity within uncertainty. The mean
+translation vector $\overline{\b{t}}_r$ shows a good variance over all
+the twelve analysed sets, with mean and standard derivation of:
+
+\begin{equation}
+  \overline{\b{t}}_r=
+  \begin{pmatrix}
+    39 \\
+    30 \\
+    0 \\
+  \end{pmatrix}
+  \pm
+  \begin{pmatrix}
+    10 \\
+    4 \\
+    0 \\
+  \end{pmatrix}
+  \si{\micro\m}
+\end{equation}
+
+\begin{equation}
+  \overline{\b{R}}_r =
+  \begin{pmatrix}
+    1.0000 & 0.0008 & 0 \\
+    -0.0008 & 1.000 & 0 \\
+    0 & 0 & 1
+  \end{pmatrix}
+\end{equation}
+
+\begin{equation}
+  \sigma( \b{R}_r ) =
+  \begin{pmatrix}
+    4\cdot10^{-7} & 4\cdot10^{-4} & 0 \\
+    4\cdot10^{-4} & 4\cdot10^{-7} & 0 \\
+    0 & 0 & 0
+  \end{pmatrix}
+\end{equation}
+
+As an example of this rigid transformation, the localisations of the
+blue channel (blue $\times$), the red channel (violet $+$) and the
+projection from blue channel to red channel channel (magenta $\circ$)
+is shown in Figure~\ref{f:npc_rigid}, for one exemplary data set. The
+transformed blue channel localisations mostly align well with the red
+channel localisations.
+
+
+\subsubsection{Affine Projection}\label{r:dcnpca}
+
+A similar analysis assuming an affine transformation though fails
+completely. This is due to the fact that the data sets are projected
+onto the z plane for analysis, so are now composing strictly parallel
+planes. This leads to the covariance matrices being \e{singular}, so
+the affine transform routine fails (or at least heavily crashes
+trying) to invert the covariance matrices. At least the results are so
+horribly wrong---if at all---that it is highly unlikely to \e{not} get
+suspicious immediately. In our case the translation vector is in the
+order of millimeters, which is not very plausible for two sets within
+the same cell. Thus we omitted the results.
+
+
+\begin{figure*}[!t]
+  \vspace{-5em}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.7\textwidth,
+      height=0.7\textwidth,
+      name=ax1,
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={X Position / \n{nm}},
+      ylabel={Y Position / \n{nm}},
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xmin=0.5e4,
+      xmax=0.85e4,
+      ymin=0.5e4,
+      ymax=0.851e4,
+      grid=major,
+      thick,
+      mark size=8pt,
+      ]
+      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
+      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
+      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
+    \end{axis}
+    \begin{axis}[
+      width=0.7\textwidth,
+      height=0.7\textwidth,
+      name=ax2,
+      % place second axis relative to first one anchor is south west
+      at={($(ax1.north west)+(0,1.5cm)$)},
+      enlargelimits=false, smooth,
+      grid=both, grid style=dashed,
+      xlabel={X Position / \n{nm}},
+      ylabel={Y Position / \n{nm}},
+      xmin=0,
+      xmax=2e4,
+      ymin=0,
+      ymax=2e4,
+      grid=major,
+      thick,
+      mark size=8pt,
+      legend entries={blue channel, red channel, rigid transformation},
+      ]
+      \addplot[cyan, only marks, mark=x] table {npc_rigid/centroid_blue.mat};
+      \addplot[violet, only marks, mark=+] table {npc_rigid/centroid_red.mat};
+      \addplot[magenta, only marks, mark=o] table {npc_rigid/centroid_blue_transformed.mat};
+      % define coordinates at bottom left and top left of rectangle
+      \coordinate (c1) at (axis cs:0.5e4,0.5e4);
+      \coordinate (c2) at (axis cs:0.5e4,0.85e4);
+      \coordinate (c3) at (axis cs:0.85e4,0.85e4);
+      % draw a rectangle
+      \draw (c1) rectangle (axis cs:0.85e4,0.85e4);
+    \end{axis}
+    % draw dashed lines from rectangle in first axis to corners of second
+    \draw [dashed] (c2) -- (ax1.north west);
+    \draw [dashed] (c3) -- (ax1.north east);
+  \end{tikzpicture}
+  \caption{Demonstration of a rigid transformation of the
+    localisations (magenta $\circ$) from blue channel (blue $\times$)
+    to red channel (violet $+$); the transformed blue channel
+    localisations mostly align well with the red channel
+    localisations.}
+  \label{f:npc_rigid}
+\end{figure*}
+
+
 \twocolumn
 
 
@@ -1552,9 +1905,7 @@ similar---for most of the Zernike modes, as suspected by theory
 
 Yet the phase Retrieval program gave the error \e{high residual error}
 for both the red and the blue channel when using the correction collar
-settings $\{0.17,0.19\}$, is this a serious problem?\\
-
-how can we avoid it?
+settings $\{0.17,0.19\}$.
 
 
 \subsection{Correction Collar}
@@ -1567,9 +1918,7 @@ setting for the correction collar is 0.13.\\
 Yet the recommended setting for our microscope setup is 0.17! Which is
 backed by Lukas, based on the PSF stacks: One would have guessed the
 0.17 is more sensitive to z since it changes much more with different
-z positions than 0.13.\\
-
-Which is the one we should use?\\
+z positions than 0.13.
 
 
 \section{SMLM Analysis}
@@ -1583,17 +1932,17 @@ about 26\%.
 \section{SMLM Analysis: NPC}~\label{s:d:ananpc}
 
 \subsection{Automation}
-  
+
 The fully automatic evaluation of the NPC \e{quality}, shown in
 Section~\ref{s:r:ananpc} surfaced mixed results. The key problems
 being for one, that there are quite many parameters involved; and
 secondly that the analysis proved very susceptible to changes of most
-of these parameters.
+of these parameters.\\
 
 A quick glance at the histograms in Section~\ref{s:r:xyzhist} shows,
 that the cluster considered to be the \e{best} does not look better in
 fact, than most of the other clusters. We may well consider this
-approach failed.
+approach failed.\\
 
 Nevertheless we might have gained some valuable insight, into why this
 approach doesn't work. Reasons for this may be any and all of the
@@ -1639,6 +1988,63 @@ In the end, possessing a list of the clusters position allows for a
 much easier way to plot some of them manually, than to zoom in on a
 plot of thousands of localisations repeatedly.
 
+\section{Transform}
+
+Simply put, the algorithm \tt{rig()} finds the \e{best}
+rigid transformation, whatever the real relation is. This poses a
+serious caveat for experimental data, since one is usually not in
+possession of any form of ground truth to check whether the result is
+plausible or not.
+
+\subsection{Dual Channel: Simulation}\label{d:dcsim}
+
+At first glance at the plots in Figure~\ref{f:transim}, the rigid as
+well as the shift problem (top and middle row) are similarly well
+solved either by rigid or affine assumption; their projection of the
+set \tt{q} neatly correspond with set \tt{p}. Also quite obviously the
+recovery of a assumed rigid transform of sets \e{not} related in such
+a way (bottom row) does not yield a significant solution.\\
+
+A closer inspection of the respective recovered translation vectors
+$\b{t}$ and rotation matrices $\b{R}$ in Section~\ref{r:dcsim} enables
+a deeper understanding of the involved misconceptions---that
+ultimately question this approach.
+
+
+\subsubsection{Shift}
+
+Comparison of the respective recovered translation vectors
+$\b{t}_s^{r,a}$ and rotation matrices $\b{R}_s^{r,a}$ to the ground
+truth $\b{t}_s^{t}$ and $\b{R}_s^{t}$ show, that both sort of
+agree---for solely shifted data sets. The affine projection is a
+little farther off.
+
+
+\subsubsection{Rigid}
+
+Comparison of the respective recovered translation vectors
+$\b{t}_r^{r,a}$ to the ground truth $\b{t}_r^{t}$ shows, that even the
+rigid recovery does not represent the ground truth well, with the
+affine projection being even farther off still.
+
+Yet a comparison of the respective recovered rotation matrices
+$\b{R}_r^{r,a}$ to the ground truth $\b{R}_r^{t}$ show good agreement
+for the rigid recovery. The affine recovery is slightly off, but
+somewhat acceptable.
+
+
+\subsubsection{Rigid}
+
+Comparison of the respective recovered translation vectors
+$\b{t}_a^{r,a}$ to the ground truth $\b{t}_a^{t}$ show very little
+agreement for both the rigid and the affine recovery.
+
+A comparison of the respective recovered rotation
+matrices $\b{R}_a^{r,a}$ to the ground truth $\b{R}_a^{t}$ shows show
+good agreement for the affine recovery, with the rigid recovery
+completely failing.
+
+
 
 % .        ___                    ___         ___             ___         ___   ___                          ___  
 % .   .'|=|_.'   .'|=|`.     .'| |   |   .'|=|_.'   .'|      |   | |`.   |   |=|_.'   .'|   .'|=|`.     .'| |   | 
@@ -1667,12 +2073,113 @@ and \SI{250}{\micro\meter}.
 \section{dSTORTM Buffer}
 
 
+\subsection{Dual Channel: Simulation}\label{c:dcsim}
+
+Due to the convexity of the problem (there are infinitely many
+transformations), the recovery of a translation vector under the
+assumption of at least dome rotation involved is not really possible,
+as shown in Table~\ref{t:t} and Table~\ref{t:r}.This poses a dangerous
+caveat for the dual channel SMLM analysis, since we have to take the
+possibility of a rigid transform into account.
+
+\begin{table}[!htb]
+  \caption{Quality of the recovered rotation translation vectors
+    (transformation) matrices $\b{t}_{s,r,a}^{r,a}$.}\label{t:t}
+  \begin{tabularx}{.5\textwidth}{X l r}
+    \hhline{===}
+    Problem & rig() & affine() \\
+    \hline
+    Shift & ok & ok \\
+    Rigid & bad & bad \\
+    Affine & worse & bad \\
+    \hhline{===}
+  \end{tabularx}
+\end{table}
+
+\begin{table}[!htb]
+  \caption{Quality of the recovered rotation (transformation) matrices
+    $\b{R}_{s,r,a}^{r,a}$}\label{t:r}
+  \begin{tabularx}{.5\textwidth}{X l r}
+    \hhline{===}
+    Problem & rig() & affine() \\
+    \hline
+    shift & ok & ok \\
+    rigid & good & bad \\
+    affine & worse & good \\
+    \hhline{===}
+  \end{tabularx}
+\end{table}
+
+Concluding one best uses an rigid recovery for a rigid problem, or an
+affine recovery for an affine problem, as shown in Table~\ref{t:t} and
+Table~\ref{t:r}.
+
+
+\subsection{Dual Channel: NPC}
+
+As a second proof of work, we tested both rigid and affine recovery on
+several real dual channel SMLM data sets of two color in focus
+measurements of different cells successively recorded in the same
+sample.
+
+
+\subsubsection{Rigid}
+
+The rigid recovery worked quite flawlessly, the mean rotation matrix
+$\overline{\b{R}}_r$ is almost unity within uncertainty. The mean
+translation vector $\overline{\b{t}}_r$ shows a good variance over all
+the twelve analysed sets, with mean and standard derivation of:
+
+\begin{equation}
+  \overline{\b{t}}_r=
+  \begin{pmatrix}
+    39 \\
+    30 \\
+    0 \\
+  \end{pmatrix}
+  \pm
+  \begin{pmatrix}
+    10 \\
+    4 \\
+    0 \\
+  \end{pmatrix}
+  \si{\micro\m}
+\end{equation}
+
+\begin{equation}
+  \overline{\b{R}}_r =
+  \begin{pmatrix}
+    1.0000 & 0.0008 & 0 \\
+    -0.0008 & 1.000 & 0 \\
+    0 & 0 & 1
+  \end{pmatrix}
+\end{equation}
+
+\begin{equation}
+  \sigma( \b{R}_r ) =
+  \begin{pmatrix}
+    4\cdot10^{-7} & 4\cdot10^{-4} & 0 \\
+    4\cdot10^{-4} & 4\cdot10^{-7} & 0 \\
+    0 & 0 & 0
+  \end{pmatrix}
+\end{equation}
+
+
+\subsubsection{Affine}
+
+A similar analysis assuming an affine transformation though fails
+completely, this method simply cannot work on two dimensional data.
+
+
+
 \appendix
 
 
-\section{SMLM Analysis: NPC}
 
+\chapter{Code}
 \onecolumn
+
+\section{3d SMLM Analysis: NPC}
 
 \usemintedstyle{
   manni,
@@ -1792,7 +2299,7 @@ and \SI{250}{\micro\meter}.
 \end{minted}
 
 
-\section{SMLM Analysis: NPC}
+\clearpage\section{3d SMLM Analysis: NPC}
 
 \subsection{Clustering}
 
@@ -1943,6 +2450,173 @@ and \SI{250}{\micro\meter}.
 \end{minted}
 
 
+\clearpage\section{Dual Channel 3d SMLM}\label{a:dc}
+
+
+\subsection{Rigid Transformation: rig.m}\label{a:rig}
+
+\begin{minted}{octave}
+  #!/bin/octave
+  function [ rotation, translation, s ] = rig( p, q )
+  ## this function "rig(p,q)" finds the optimal rigid transform in
+  ## 3-dimensional euclidian space, using least squares and
+  ## single-value-decomposition. Given a 3xn matrix (set of n 3d
+  ## positions), it returns the rotation matrtix "rotation", and the
+  ## translation vector "translation".
+  ##
+  ## K. S. Arun, T. S. Huang and S. D. Blostein, "Least-Squares Fitting of
+  ## Two 3-D Point Sets," in IEEE Transactions on Pattern Analysis and
+  ## Machine Intelligence, vol. PAMI-9, no. 5, pp. 698-700, Sept. 1987,
+  ## doi: 10.1109/TPAMI.1987.4767965.
+  ##
+  ## moritz siegel @ 210322
+
+  ## check stuff.
+  assert( nargin == 2 && size( p ) == size( q ), ...
+  "need 2 identical input matrices\n" );
+  assert( size( p, 2 ) == 3, "input matrix p must be nx3\n" );
+  assert( size( q, 2 ) == 3, "input matrix q must be nx3\n" );
+  n = size( p, 1 );
+  assert( n > 2, "need at least 3 points\n" );
+
+  ## 1) center to get rid of translation.
+  centroid_p = mean( p, 1 );
+  centroid_q = mean( q, 1 );
+  p_shifted = p - repmat( centroid_p, n, 1 );
+  q_shifted = q - repmat( centroid_q, n, 1 );
+
+  ## 2) solve least squares problem for best rotation.
+  ## -------------------------------------------------
+  
+  ## covariance matrix.
+  h = p_shifted' * q_shifted;
+  
+  ## singular value decomposition.
+  [ u, s, v ] = svd( h );
+  rotation = v * u'
+
+  ## reflection? theres more to that.
+  if ( det( rotation ) < 0 )
+  printf( "warning: det(r) < 0\n" );
+  if ( any( s( : ) ) < 0 )
+  printf( "found reflection, correcting.\n" );
+  v( :, 3 ) = -v( :, 3 );
+  rotation = v * u';
+  else
+  printf( "error: single-value-decomposition failed! \
+  provided data seems is too noisy for least-squares\n." );  
+  endif
+  endif
+
+  ## 3) compute translation.
+  translation = centroid_q - ( rotation * centroid_p' )';
+  
+  endfunction
+\end{minted}
+
+
+\subsection{Affine Transformation: affine.m}\label{a:affine}
+
+\begin{minted}{octave}
+  #!/bin/octave
+  function [ affine_rotation, translation, s ] = affine( p, q )
+  ## this function "affine(p,q)" finds the optimal affine transform in
+  ## 3-dimensional euclidian space, using least squares and
+  ## single-value-decomposition. Given a 3xn matrix (set of n 3d
+  ## positions), it returns and the rotation matrtix "affine_rotation",
+  ## and the translation vector "translation".
+  ##
+  ## K. S. Arun, T. S. Huang and S. D. Blostein, "Least-Squares Fitting of
+  ## Two 3-D Point Sets," in IEEE Transactions on Pattern Analysis and
+  ## Machine Intelligence, vol. PAMI-9, no. 5, pp. 698-700, Sept. 1987,
+  ## doi: 10.1109/TPAMI.1987.4767965.
+  ##
+  ## Berthold K. P. Horn, "Closed-form solution of absolute orientation
+  ## using unit quaternions," J. Opt. Soc. Am. A 4, 629-642 (1987)
+  ##
+  ## @ moritz siegel
+
+  global hd
+  global wd
+  global nwd
+  
+  ## check stuff.
+  assert( nargin == 2 && size( p ) == size( q ), ...
+  "need 2 identical input matrices\n" );
+  assert( size( p, 2 ) == 3, "input matrix p must be nx3\n" );
+  assert( size( q, 2 ) == 3, "input matrix q must be nx3\n" );
+  n = size( p, 1 );
+  assert( n > 2, "need at least 3 points\n" );
+
+  ## 1) center to get rid of translation.
+  centroid_p = mean( p, 1 );
+  centroid_q = mean( q, 1 );
+  p_shifted = p - repmat( centroid_p, n, 1 );
+  q_shifted = q - repmat( centroid_q, n, 1 );
+  
+  ## 2) orthogonal reduction.
+  ## ------------------------
+  
+  ## variance (?) matrices.
+  s_p = p_shifted' * p_shifted;
+  s_q = q_shifted' * q_shifted;
+
+  ## square-roots of the covariance matrices.
+  ## choleski decomposition: "A -> LL*" , any advantage over sqrtm()?
+  #s_sqrt_p = sqrtm( s_p );
+  #s_sqrt_q = sqrtm( s_q );
+  s_sqrt_p = chol( s_p, "lower" );
+  s_sqrt_q = chol( s_q, "lower" );
+  
+  ## left division. "x\y" is conceptually equivalent to the expression
+  ## "inv(x) * y" but it is computed without forming the inverse of x.
+  ## if the system is not square, or if the coefficient matrix is
+  ## singular, a minimum norm solution is computed.
+  p_orthogonal = ( s_sqrt_p \ p_shifted' )';
+  q_orthogonal = ( s_sqrt_q \ q_shifted' )';
+  
+  ## "p" and "q" are now solely related by a rotational matrix
+  ## "r = s_inv_sqrt_q * affine * s_sqrt_p" (no inverse!).
+
+  ## 3) solve least squares problem for best rotation.
+  ## -------------------------------------------------
+  
+  ## covariance matrix again.
+  h = p_orthogonal' * q_orthogonal;
+
+  ## singular value decomposition.
+  [ u, s, v ] = svd( h );
+  rotation = v * u';
+
+  ## reflection? theres more to that.
+  if ( det( rotation ) < 0 )
+  printf( "warning: det(rotation) < 0\n" );
+  if ( any( s( : ) ) < 0 )
+  printf( "found reflection, correcting.\n" );
+  v( :, 3 ) = - v( :, 3 );
+  rotation = v * u';
+  else
+  printf( "error: single-value-decomposition might have failed! \
+  provided data seems is too noisy for least-squares.\n" );  
+  endif
+  endif
+
+  ## 4)  reverse the rotation to the non-orthogonal affine transform using
+  ## right division: "x/y" is conceptually equivalent to the expression
+  ## "x * inv(y)" but it is computed without forming the inverse of x.
+  affine_rotation = ( s_sqrt_q * rotation ) / s_sqrt_p;
+  
+  ## 5) compute translation.
+  translation = centroid_q - ( affine_rotation * centroid_p' )';
+  
+  endfunction
+\end{minted}
+
+asdf \ref{a:caffine} asdf
+
+
+\twocolumn
+
 
 % .        _                _   
 % .   .'|=| `.   .'|   .'|=| `. 
@@ -1965,7 +2639,18 @@ and \SI{250}{\micro\meter}.
 % . |___|=|_.' |___|  `._|=|___|       `.|       `._|=|___|
 % .
 
+
+\clearpage \listoftables
+
+
 \clearpage \listoffigures
+
+
+% \clearpage \listofalgorithms
+% \addcontentsline{toc}{chapter}{List of Algorithms}
+
+
+% \clearpage \listoflistings
 
 
 % .        ___                          ___   ___  ___   ___                    __   ___   ___  

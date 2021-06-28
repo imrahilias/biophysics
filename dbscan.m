@@ -52,3 +52,4 @@ function [assignments,C] = dbscan(X,minpts,EPS)
       endfor
     endif
   endfor
+endfunction

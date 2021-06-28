@@ -1,7 +1,7 @@
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
-% arara: bibtex
+%% arara: bibtex
 % arara: makeglossaries
-% arara: makeindex
+%% arara: makeindex
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 \documentclass[11pt, a4paper, oneside, twocolumn]{report}
@@ -34,6 +34,7 @@
   subcaption,
   tabularx,
   tikzinput,
+  unicode-math,
   xcolor}
 \usepackage[nottoc]{tocbibind} % hide toc itself from toc
 \usepackage[hidelinks]{hyperref} % always load last!
@@ -52,11 +53,12 @@
 \tikzexternalize[optimize=true,prefix=tikz/] % externalize tikz, much faster, many conflicts!
 \setcounter{secnumdepth}{2} % set level of depth for numbering
 \graphicspath{{figures/}}
-\input{listingsrc.tex} % a lot of listing options
 \renewcommand{\arraystretch}{1.2} % streches row heigth in arrays (and tables)
 \DeclareSIUnit\molar{\mole\per\cubic\deci\metre}
 \DeclareSIUnit\Molar{\textsc{m}}
 \DeclareSIUnit\NA{\textsc{na}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 %% makros ----------------------------------------------------------------------
 \renewcommand{\b}{\textbf}
 \renewcommand{\u}{\underline}
@@ -66,6 +68,17 @@
 \newcommand{\n}{\textnormal}
 \newcommand{\m}{\mathrm}
 \newcommand{\x}[1]{#1\index{#1}}
+% .        ___                          ___   ___  ___   ___                    __   ___   ___  
+% .   .'|=|_.'    .'|        .'|=|`.   |   |=|_.' |   |=|_.'   .'|=|`.     .'|=|  | |   | |   | 
+% . .'  |___    .'  |      .'  | |  `. `.  |      `.  |      .'  | |  `. .'  | |  | `.  |_|  .' 
+% . |   |`._|=. |   |      |   | |   |   `.|=|`.    `.|=|`.  |   |=|   | |   |=|.'    `.   .'   
+% . `.  |  __|| |   |  ___ `.  | |  .'  ___  |  `. ___  |  `.|   | |   | |   |  |`.    |   |    
+% .   `.|=|_.'' |___|=|_.'   `.|=|.'    `._|=|___| `._|=|___||___| |___| |___|  |_|    |___|    
+% .                                                                                             
+\makeindex
+\makeglossaries % definitions in a separate file and load it in the preamble after \makeglossaries
+% \loadglsentries{glossary} % also disable option "nomain"
+\loadglsentries{acronyms}
 % .  ___  ___   ___        ___  ___   ___                   ___ 
 % . `._|=|   |=|_.'   .'| `._|=|   |=|_.'   .'|        .'|=|_.' 
 % .      |   |      .'  |      |   |      .'  |      .'  |  ___ 
@@ -136,9 +149,9 @@
 % .
 \clearpage\chapter{Introduction}
 
-\t{we want two color dyed SMLM data in sync, how to get there?}
+\t{we want two color dyed \gls{smlm} data in sync, how to get there?}
 
-Single Molecule Localisation Microscopy (SMLM) is a technique of
+Single Molecule Localisation Microscopy (\gls{smlm}) is a technique of
 fitting a full Point Spread Functions (PSF) to a stack of images
 containing reasonably spaced fluorescence signals.\\
 
@@ -155,19 +168,19 @@ fluorescence molecule.\\
 \t{Flouro}
 
 
-\section{2dSMLM}
+\section{2d SMLM}
 
-\t{SMLM}
+\t{\gls{smlm}}
 
 
-\section{3dSMLM}
+\section{3d SMLM}
 
-\t{SMLM}
+\t{\gls{smlm}}
 
 
 \section{dSTORM}
 
-\t{dSTORM}
+\t{\gls{dstorm}}
 
 
 % .                     ___  ___  ___   ___                                      ___   ___ 
@@ -180,14 +193,55 @@ fluorescence molecule.\\
 \clearpage\chapter{Methods}
 
 
-\section{PSF}
+\section{Maximum-likelihood \\estimation}
 
-\t{PSF}
+For the Analysis of \gls{dstorm} fluorescence microscopy, \gls{mle} is
+widely accepted as a gold standard; We closely follow the method from
+\t{cit} here. First we assume a Poissonian probability amount of
+photons $n_k$ detected in pixel $k$:
+
+\begin{equation}
+  P_k(n_k | \mu_{\symbf{\theta},k}) = \n{e}^{-\mu_{\symbf{\theta},k}} \frac{\mu_{\symbf{\theta},k}^{n_k}}{n_k!}
+\end{equation}
+
+where the expectation values $\mu_{\symbf{\theta},k}$ is defined as:
+
+\begin{equation}
+\mu_{\symbf{\theta},k} = \beta +  s *h_k( x_0, y_0, z_0 )
+\end{equation}
+
+depending on the form of the \gls{psf} model $h$ and on the parameter
+vector $\symbf{\theta}$:
+
+\begin{equation}
+  \symbf{\theta} = (\beta, s, x_0, y_0, z_0)
+\end{equation}
+
+with $\beta$ and $s$ denoting the mean photon numbers for background
+level respective signal; and $x_0, y_0, z_0$ denote the particle
+position in 3d.
+
+For each recorded frame, the parameter vector $\symbf{\theta}$ is
+estimated by finding a minimum of the total negative log-likelihood
+function using the MATLAB tool \tt{fminunc}:
 
 
-\section{Zernike}
+\begin{equation}
+\symbf{\theta} = \argmin_{\symbf{\theta}} \sum_{k}{\mu_{\symbf{\theta},k} - n_k \ln{\mu_{\symbf{\theta},k}}}
+\end{equation}
 
-\t{zern}
+
+\section{PSF model \& Zernike}
+
+In first order approximation the \gls{psf} can be aberration-free, but
+for \gls{smlm} this is not going to be precise enough. In this thesis
+we employ a \gls{psf} model expressed in a Zernike modes basis using
+Noll coefficients \t{cit} ranging from 2 to 37 (3rd order spherical
+aberration) plus the 4th order spherical mode $Z_{56}$:
+
+\begin{equation}
+\Phi = a_{56}Z_{56} + \sum_{i=1}^{37}{ a_iZ_i }
+\end{equation}
 
 
 \section{TIRF}
@@ -197,12 +251,12 @@ fluorescence molecule.\\
 
 \section{dSTORM}
 
-\t{dSTORM}
+\t{\gls{dstorm}}
 
 
 \subsection{Gloxy Buffer}
 
-Single channel SMLM may employ the same buffer for both excitation
+Single channel \gls{smlm} may employ the same buffer for both excitation
 wavelengths, in our case at \SI{645}{\nm} (red) respective at
 \SI{488}{\nm} (blue). After its central ingredients glucose and
 oxidase, the buffer we used throughout this paper for all single
@@ -210,27 +264,27 @@ channel measurements unless noted otherwise is called Gloxy buffer:
 
 \subsubsection{Gloxy buffer concentration}
 \begin{itemize}
-\item 50 \si{\milli\mol} $\beta$-MercaptoEthylamine hydrochloride (MEA, Sigma-Aldrich).
+\item 50 \si{\milli\mol} $\beta$-MercaptoEthylamine hydrochloride (\gls{mea}, Sigma-Aldrich).
 \item 10~vol\% of a \SI{250}{\g\per\L} solution of glucose.
 \item \SI{0.5}{\mg\per\ml} glucose oxidase.
 \item \SI{40}{\mg\per\ml} catalase (Sigma-Aldrich).
-\item in PBS, pH 7.6 .
+\item in \gls{pbs}, pH 7.6 .
 \end{itemize}
 
 \subsection{OxEA Buffer}
 
 Dual channel Fluorescence microscopy poses novel challenges to find a
-proper dSTORM buffer, that works for both excitation
+proper \gls{dstorm} buffer, that works for both excitation
 wavelengths---thus two distinct fluorophores AF647 and AF488. The
 buffer composition we used is based on \t{cit}, and called OxEA after
-its main ingredients OxyFlour and ($\beta$-Mercapto)Ethylamine:
+its main ingredients OxyFlour and \gls{mea}:
 
 \subsubsection{OxEA buffer concentration}
 \begin{itemize}
-\item 50 \si{\milli\mol} $\beta$-MercaptoEthylamine hydrochloride (MEA, Sigma-Aldrich).
+\item 50 \si{\milli\mol} \gls{mea} (Sigma-Aldrich).
 \item 3~vol\% OxyFlourTM (Oxyrase Inc., Mansfield, Ohio, U.S.A.).
 \item 20~vol\% of \todo{60\%} sodium DL-lactate solution (L1375, Sigma-Aldrich).
-\item in PBS, pH adjusted to 8–8.5 with NaOH.
+\item in \gls{pbs}, pH adjusted to 8–8.5 with NaOH.
 \end{itemize}
 
 \subsubsection{OxEA buffer protocol}
@@ -240,16 +294,16 @@ in Table~\ref{t:oxea}, to obtain above listed concentrations.
 
 \begin{table}[!htb]
   \caption{Ingredients used for preparation of OxEA buffer for dual
-    channel dSTORM buffer.} \label{t:oxea}
+    channel \gls{dstorm} buffer.} \label{t:oxea}
   \begin{tabularx}{.5\textwidth}{l X l r}
     \hhline{====}
     Order & Ingredient & Store & Vol / \si{\micro\liter} \\
     \hline
     1 & Ultra pure H$_2$O & & 600 \\
     2 & \SI{10}{\Molar} NaOH & & 20 \\
-    3 & 10$\times$ PBS & & 100 \\
+    3 & 10$\times$ \gls{pbs} & & 100 \\
     4 & 60\% DL-lactate & fridge & 200 \\
-    5 & \SI{1}{\Molar} MEA & freezer & 50 \\
+    5 & \SI{1}{\Molar} \gls{mea} & freezer & 50 \\
     6 & OxyFluor & freezer & 30 \\
     \hhline{====}
   \end{tabularx}
@@ -261,13 +315,13 @@ The pH of the OxEA buffer is checked using both broad range pH testing
 strips, and a digital pH meter, to be between pH~7 and pH~8.
 
 
-\section{Dual Channel 3dSMLM}
+\section{Dual Channel Optics}
 
 It is possible to use different excitations to simultaneously measure
 different fluorescence markers, but for that the Point Spread
 Functions (PSF) has to known for each wavelength. So the PSFs are
 estimated both for red and blue laser light, with the Phase Retrieval
-program by [Jesacher et al 21?]; each on a stack of 50000~dSTORM
+program by [Jesacher et al 21?]; each on a stack of 50000~\gls{dstorm}
 images of \SI{100}{\nm} \t{100nm?} beads stained with fluorescence
 dyes for both red (\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser
 light.\\
@@ -279,7 +333,7 @@ To further complicate things, the new Olympus \SI{1.5}{\NA} objective
 comes with a Correction Collar to compensate for aberrations---which
 naturally vary slightly for both color channels. In order to find the
 best Correction Collar setting of the Olympus \SI{1.5}{\NA} objective
-for SMLM, the Point Spread Functions (PSF) is computed for each of the
+for \gls{smlm}, the Point Spread Functions (PSF) is computed for each of the
 three settings of the correction collar $\{0.13,0.17,0.19\}$; using
 the program by [Jesacher et al 21?].\\
 
@@ -287,42 +341,46 @@ the program by [Jesacher et al 21?].\\
 \subsection{Cramer Rao Lower Bound}
 
 In order to find the best Correction Collar setting of the Olympus
-\SI{1.5}{\NA} objective for SMLM, the Cramer Rao Lower Bound (CRLB) is
+\SI{1.5}{\NA} objective for \gls{smlm}, the Cramer Rao Lower Bound (\gls{crlb}) is
 computed using the program by [Jesacher et al 21?], with prior
 estimated Point Spread Functions (PSF) via phase retrieval [Jesacher
 et al 21?].\\
 
-All CRLBs are computed at a defocus position of -500~nm, in steps of
+All \gls{crlb}s are computed at a defocus position of -500~nm, in steps of
 5~nm from 0 to 500 nm. For all Estimations we assume identical
 arbitrary signal strength (2500) respective background (100).\\
 
 
+\section{Dual Channel SMLM}
 
-\section{Dual Channel Projections}
-
-The ultimate goal of this thesis was to facilitate dual channel SMLM,
+The ultimate goal of this thesis is to facilitate dual channel \gls{smlm},
 by alternating excitation with different lasers. The alternation
 ensures the comparability of the two sets of images; so that they are
 affected by drift over time, bleaching, etc. in the same way.
 
 The generated image stacks are then split and fed separately through
-the SMLM algorithm, since the PSF model depends on the emitted
-wavelength---and thus on the excitation. Ideally, the obtained two
-data sets with localisations for both channels are then analysed
-together.
+the \gls{smlm} algorithm, since the PSF model depends on the emitted
+wavelength---and thus on the excitation. The two obtained data sets
+with localisations for both channels are then analysed together.
+
+Since the methods used to obtain 3d \gls{smlm} data are wavelength
+dependent, the two channels will most likely be \e{off}, yet we
+ultimately want to overlay them. We hereby propose a calibration step,
+based on evaluating evenly dyed beads in both channels, analysing the
+localisations, and finally figuring out their offset.
 
 
-\subsection{Rigid Transform}\label{r:rig}
+\subsection{Rigid Transform}\label{m:rig}
 
 In first order approximation, this offset may be thought as linear, so
-the two sets are related via a \e{rigid} transform; thus by rotation
-and translation. Such a transformation can be solved easily via linear
-algebra, The solution used here is one of the many known ways, using
-least squares and single-value-decomposition (SVD) based on \t{cit}.
-In this quick overview, the Lines refer to the the function \tt{rig()}
-shown in Section~\ref{a:rig}, where the full code is
-listed. Basically, one first calculates the centroids of the two sets
-of points \tt{p},\tt{q}, and shifts both sets to their respective
+the two sets are related via a \e{rigid} transform; thus only by
+rotation and translation. Such a transformation can be solved easily
+via linear algebra, The solution used here is one of the many known
+ways, using least squares and single-value-decomposition (SVD) based
+on \t{cit}.  In this quick overview, the Lines refer to the the
+function \tt{rig()} shown in Section~\ref{a:rig}, where the full code
+is listed. Basically, one first calculates the centroids of the two
+sets of points \tt{p},\tt{q}, and shifts both sets to their respective
 centres, thus eliminating translation (block 1 at Lines~24--28). As a
 second step the \e{best} (least squares) transform that \e{rotates}
 the set p to the set q is found via SVD (block 2 at Lines~30--51). As
@@ -330,7 +388,7 @@ a last step the translation between set p and q is computed using the
 known rotation (block 3 at line 53).
 
 
-\subsection{Affine Transform}\label{r:affine}
+\subsection{Affine Transform}\label{m:affine}
 
 The next more complex approach includes
 other---nonlinear---transformations like \e{shearing} or \e{scaling},
@@ -345,6 +403,41 @@ follow the rigid transform, a \e{orthogonal reduction} is performed
 decomposition (Lines~44--49). The already centred sets \tt{p} and
 \tt{q} are subsequently orthogonalised (Lines~51--56); so that \tt{p}
 and \tt{q} are now solely related by a rotational matrix.
+
+
+\subsection{Simulation}\label{m:sim}
+
+As a proof of concept,we performed both a rigid and an affine recovery
+on simulated data. The code for this simulations is listed in
+Section~\ref{a:sim}, as well as in my Git repository at
+\t{git}. First, each simulation creates a cylinder-shaped
+pseudo-random point cloud \tt{p}, and deducts some projection to get a
+second set \tt{q}, related to \tt{p} by either a rigid or an affine
+transformation.
+
+
+\subsection{Projected 2d \gls{npc}}\label{m:2dsmlm}
+
+As a second proof of work, we tested both rigid and affine recovery on
+several real dual channel \gls{smlm} data sets of \gls{npc}s of two-color in focus
+measurements of different cells successively recorded in the same
+sample. The fluorescence images are analysed with \e{Thunderstorm}, a
+\gls{dstorm} plugin for ImageJ, to obtain 2d localisations based on Gaussian
+fits.
+
+Since these data sets are two dimensional, we added low-magnitude
+noise ($\mathcal{O}(10^{-3})$) as a virtual z component, so both sets
+are projected almost onto the z plane for analysis. This is necessary,
+because the singular-value-decomposition can faults on 2d data.
+
+The resulting data sets are then analysed either a rigid or an affine
+transformation.
+
+This process is centrally governed by the octave program
+\tt{cockpit.m}, which internally uses the octave function \tt{ampel.m}
+to sort the imported data file into the two alternating color
+channels. The code is listed in Section~\ref{a:cockpit}, and
+Section~\ref{a:ampel}, as well as in my Git repository at \t{git}.
 
 
 % . 
@@ -845,7 +938,7 @@ settings in Figure~\ref{f:collar}.\\
 
 \clearpage\section{3d SMLM Analysis}\label{s:r:ana}
 
-Applying the SMLM described in Section~\t{sec} for the stack of
+Applying the \gls{smlm} described in Section~\t{sec} for the stack of
 microscopy images, one obtains a list of localisations comprised of
 position (\tt{x,y,z}), photon count (\tt{n}), and a fit parameter
 (\tt{fit}). Where the \tt{sans serif} typeset letters refer to the
@@ -856,23 +949,23 @@ order to cut down the massive amount of initial localisations---in our
 example case over 130k---to distill it to the most meaningful
 conclusions.
 
-As a proof of work we used NPCs as sort of a well defined biological
+As a proof of work we used \gls{npc}s as sort of a well defined biological
 test target. As these are used frequently for the purpose of
 validating a new method, it would be nice to quickly evaluate of
-\e{how good are the NPCs resolved}. The Section \t{sec} is thus
-dedicated to find some metric for \e{best resolved} NPCs.
+\e{how good are the \gls{npc}s resolved}. The Section \t{sec} is thus
+dedicated to find some metric for \e{best resolved} \gls{npc}s.
 
 This analysis is performed in \e{Python}, and is freely available in
 my Git repository \t{git}; both as a plain python file (.py) as well
 as in the format of a \e{Jupyter Notebook} (.ipynb).
 
-For the sake of readability we omit the code sections generating the
-shown plots, as they are mostly redundant. Of course the full code is
-available online.
+A slightly shortened version of the code is also shown in
+Appendix~\ref{ch:code} for each Subsection. For the sake of
+readability we omit the code sections generating the shown plots, as
+they are mostly redundant. Of course the full code is available
+online.
 
 \t{npc image}
-
-\t{appendix}
 
 % \usemintedstyle{
 % manni,
@@ -883,7 +976,7 @@ available online.
 \subsection{Import}
 
 Here we import the used packages and the data file we obtain from
-running the SMLM algorithm.
+running the \gls{smlm} algorithm.
 
 % \begin{minted}{python}
 %   #@markdown ##import core
@@ -1072,10 +1165,10 @@ further shrinks down our exemplary data set by about 60\%.
 \end{figure}
 
 
-\section{3d SMLM Analysis: NPC}\label{s:r:ananpc}
+\section{3d \gls{smlm} Analysis: \gls{npc}}\label{s:r:ananpc}
 
-We use NPCs as a test target for our method, thus we have some
-additional knowledge, like the geometry of each individual NPC: they
+We use \gls{npc}s as a test target for our method, thus we have some
+additional knowledge, like the geometry of each individual \gls{npc}: they
 comprise two stacked \t{tori}, each about \SI{150}{\n\m} diameter (in
 x,y direction), and \SI{150}{\n\m} apart (in z direction).
 
@@ -1142,7 +1235,7 @@ For all the localisations within each of these identified clusters, we
 now derive the centroid position (\tt{xmean,ymean,zmean}), with
 standard derivation (\tt{xvar,yvar,zvar}). This enables the
 classification of the within-cluster distribution of localisations,
-alas how well they represent the anticipated NPC geometry.
+alas how well they represent the anticipated \gls{npc} geometry.
 
 To obtain this \e{quality}, we compose both the quantity
 \tt{ringness}, denoting how well the cluster shapes a ring in x,y
@@ -1151,7 +1244,7 @@ cluster shapes two stacked tori in z direction, basically forming a
 camel-curve in z direction. To break this down to one scalar each, we
 compute the root mean square (RMS) of the deviations of each
 localisations radius from the cluster centre (in x,y direction) from
-the known NPC radius (Lines~20--24). The quantity \tt{twofold} is
+the known \gls{npc} radius (Lines~20--24). The quantity \tt{twofold} is
 similarly comprised of a (RMS) deviation of each localisations z value
 from the cluster centre (in z direction) from the known NPC
 height. The mentioned parameters are thus called \tt{npc\_radius},
@@ -1229,11 +1322,11 @@ clusters; for example to sort for the lets say 10 most \e{ringlike}
 clusters. Or, by setting \tt{sort = 'ringness + twofold'}, we may find
 the 10 \e{best} clusters in terms of both \tt{ringness} and
 \tt{twofold}---weighted equally---which would comprise the 10
-\e{overall best}, thus \e{most NPC like} clusters.
+\e{overall best}, thus \e{most \gls{npc} like} clusters.
 
 For sake of completeness we also include the x,y and z variances, even
 if they do not comprise a very meaningful parameter in the particular
-case due to the NPCs geometry.
+case due to the \gls{npc}s geometry.
 
 Figure~\label{f:89_best_filtered_clusters} shows a 3d plot of the
 localisations within the 10 \e{best} clusters, color coded by photon
@@ -1288,7 +1381,7 @@ count.
 As a further sanity check, we plot the histograms for selected
 clusters (\tt{plot\_cluster}), in x,y and z direction; to figure out
 if the sorting did work effectively---thus the higher sorted clusters
-are indeed \e{better} examples of NPCs.
+are indeed \e{better} examples of \gls{npc}s.
 
 Figure~\ref{f:10_xyz_best_filtered_clusters} shows exemplary
 histograms of the x,y (right) respective z distribution (left) of the
@@ -1336,9 +1429,9 @@ localisations within the \e{best} cluster (top), the \e{worst}
 \end{figure}
 
 
-\clearpage\section{Dual Channel 3d SMLM}\label{r:dc}
+\clearpage\section{Dual Channel 3d \gls{smlm}}\label{r:dc}
 
-In order to perform two-colour SMLM we marked NPC and bead samples
+In order to perform two-colour \gls{smlm} we marked \gls{npc} and bead samples
 with an equal amount of both AF488 and AF647 fluorescence dyes.\\
 
 A first measurement using the Gloxy buffer worked well for the red
@@ -1351,25 +1444,12 @@ for drift analysis via ImageJ, or even particle tracking. There is no
 way we could try to recover the 3d transformation relating those data
 sets under this noisy conditions.  
 
-
-\section{Dual Channel 3d Projection}\label{r:3dp}
-
-Lacking proper 3d dual channel SMLM data, we choose to use
-two-dimensional Thunderstorm SMLM data for a proof of work. A close
-look on such generated sets already shows interesting behaviour: the
-two sets are \e{shifted}. Obviously by utilising different wavelength
-regimes in a highly wavelength dependent process (optical path,
-refraction, objective, PSF, etc), one will eventually face some
-offset.
+Thus we will analyse simulated data instead: based on three
+dimensional random data sets in Section~\ref{r:3dsim}, as well as
+based on two dimensional \gls{smlm} data sets in Section~\ref{r:2dsim}.
 
 
-\subsection{Dual Channel: Simulation}\label{r:dcsim}
-
-As a proof of concept,we performed both a rigid and an affine recovery
-on simulated data. First, each simulation creates a cylinder-shaped
-pseudo-random point cloud \tt{p}, and deducts some projection to get a
-second set \tt{q}, related to \tt{p} by either a rigid or an affine
-transformation.
+\subsection{Simulation}\label{r:3dsim}
 
 In the first and second simulation the transformation relating both
 sets simply is a translation, respective a rotation and translation
@@ -1542,7 +1622,7 @@ of Figure~\ref{f:transim}.
   % 
   \caption{Demonstration of the recovery of rigid (left) respective
     affine (right) transformations, via recovering localisations of
-    simulated two channel SMLM data; transformation (magenta) from red
+    simulated two channel \gls{smlm} data; transformation (magenta) from red
     channel (violet) to blue channel (cyan); for the use cases of
     translation (top), rigid transformation (middle) and affine
     transformation (bottom). Obviously a rigid transformation may not
@@ -1728,17 +1808,17 @@ $\b{t}_a^a$ and rotation matrix $\b{R}_a^a$ is:
   \end{pmatrix}
 \end{equation}
 
-\clearpage\subsection{Dual Channel: NPC}\label{r:dcnpc}
 
-As a second proof of work, we tested both rigid and affine recovery on
-several real dual channel SMLM data sets of NPCs of two-color in focus
-measurements of different cells successively recorded in the same
-sample. The fluorescence images are analysed with \e{Thunderstorm}, a
-dSTORM plugin for ImageJ, to obtain 2d localisations based on Gaussian
-fits.
+\clearpage\subsection{Projected 2d NPC}\label{r:2dsim}
 
-Since these data sets are two dimensional, we added an empty z
-component, so both sets are projected onto the z plane for analysis.
+Lacking proper 3d dual channel \gls{smlm} data, we choose to use
+two-dimensional Thunderstorm \gls{smlm} data for a second proof of work.
+
+A close look on such generated sets already shows interesting
+behaviour: the two sets are \e{shifted}. Obviously by utilising
+different wavelength regimes in a highly wavelength dependent process
+(optical path, refraction, objective, PSF, etc), one will eventually
+face some offset.
 
 
 \subsubsection{Rigid Projection}\label{r:dcnpcr}
@@ -1887,7 +1967,10 @@ the same cell. Thus we omitted the results.
 \section{SMLM}
 
 
-\subsection{Phase Retrieval}
+\section{Dual Channel Optics}
+
+
+\subsection{Zernike Modes}
 
 The image stacks look ok, even if not all are perfectly
 symmetrical--some errors are to be expected.\\
@@ -1921,7 +2004,7 @@ backed by Lukas, based on the PSF stacks: One would have guessed the
 z positions than 0.13.
 
 
-\section{SMLM Analysis}
+\section{3d \gls{smlm} Analysis}
 
 The analysis performed in Section~\ref{s:r:ana} is well suited to
 greatly reduce the localisations, just by omitting unplausible data
@@ -1929,11 +2012,11 @@ and noise; in our example from initially 370k to below 100k, or to
 about 26\%.
 
 
-\section{SMLM Analysis: NPC}~\label{s:d:ananpc}
+\section{3d \gls{smlm} Analysis: \gls{npc}}~\label{s:d:ananpc}
 
 \subsection{Automation}
 
-The fully automatic evaluation of the NPC \e{quality}, shown in
+The fully automatic evaluation of the \gls{npc} \e{quality}, shown in
 Section~\ref{s:r:ananpc} surfaced mixed results. The key problems
 being for one, that there are quite many parameters involved; and
 secondly that the analysis proved very susceptible to changes of most
@@ -1956,7 +2039,7 @@ following, for some of which we may suggest possible improvements.
 \item [quality] The definitions of the two quality entities
   \e{ringness} and \e{twofold}, might not be derived well using RMS. A
   more sophisticated approach to quantify the clusters deviations to
-  our known NPC geometry might work better, such as fitting the
+  our known \gls{npc} geometry might work better, such as fitting the
   histogram in z direction to a Gaussian.
 \item [weighting] The equal weighting of \e{ringness} and \e{twofold}
   quantities are canceling each other; Some clusters might look very
@@ -1967,28 +2050,28 @@ following, for some of which we may suggest possible improvements.
 
 \subsection{Secondary Filter}
 
-Some of the results of the NPC analysis might still prove themselves
+Some of the results of the \gls{npc} analysis might still prove themselves
 useful as a secondary filters. In reducing the clusters until only a
 few remain, effectively also finds the \e{best}.
 
 \begin{description}
 \item [high variance] One might want to exclude clusters with an
-  overly high variance, as these might be in fact two NPCs too close
+  overly high variance, as these might be in fact two \gls{npc}s too close
   to each other to be accounted separately by the clustering
   algorithm.
 \item [low variance] Quite similarly we might exclude those clusters
   showing extremely low variance, under suspicion of being well
-  concentrated---yet noise, not representing a NPC at all.
+  concentrated---yet noise, not representing a \gls{npc} at all.
 \item [spread] Likewise we may exclude clusters spreading far in z,
-  due to our knowledge of the NPC heigth, as well as in x,z due to the
-  NPCs well defined radius.
+  due to our knowledge of the \gls{npc} heigth, as well as in x,z due to the
+  \gls{npc}s well defined radius.
 \end{description}
 
 In the end, possessing a list of the clusters position allows for a
 much easier way to plot some of them manually, than to zoom in on a
 plot of thousands of localisations repeatedly.
 
-\section{Transform}
+\section{Dual Channel Projections}
 
 Simply put, the algorithm \tt{rig()} finds the \e{best}
 rigid transformation, whatever the real relation is. This poses a
@@ -1996,7 +2079,7 @@ serious caveat for experimental data, since one is usually not in
 possession of any form of ground truth to check whether the result is
 plausible or not.
 
-\subsection{Dual Channel: Simulation}\label{d:dcsim}
+\subsection{SMLM Simulations}\label{d:dcsim}
 
 At first glance at the plots in Figure~\ref{f:transim}, the rigid as
 well as the shift problem (top and middle row) are similarly well
@@ -2055,14 +2138,18 @@ completely failing.
 % .       
 \chapter{Conclusion}
 
-\section{Phase Retrieval}
+
+\section{Dual Channel Optics}
+
+
+\subsection{Zernike Modes}
 
 The Zernike modes for both red and blue channel are estimated via
 phase retrieval of in-focus measurements of beads at various
-depths. This yields a full PSF model to be used for de-focus 3d SMLM.
+depths. This yields a full PSF model to be used for de-focus 3d \gls{smlm}.
 
 
-\section{Correction Collar}
+\subsection{Correction Collar}
 
 The best setting of the Correction Collar for the Olympus \SI{1.5}{\NA}
 objective is shown to be 0.13. Here we find the preferable compromise
@@ -2073,14 +2160,20 @@ and \SI{250}{\micro\meter}.
 \section{dSTORTM Buffer}
 
 
-\subsection{Dual Channel: Simulation}\label{c:dcsim}
+\section{3d SMLM Analysis}
 
-Due to the convexity of the problem (there are infinitely many
-transformations), the recovery of a translation vector under the
-assumption of at least dome rotation involved is not really possible,
-as shown in Table~\ref{t:t} and Table~\ref{t:r}.This poses a dangerous
-caveat for the dual channel SMLM analysis, since we have to take the
-possibility of a rigid transform into account.
+
+\section{3d SMLM Analysis: NPC}
+
+
+\section{Dual Channel 3d SMLM}
+
+
+\subsection{Simulation}
+
+Concluding, one best uses an rigid recovery for a rigid problem, or an
+affine recovery for an affine problem, as shown in Table~\ref{t:t} and
+Table~\ref{t:r}.
 
 \begin{table}[!htb]
   \caption{Quality of the recovered rotation translation vectors
@@ -2110,25 +2203,32 @@ possibility of a rigid transform into account.
   \end{tabularx}
 \end{table}
 
-Concluding one best uses an rigid recovery for a rigid problem, or an
-affine recovery for an affine problem, as shown in Table~\ref{t:t} and
-Table~\ref{t:r}.
+Due to the convexity of the problem (there are infinitely many
+transformations), the recovery of a translation vector under the
+assumption of at least dome rotation involved is not really possible,
+as shown in Table~\ref{t:t} and Table~\ref{t:r}. This poses a
+dangerous caveat for the dual channel \gls{smlm} analysis, where we cannot
+rule out rotations.
 
 
-\subsection{Dual Channel: NPC}
+\subsection{Projected 2d NPC}
 
 As a second proof of work, we tested both rigid and affine recovery on
-several real dual channel SMLM data sets of two color in focus
+several real dual channel \gls{smlm} data sets of two color in focus
 measurements of different cells successively recorded in the same
 sample.
+
+Mind that this is a simulation, the actual transformation between both
+sets using the \gls{smlm} analysis might look completely different.
 
 
 \subsubsection{Rigid}
 
 The rigid recovery worked quite flawlessly, the mean rotation matrix
-$\overline{\b{R}}_r$ is almost unity within uncertainty. The mean
-translation vector $\overline{\b{t}}_r$ shows a good variance over all
-the twelve analysed sets, with mean and standard derivation of:
+$\overline{\b{R}}_r$ is almost unity within uncertainty. Yet the mean
+translation vector $\overline{\b{t}}_r$ shows a high variance (at
+least on x axis) over all the twelve analysed sets, with mean and
+standard derivation of:
 
 \begin{equation}
   \overline{\b{t}}_r=
@@ -2176,8 +2276,10 @@ completely, this method simply cannot work on two dimensional data.
 
 
 
-\chapter{Code}
+\chapter{Code}\label{ch:code}
+
 \onecolumn
+
 
 \section{3d SMLM Analysis: NPC}
 
@@ -2186,6 +2288,7 @@ completely, this method simply cannot work on two dimensional data.
   linenos = true,
   frame = single,
 }
+
 
 \subsection{Import}
 
@@ -2453,6 +2556,172 @@ completely, this method simply cannot work on two dimensional data.
 \clearpage\section{Dual Channel 3d SMLM}\label{a:dc}
 
 
+\subsection{Cockpit: cockpit.m}\label{a:cockpit}
+
+\begin{minted}{octave}
+#!/bin/octave
+## images fluorescence microscopy / 3d position / offsets.
+## splice red/green/blank fluorescence microscopy images already located
+## into red/green matrices for further analysis, find rigid transform,
+## do statistics on all files.
+## @ moritz siegel
+
+## init
+close all
+clear all
+clc
+graphics_toolkit('gnuplot')
+#graphics_toolkit('qt')
+#graphics_toolkit('fltk')
+
+## \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+## soft settings \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+global hd = "~/biophysics" # parent directory
+global wd = "data/210318_beads_2_colors_in_focus"
+global fn = "position"
+global nn = ""; # additional luminosity suffix  ( default: "" )
+method = "rigid"; # /char, "rigid","affine", method to reconstruct
+global minpts = 10; # minimum number of points needed in its neighbourhood to consider it as a valid data(not noise). ( default: 3 )
+global dist = 300; #/nm, distance on which neighbourhood is calculated.( default: 200 )
+nmax = 15; #/num, maximum number of files analysed.( default: 10 )
+global verbose = true; # /bool, plot for error checking? ( default: true )
+exclude = [ 6, 7, 8, 11, 12 ]
+channel_order0 = [ 0, 1, 2 ];
+channel_order = repmat( channel_order0, nmax, 1 );
+channel_order( 3, : ) = [ 2, 0, 1 ];
+channel_order( 4, : ) = [ 1, 2, 0 ];
+channel_order( 6, : ) = [ 2, 0, 1 ];
+channel_order( 7, : ) = [ 1, 2, 0 ];
+channel_order( 8, : ) = [ 2, 0, 1 ];
+channel_order( 12, : ) = [ 2, 0, 1 ];
+## end of settings: hands off /////////////////////////////////////////////////
+## ///////////////////////////////////////////////////////////////////////////
+
+disp( 'warmup \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
+## lets move it move it
+addpath( hd ) # function & stuff needed
+stamp = strftime("%Y_%m_%d_%H%M%S", localtime (time ())); # create timestamp for saving files
+global nwd = sprintf( "%s/%s/all_%s%s%s", hd, wd, method, stamp, nn ); # concat working dir
+mkdir( nwd )
+chdir( nwd )
+global rf = fopen ( "kockpit.log", "w" );
+
+disp( 'cycle \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
+rotations = nan( nmax, 3, 3 );
+translations = nan( nmax, 3 );
+for n = 1 : nmax
+  if ( any( exclude == n ) )
+    disp( sprintf( "    warning: skipping file positions%d.csv", n ) );
+    continue
+  endif
+  disp( sprintf( "    importing positions%d.csv", n ) );
+  disp( '    load \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
+  
+  ## "id","frame","x [nm]","y [nm]","sigma [nm]","intensity [photon]","offset [photon]","bkgstd [photon]","uncertainty [nm]"
+  try
+    pos = csvread( sprintf( "%s/%s/%s%d.csv", hd, wd, fn, n ) );
+  catch
+    continue
+  end_try_catch
+  
+  
+  disp( '    analyse \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
+  
+  [ centroid_red, centroid_blue_transformed, centroid_blue, red, blue, rotation, translation ] = ampel( pos, channel_order( n, : ), n, method );
+  
+  ## save optimal rigid transform for comparison
+  rotations( n, :, : ) = rotation;
+  translations( n, : ) = translation;
+endfor 
+\end{minted}
+
+
+\subsection{Splice Channels: ampel.m}\label{a:ampel}
+
+\begin{minted}{octave}
+#!/bin/octave
+function[ centroid_red, centroid_blue_transformed, centroid_blue, red, blue, rotation, translation ] = ampel( pos, channel_order, n, method );
+  ## This function "ampel" splices the given table including 3d positions
+  ## etc from images of twocolor fluorescence microscopy into red & blue
+  ## color chanels based on the frame number. It uses "dbscan" to cluster
+  ## the images, and sverages the positions within each
+  ## cluster. Depending on "method" either finds best rigid transform, or
+  ## best affine transform correlating the red and blue sets via least
+  ## squares (singular-value-decomposition).
+  ## @ moritz siegel
+  
+  global nwd
+  global rf
+  global minpts
+  global dist
+
+  ## sort red/blue/empty of many frames.
+  red = blue = empty = zeros( size( pos ));
+  nb = nr = ne = 1;
+  for k = 1 : size( pos, 1 )
+    
+    ## exclude blank lines (text).
+    if ( all( pos( k, : ) == 0 ) )
+      disp( sprintf( 'warning: line %d is empty; skipping.', k ));
+      fprintf( rf, 'warning: empty line; skipping.\n' );
+      continue
+    endif
+    
+    ## red pill / blue pill?
+    channel = mod( pos( k, 2 ), 3 );
+    switch ( channel )
+      case channel_order(1)
+        blue( nb, : ) = pos( k, : );
+        nb = nb + 1;
+      case channel_order(2)
+        empty( ne, : ) = pos( k, : );
+        ne = ne + 1;
+      case channel_order(3)
+        red( nr, : ) = pos( k, : );
+        nr = nr + 1;
+    endswitch
+  endfor
+  disp( sprintf( 'sorted localisations:\n %d red\n %d blue\n %d empty', nr, nb, ne ) );
+  fprintf( rf, 'sorted localisations:\n %d red\n %d blue\n %d empty\n', nr, nb, ne );
+
+  ## analyse clusters & average centroids.
+  [ assignments_blue, c_blue ] = dbscan( blue( 1:300, 3:4 ), minpts, dist );
+  for k = 1 : c_blue
+    idx = find( assignments_blue == k );
+    centroid_blue( k, 1:2 ) = mean( blue( idx, 3:4 ), 1 );
+  endfor
+  [ assignments_red, c_red ] = dbscan( red( 1:300, 3:4 ), minpts, dist );
+  for k = 1 : c_red
+    idx = find( assignments_red == k );
+    centroid_red( k, 1:2 ) = mean( red( idx, 3:4 ), 1 );
+  endfor
+
+  ## need to ditch clusters if the sets are not equally sized.
+  assert( c_red == c_blue, "clusters are not equally sized" );
+
+  ## recover transform.
+  switch( method )
+    case "rigid"
+      ## we only have 2d data currently, introduce linear dependent z component.
+      centroid_red = [ centroid_red, zeros( c_red, 1 ) ]
+      centroid_blue = [ centroid_blue, zeros( c_blue, 1 ) ]
+      [ rotation, translation ] = rig( centroid_blue, centroid_red )
+    case "affine"
+      ## we only have 2d data currently, introduce noise for z component,
+      ## matrix cant be singular, else cholesky decomposition fails.
+      z = 1 + 1e-3 * rand( c_red, 1 ); 
+      centroid_red = [ centroid_red, z ];
+      centroid_blue = [ centroid_blue, z ];
+      [ rotation, translation ] = affine( centroid_blue, centroid_red );
+  endswitch
+
+  ## transform blue set to red set.
+  centroid_blue_transformed = ( rotation * centroid_blue' )' + translation;
+
+endfunction
+\end{minted}
+
+
 \subsection{Rigid Transformation: rig.m}\label{a:rig}
 
 \begin{minted}{octave}
@@ -2518,8 +2787,8 @@ completely, this method simply cannot work on two dimensional data.
 \subsection{Affine Transformation: affine.m}\label{a:affine}
 
 \begin{minted}{octave}
-  #!/bin/octave
-  function [ affine_rotation, translation, s ] = affine( p, q )
+#!/bin/octave
+function [ affine_rotation, translation, s ] = affine( p, q )
   ## this function "affine(p,q)" finds the optimal affine transform in
   ## 3-dimensional euclidian space, using least squares and
   ## single-value-decomposition. Given a 3xn matrix (set of n 3d
@@ -2542,7 +2811,7 @@ completely, this method simply cannot work on two dimensional data.
   
   ## check stuff.
   assert( nargin == 2 && size( p ) == size( q ), ...
-  "need 2 identical input matrices\n" );
+          "need 2 identical input matrices\n" );
   assert( size( p, 2 ) == 3, "input matrix p must be nx3\n" );
   assert( size( q, 2 ) == 3, "input matrix q must be nx3\n" );
   n = size( p, 1 );
@@ -2590,15 +2859,15 @@ completely, this method simply cannot work on two dimensional data.
 
   ## reflection? theres more to that.
   if ( det( rotation ) < 0 )
-  printf( "warning: det(rotation) < 0\n" );
-  if ( any( s( : ) ) < 0 )
-  printf( "found reflection, correcting.\n" );
-  v( :, 3 ) = - v( :, 3 );
-  rotation = v * u';
-  else
-  printf( "error: single-value-decomposition might have failed! \
-  provided data seems is too noisy for least-squares.\n" );  
-  endif
+    printf( "warning: det(rotation) < 0\n" );
+    if ( any( s( : ) ) < 0 )
+      printf( "found reflection, correcting.\n" );
+      v( :, 3 ) = - v( :, 3 );
+      rotation = v * u';
+    else
+      printf( "error: single-value-decomposition might have failed! \
+provided data seems is too noisy for least-squares.\n" );  
+    endif
   endif
 
   ## 4)  reverse the rotation to the non-orthogonal affine transform using
@@ -2609,10 +2878,154 @@ completely, this method simply cannot work on two dimensional data.
   ## 5) compute translation.
   translation = centroid_q - ( affine_rotation * centroid_p' )';
   
-  endfunction
+  ## save stuff for plotting.
+  ## chdir( nwd )
+  ## save p_shifted.mat p_shifted;
+  ## save q_shifted.mat q_shifted;
+  ## save p_orthogonal.mat p_orthogonal;
+  ## save q_orthogonal.mat q_orthogonal;
+  ## save rotation.mat rotation
+  ## save affine_rotation.mat affine_rotation
+  ## save translation.mat translation
+  
+endfunction
 \end{minted}
 
-asdf \ref{a:caffine} asdf
+\subsection{Clustering: dbscan.m}\label{a:dbscan}
+\begin{minted}{octave}
+#!/bin/octave
+## This reposetory contains a simple implementation of DBSCAN algorithm
+## using GNU OCTAVE.  DBSCAN is a popular clustering algorithm. It
+## creates clusters on a spatial data depending on two parameters:
+## MinPoints: minimum number of points needed in its neighbourhood to
+## consider it as a valid data(not noise).  EPS: A distance on which
+## neighbourhood is calculated.
+## For more info:
+## https://github.com/devil1993/DBSCAN
+## https://en.wikipedia.org/wiki/DBSCAN
+## http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=1A6A7A85AF3F43BCBF66D847FEC8F8C5?doi=10.1.1.121.9220&rep=rep1&type=pdf
+function [assignments,C] = dbscan(X,minpts,EPS)
+  C = 0;
+  assignments = zeros(size(X)(1),1);
+  clustered = zeros(size(X)(1),1);
+  for i=1: size(X)(1)
+    if(clustered(i)==1)
+      continue;
+    endif
+    clustered(i)=1;
+    isneighbour = [];
+    neighbourcount = 0;
+    for j=1: size(X)(1)
+      dist = sqrt(sum((X(i,:)-X(j,:)).^2));
+      if(dist<EPS)
+        neighbourcount++;
+        isneighbour = [isneighbour j];
+      endif
+    endfor
+    if(neighbourcount<minpts)
+      continue;
+    else
+      C++;
+      assignments(i) = C;
+      for k=isneighbour
+        if(clustered(k)==0)
+          clustered(k) = 1;
+          _isneighbour = [];
+          _neighbourcount = 0;
+          for j=1: size(X)(1)
+            dist = sqrt(sum((X(k,:)-X(j,:)).^2));
+            if(dist<EPS)
+              _neighbourcount++;
+              _isneighbour = [_isneighbour j];
+            endif
+          endfor
+          if(_neighbourcount>=minpts)
+            isneighbour = [isneighbour _isneighbour];
+          endif
+        endif
+        assignments(k) = C;
+      endfor
+    endif
+  endfor
+endfunction
+\end{minted}
+
+\subsection{Simulate Dual Chanel 3d SMLM Data: simulate.m}\label{a:sim}
+\begin{minted}{octave}
+#!/bin/octave
+## @ moritz siegel
+
+clear all
+close all
+clc
+graphics_toolkit('gnuplot')
+#graphics_toolkit('qt')
+#graphics_toolkit('fltk')
+
+## \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+## soft settings \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+global hd = "~/biophysics"; # parent directory
+global wd = "data";
+global nn = "AFFINE"; # additional luminosity suffix  ( default: "" )
+method = "affine"; # /char, "rigid","affine", method to reconstruct
+#method = "affine"; # /char, "rigid","affine", method to reconstruct
+eps = 1e-8; # precision ( default: 1e-8 )
+## end of settings: hands off /////////////////////////////////////////////////
+## ///////////////////////////////////////////////////////////////////////////
+
+
+disp( 'init \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
+
+## lets move it move it.
+addpath( hd ) # function & stuff needed
+stamp = strftime("%Y_%m_%d_%H%M%S", localtime (time ())); # create timestamp for saving files
+global nwd = sprintf( "%s/%s/simulation_%s_%s_%s", hd, wd, method, stamp, nn ); # concat working dir
+mkdir( nwd )
+chdir( nwd )
+
+## init first point cloud. introduce noise for z component, matrix cant
+## be singular (e.g. points on a plane), else cholesky decomposition fails.
+n = 100;
+theta = 100 * rand( n, 1 );
+p = [ cos( theta ), sin( theta ), 1e-3 * rand( size( theta ) ) ];
+
+## introduce noise
+salt = [ 1e-2*rand( size( theta ) ), 1e-2*rand( size( theta ) ), 1e-5*rand( size( theta ) ) ];
+q = p + salt;
+
+## define affine transforms & derive second point cloud.
+simulated_translation = [ 0, 0.005, 0.003 ];
+reflect = [ -1, 0, 0; 0, 1, 0; 0, 0, 1 ];
+scale = [ 2, 0, 0; 0, 1, 0; 0, 0, 1 ];
+theta = 70;
+rot = [ cosd(theta), 0, -sind(theta); 0, 1, 0; sind(theta), 0, cosd(theta) ];
+shear = [ 1, 0.5, 0; 0, 1, 0; 0, 0, 1 ];
+simulated_transform = eye( 3 );
+simulated_transform = simulated_transform * rot;
+simulated_transform = simulated_transform * reflect;
+simulated_transform = simulated_transform * scale;
+simulated_transform = simulated_transform * shear;
+q = ( simulated_transform * q' )';
+q = q + simulated_translation;
+
+## check determinant.
+#assert( det( simulated_transform ) > 0, "det( simulated_transform ) <= 0, rerun" );
+
+
+disp( 'analyse \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ ' );
+
+## recover transform
+switch( method )
+case "rigid"
+    [ rekovered_transform, rekovered_translation ] = rig( p, q );
+case "affine"
+    [ rekovered_transform, rekovered_translation ] = affine( p, q );
+endswitch
+
+if ( any( any( ( simulated_transform - rekovered_transform ) > eps ) ) )
+  disp( "warning: failed to recover affine transform" );
+endif
+\end{minted}
 
 
 \twocolumn
@@ -2661,8 +3074,8 @@ asdf \ref{a:caffine} asdf
 % .   `.|=|_.'' |___|=|_.'   `.|=|.'    `._|=|___| `._|=|___||___| |___| |___|  |_|    |___|    
 % . 
 
-% \glsaddallunused % add all unused terms to the glossary without including a phantom page number
-% \clearpage \printacronyms
+%\glsaddallunused % add all unused terms to the glossary without including a phantom page number
+\clearpage \printacronyms
 
 
 % .              ___                     ___  ___   ___  

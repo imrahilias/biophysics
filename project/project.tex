@@ -508,6 +508,41 @@ Section~\ref{s:c:ampel}, as well as in my Git repository at
 \cite{sie21}.
 
 
+\subsubsection{Cockpit}
+  
+To begin with, the Octave program\tt{cockpit.m} acts as a framework
+for the entire analysis; successively loading the content of all lokal
+2d location files (unless specifically excluded using the exclude
+variable). All parameters for further analysis are confined to the
+settings block at the beginning, e.g. load-order corrections due to
+frames being skipped, etc.
+
+
+\subsubsection{Sort}
+
+The function \tt{ampel.m} sorts (modulo) the positions in three
+categories---red, blue, empty---based on the frame, in which the
+respective positions have been found by prior localisation. The
+illumination order (e.g. red-blue-empty) has to stay constant, but the
+offset (which one of the three staging the starting frame) can, and
+unfortunately currently has to be adjusted for each file manually by
+specifying mod values.
+
+
+\subsubsection{Cluster}
+
+The three separate channels red/blue/empty are then clustered by
+\tt{dbscan.m}, based on two parameters: euclidean distance between two
+neighbours (\tt{eps}), and least number of points required to be
+considered a cluster at all (\tt{minpts}). Based on these parameters,
+some ensemble of dots are considered a cluster while others are not,
+which is the whole point of these routines. Naturally, the number of
+clusters vary with different data sets. Unfortunately though, a rigid
+projection demands sets of the same size. Brief parameter tuning
+reveals: Whatever parameters, some regions most likely will have to be
+excluded.
+
+
 % . 
 % .        __         ___  ___   ___  ___                    ___  ___   ___  ___   ___ 
 % .   .'|=|  |   .'|=|_.' |   |=|_.' |   | |`.     .'|      `._|=|   |=|_.' |   |=|_.' 
@@ -874,7 +909,7 @@ settings in Figure~\ref{f:collar}.\\
     \end{axis}
   \end{tikzpicture}
   \caption{Estimated \textsc{Cram\'er Rao} lower bound for different correction
-    Collar settings (variing linestyles for 0.13, 0.17, 0.19) of the
+    Collar settings (varying linestyles for 0.13, 0.17, 0.19) of the
     Olympus \SI{1.5}{\NA} objective; for X, Y and Z axis (top, middle,
     and bottom); for both red and blue channel (colours).}
   \label{f:all}
@@ -1160,7 +1195,7 @@ molecules, so their intensities add up.
 
 In this first filter we limit the dataset to the more meaningful
 points; like those with intensities between 2k and 7k. Also since we
-defocused for \SI{500}{\n\m}, only those \tt{z} values between 0 and
+defocused for \SI{500}{\nano\m}, only those \tt{z} values between 0 and
 499 can be considered realistic. Here 0 means directly attached to the
 glass substrate, so negative values would be \e{inside} the glass
 substrate; and thus need to be discarded as unplausible. The dataset
@@ -1215,8 +1250,8 @@ further shrinks down our exemplary data set by about 60\%.
 
 We use \gls{npc}s as a test target for our method, thus we have some
 additional knowledge, like the geometry of each individual \gls{npc}:
-they comprise two stacked tori, each about \SI{150}{\n\m} diameter
-(in x,y direction), and \SI{150}{\n\m} apart (in z direction).
+they comprise two stacked tori, each about \SI{150}{\nano\m} diameter
+(in x,y direction), and \SI{150}{\nano\m} apart (in z direction).
 
 Now we can group our dataset with close to 100 thousand localisations
 to clusters of roughly this size in x,y (set \tt{dim=2}). Note that
@@ -3034,3 +3069,11 @@ endif
 % . 
 
 \end{document}
+% LocalWords:  Universit Velas scmos tirf ImageJ ThunderSTORM dstorm
+% LocalWords:  mle fminunc Noll gloxy Sigma-Aldrich pbs oxea OxyFlour
+% LocalWords:  OxyFlourTM Oxyrase DL-lactate -- NaOH. PSFs Rao crlb -
+% LocalWords:  crlb.m svd simulate.m cockpit.m ampel.m dbscan.m Alexa
+% LocalWords:  minpts NaOH OxyFluor snr linestyles nucleoporin .py sr
+% LocalWords:  .ipynb dbscan kmeans xmean ymean zmean xvar yvar zvar
+% LocalWords:  ringness gls defocusing doesn ok manni linenos rig.m
+% LocalWords:  affine.m

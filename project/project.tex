@@ -1,5 +1,5 @@
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
-%% arara: bibtex
+% arara: bibtex
 % arara: makeglossaries
 %% arara: makeindex
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
@@ -95,7 +95,7 @@
   \vspace{.5cm}
   {\Large \textsc{Projektarbeit / Student Project}}\\
   \vspace{1cm}
-  {\Huge \textsc{Three Dimensional Dual Colour Single Molecule Localisation Microscopy}}\\
+  {\Huge \textsc{Three Dimensional Dual Colour Single Molecule Localisation Fluorescence Microscopy}}\\
   \vspace{1cm}
   concluded at the\\
   \vspace{.5cm}
@@ -150,26 +150,26 @@
 \clearpage\chapter{Introduction}
 
 The ultimate goal of this thesis is to facilitate dual colour three
-dimensional \gls{smlm}, by alternating excitation with different
-lasers, but still measuring only one channel.\\
+dimensional single molecule microscopy, by alternating excitation with
+different lasers; but still measuring only one channel.\\
 
-\gls{smlm} is a technique of circumvent \textsc{Abbe’s} diffraction
-limit, enabling the study of structures smaller than half the
-wavelength of light; thus reaching super resolution fluorescence
-microscopy.
+\gls{smlm} is one of the many microscope techniques to circumvent
+\textsc{Abbe’s} \x{diffraction limit}, enabling the study of
+structures smaller than half the wavelength of light; thus reaching
+\x{super resolution} \x{fluorescence microscopy}.
 
 
 \section{Fluorescence Microscopy}
 
-Fluorescence microscopy is a optical microscopy technique using
+Fluorescence microscopy is an optical microscopy technique using
 fluorescence instead of reflection or transmission of light, foremost
 to study organic substances.
 
 The specimen is illuminated with laser light, exciting the respective
-fluorophores; causing them to emit (much weaker) light on a slightly
-longer wavelength. After separation from excitation light using
-spectral filters, this image is captured by a sensitive \gls{scmos}
-camera.
+\x{fluorophores}; causing them to emit (much weaker) light on a
+slightly longer wavelength. After separation from excitation light
+using spectral filters, this image is captured by a sensitive
+\gls{scmos} camera.
 
 However, fluorophores that are bound to the specimen surface and those
 in the surrounding medium exist in an equilibrium state; When exciting
@@ -177,17 +177,17 @@ with a conventional fluorescence microscope, the fluorophores bound to
 the surface are often overwhelmed by the background fluorescence.
 
 
-\section{Total Internal Reflection}
+\section{Total Internal Reflection}\index{total internal reflection}
 
 To restrict the excitation to a thin layer of the specimen, and so
-only illuminating the bound fluorophores, \gls{tirf} was
-invented. This is a type of microscope with which a thin region of a
+only illuminating the bound fluorophores, \gls{tirf} microscopy can be
+used. This is a type of microscope with which a thin region of a
 specimen, usually less than 200 nanometers can be observed. This is
 used notably to study constituents of and interaction with cellular
 surfaces, such as cell adhesion or binding of antibodies.
 
 
-\section{Single Molecule's Location}
+\section{Single Molecule Location}\index{single molecule localisation}
 
 The basic principle of all \gls{smlm} techniques is to separate the
 signal of neighbouring individual emitters in time, which allows to
@@ -213,39 +213,37 @@ neighbouring emitters.
 \section{Two Dimensional SMLM}
 
 For obtaining 2d localisations, it is convenient and most often
-precise enough to fit a Gaussian to each of the diffuse dots in the
-frame, in order to estimate their centre---thus, the position of the
-fluorophore. For this thesis we used the ImageJ plugin
-\tt{ThunderSTORM} \t{cit} for this task.
+precise enough to fit a \textsc{\x{Gaussian}} to each of the diffuse dots
+in the frame, in order to estimate their centre---thus, the position
+of the fluorophore. For this thesis we used the ImageJ plugin
+\e{ThunderSTORM} \cite{omk14} for this task.
 
 \begin{figure}[h]
   \centering \includegraphics[width=0.5\textwidth]{2dsmlm.png}
   \caption{Influence of imaging parameters on the reconstructed SMLM
     image. The actual localization (left column) of the protein
     molecules (circles) yielding the obtained localization (right
-    column).}
+    column), \cite{smlm}.}
   \label{f:2dsmlm}
 \end{figure}
-
-\t{cit}
 
 In Figure~\ref{f:2dsmlm}, a summary of the principle of 2d \gls{smlm}
 is shown, including the common pitfalls: Due to localization errors,
 the localizations are slightly displaced from the true molecule
 positions (a). In addition, the structure is distorted or
 misrepresented by decreased labeling efficiency (b), label
-displacement (c) or overcounting (d), \t{cit}.
+displacement (c) or over counting (d), \cite{smlm}.
 
 
 \section{Three Dimensional SMLM}
 
-To be able to accurately estimate the 3 dimensional location of the
-fluorescent molecule, the PSF must be known quite well. Simply put: If
-one knows the shape of a point source in varying degrees of defocus,
-one can guess the defocus and thus the z coordinate of the
+To be able to accurately estimate the three dimensional location of
+the fluorescent molecule, the PSF must be known quite well. Simply
+put: If one knows the shape of a point source in varying degrees of
+defocus, one can guess the defocus and thus the z coordinate of the
 fluorescence molecule.
 
-Fitting a full Point Spread Functions (PSF)---using prior calculated
+Fitting a full point spread function (PSF)---using prior calculated
 \textsc{Zernike} Modes---to such a stack of images containing reasonably spaced
 fluorescence signals even yields a list of 3d localisations.
 
@@ -262,23 +260,27 @@ fluorescence signals even yields a list of 3d localisations.
 
 \section{Maximum Likelihood}\label{s:m:mle}
 
-For the Analysis of \gls{dstorm} fluorescence microscopy, \gls{mle} is
-widely accepted as a gold standard; We closely follow the method from
-\t{cit} here. First we assume a \textsc{Poissonian} probability amount
-of photons $n_k$ detected in pixel $k$:
+For the Analysis of \gls{dstorm} fluorescence microscopy,
+\gls{mle}\index{maximum likelihood estimation} is widely accepted as a
+gold standard; We closely follow the method from \cite{zkr18} here.
+
+First we assume the amount of photons $n_k$ detected in pixel $k$ can
+be described by a \textsc{Poissonian} probability
+distribution\index{Poissonian probability distribution}:
 
 \begin{equation}
   P_k(n_k | \mu_{\symbf{\theta},k}) = \n{e}^{-\mu_{\symbf{\theta},k}} \frac{\mu_{\symbf{\theta},k}^{n_k}}{n_k!}
 \end{equation}
 
-where the expectation values $\mu_{\symbf{\theta},k}$ is defined as:
+where the \x{expectation values} $\mu_{\symbf{\theta},k}$ is defined
+as:
 
 \begin{equation}
 \mu_{\symbf{\theta},k} = \beta +  s *h_k( x_0, y_0, z_0 )
 \end{equation}
 
-depending on the form of the \gls{psf} model $h$ and on the parameter
-vector $\symbf{\theta}$:
+depending on the form of the \gls{psf} model $h$ and on the
+\x{parameter vector} $\symbf{\theta}$:
 
 \begin{equation}
   \symbf{\theta} = (\beta, s, x_0, y_0, z_0)
@@ -289,8 +291,8 @@ level respective signal; and $x_0, y_0, z_0$ denote the particle
 position in 3d.
 
 For each recorded frame, the parameter vector $\symbf{\theta}$ is
-estimated by finding a minimum of the total negative log-likelihood
-function using the MATLAB tool \tt{fminunc}:
+estimated by finding a minimum of the total \x{negative log-likelihood
+  function} using the \x{MATLAB} tool \tt{\x{fminunc}}:
 
 
 \begin{equation}
@@ -300,12 +302,13 @@ function using the MATLAB tool \tt{fminunc}:
 
 \section{PSF Model \& Zernike}\label{s:m:psf}
 
-In first order approximation the \gls{psf} can be aberration-free, but
-for \gls{smlm} this is not going to be precise enough. In this thesis
-we employ a \gls{psf} model expressed in a \textsc{Zernike} modes
-basis using \textsc{Noll} coefficients \t{cit} ranging from 2 to 37
-(3rd order spherical aberration) plus the 4th order spherical mode
-$Z_{56}$:
+In first order approximation the \gls{psf} can be \x{aberration-free},
+but for \gls{smlm} this is not going to be precise enough. In this
+thesis we employ a \gls{psf} model\index{point spread function model}
+expressed in a \textsc{Zernike}\index{Zernike modes} modes basis using
+\textsc{Noll}\index{Noll coefficients} coefficients ranging from 2 to
+37 (3rd order \x{spherical aberration}) plus the 4th order spherical
+mode $Z_{56}$ \cite{zkr18}:
 
 \begin{equation}
 \Phi = a_{56}Z_{56} + \sum_{i=1}^{37}{ a_iZ_i }
@@ -314,33 +317,32 @@ $Z_{56}$:
 
 \section{STORM \& dSTORM}\label{s:m:storm}
 
-We used dSTORM microscopy throughout this thesis, which is the
+We used \x{dSTORM microscopy} throughout this thesis, which is the
 \e{direct} variant of STORM, utilising very bright fluorophores, with
-a high rate of photoswitching and minimal photobleaching.
-
-\t{state pic}
+a high rate of \x{photoswitching} and minimal
+\x{photobleaching}, based on \cite{hls08}.
 
 
 \subsection{Gloxy Buffer}\label{s:m:gloxy}
 
-The principle of \gls{storm} is based on an appropriate \e{storm
-  buffer}, which suppresses the activation of the \e{bright state},
+The principle of \gls{storm} is based on an appropriate \e{\x{storm
+buffer}}, which suppresses the activation of the \e{\x{bright state}},
 and limits the amount of oxygen, the main source of photobleaching.
 
 Single channel \gls{smlm} may employ the same buffer for both
-excitation wavelengths, in our case at \SI{645}{\nm} (red) respective
-at \SI{488}{\nm} (blue). After its central ingredients glucose and
-oxidase, the buffer we used throughout this paper for all single
-channel measurements unless noted otherwise is called \acrshort{gloxy}
-buffer.
+\x{excitation wavelengths}, in our case at \SI{645}{\nm} (red)
+respective at \SI{488}{\nm} (blue). After its central ingredients
+\x{glucose} and \x{glucose oxidase}, the buffer we used throughout this paper
+for all single channel measurements unless noted otherwise is called
+\acrshort{gloxy} buffer\index{Gloxy buffer}.
 
 \subsubsection{Gloxy buffer concentration}
 \begin{itemize}
 \item 50 \si{\milli\mol} \gls{mea} (Sigma-Aldrich).
 \item 10~vol\% of a \SI{250}{\g\per\L} solution of glucose.
 \item \SI{0.5}{\mg\per\ml} glucose oxidase.
-\item \SI{40}{\mg\per\ml} catalase (Sigma-Aldrich).
-\item with \gls{pbs} adjust to pH 7.6 .
+\item \SI{40}{\mg\per\ml} \x{catalase} (Sigma-Aldrich).
+\item with \gls{pbs}\index{phosphate-buffered saline} adjust to pH 7.6 .
 \end{itemize}
 
 \subsection{OxEA Buffer}\label{s:m:oxea}
@@ -349,43 +351,17 @@ Dual colour fluorescence microscopy poses novel challenges to find a
 proper \gls{dstorm} buffer, that works for both excitation wavelengths
 simultaneously---thus two distinct fluorophores AF647 and
 AF488---without interfering with each other. The buffer composition we
-used is based on \t{cit}, and called \acrshort{oxea} after its main
-ingredients OxyFlour and \gls{mea}:
+used is based on \cite{nab16}, and called \acrshort{oxea}\index{OxEA
+  buffer} after its main ingredients \x{OxyFlour} and
+\gls{mea}\index{mercaptoethylamine hydrochloride}:
 
 \subsubsection{OxEA buffer concentration}
 \begin{itemize}
 \item 50 \si{\milli\mol} \gls{mea} (Sigma-Aldrich).
 \item 3~vol\% OxyFlourTM (Oxyrase Inc., Mansfield, Ohio, U.S.A.).
-\item 20~vol\% of \todo{60\%} sodium DL-lactate syrup (L1375, Sigma-Aldrich).
+\item 20~vol\% of \x{sodium DL-lactate}, 60\% syrup (L1375, Sigma-Aldrich).
 \item with \gls{pbs} adjust to pH~8--8.5 with NaOH.
 \end{itemize}
-
-\subsubsection{OxEA buffer protocol}
-
-For about 1~\si{\milli\liter} of OxEA buffer we used the amounts shown
-in Table~\ref{t:oxea}, to obtain above listed concentrations.
-
-\begin{table}[!htb]
-  \caption{Ingredients used for preparation of OxEA buffer for dual
-    channel \gls{dstorm} buffer.} \label{t:oxea}
-  \begin{tabularx}{.5\textwidth}{l X l r}
-    \hhline{====}
-    Order & Ingredient & Store & Vol / \si{\micro\liter} \\
-    \hline
-    1 & Ultra pure H$_2$O & & 600 \\
-    2 & \SI{10}{\Molar} NaOH & & 20 \\
-    3 & 10$\times$ \gls{pbs} & & 100 \\
-    4 & 60\% DL-lactate & fridge & 200 \\
-    5 & \SI{1}{\Molar} \gls{mea} & freezer & 50 \\
-    6 & OxyFluor & freezer & 30 \\
-    \hhline{====}
-  \end{tabularx}
-\end{table}
-
-\subsubsection{pH}
-
-The pH of the \gls{oxea} buffer is checked using both broad range pH
-testing strips, and a digital pH meter, to be between pH~7 and pH~8.
 
 
 \section{Dual Colour Optics}
@@ -393,45 +369,55 @@ testing strips, and a digital pH meter, to be between pH~7 and pH~8.
 It is possible to use different excitations to simultaneously measure
 different fluorescence markers, but for that the point spread function
 has to known for each wavelength. So the PSFs are estimated both for
-red and blue laser light, with the Phase Retrieval program by
-[Jesacher et al 21?]; each on a stack of 50000~\gls{dstorm} images of
-\SI{100}{\nm} \t{100nm?} beads stained with fluorescence dyes for both
-red (\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser
-light.\\
+red and blue laser light, with the \x{phase retrieval} program by
+\cite{zkr18}; each on a stack of 50000~\gls{dstorm} images of
+\SI{100}{\nm} \x{beads} stained with fluorescence dyes for both red
+(\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser light.
 
 
 \subsection{Aberration Correction Collar}
 
-To further complicate things, the new Olympus \SI{1.5}{\NA} objective
-comes with a Correction Collar to compensate for aberrations---which
-naturally vary slightly for both color channels. In order to find the
-best Correction Collar setting of the Olympus \SI{1.5}{\NA} objective
-for \gls{smlm}, the Point Spread Functions (PSF) is computed for each
-of the three settings of the correction collar $\{0.13,0.17,0.19\}$;
-using the program by \t{Jesacher et al}, described in
-Section~\ref{s:m:psf}.\\
+To further complicate things, the new \SI{1.5}{\NA} \x{Olympus
+  objective} comes with a \x{correction collar} to compensate for
+\x{aberrations}---which naturally vary slightly for both colour
+channels. In order to find the best correction collar setting of the
+Olympus \SI{1.5}{\NA} objective for \gls{smlm}, the point spread
+functions (PSF) is computed for each of the three settings of the
+correction collar $\{0.13,0.17,0.19\}$; using the program by
+\cite{zkr18}, described in Section~\ref{s:m:psf}.
 
 
-\subsection{Cram\'er Rao Lower Bound}
+\subsection{Cram\'er Rao Lower Bound}\index{Cram\'er Rao lower bound}
 
 In order to find the best correction collar setting of the Olympus
 \SI{1.5}{\NA} objective for \gls{smlm}, the \gls{crlb} is computed
 using the MATLAB program \tt{crlb.m}, with prior estimated \gls{psf}
-via phase retrieval \t{Jesacher et al}.\\
+via phase retrieval \cite{zkr18}.\\
+
+The \gls{crlb}s for parameter uncertainties are given by the
+corresponding diagonal elements in the \x{inverse \textsc{Fisher}
+  information matrix}\index{inverse Fisher information matrix}
+$\b{F}$, which is calculated as follows \cite{cwo16}:
+
+\begin{equation} \b{F}_{m,n} = \sum_{k}
+  \frac{1}{\mu_{\symbf{\theta},k}}
+  \frac{\Delta \mu_{\symbf{\theta},k}}{\Delta \symbf{\theta}_m}
+  \frac{\Delta \mu_{\symbf{\theta},k}}{\Delta \symbf{\theta}_n}
+\end{equation}
 
 All \gls{crlb}s are computed at a defocus position of -500~nm, in
 steps of 5~nm from 0 to 500 nm. For all Estimations we assume
-identical arbitrary, but consistent signal strength (2500) respective
+identical, arbitrary yet consistent signal strength (2500) respective
 background (100).\\
 
 
 \section{Dual Colour Projection}
 
 The ultimate goal of this thesis is to facilitate dual colour
-\gls{smlm}, by alternating excitation with different lasers, but still
+\gls{smlm}, by alternating excitation with different lasers, yet still
 measuring only one channel. The alternation ensures the comparability
-of the two sets of images; so that they are affected by drift over
-time, bleaching, etc. in the same way.
+of the two sets of images; so that they are affected by \x{drift} over
+time, \x{bleaching}, etc. in the same way.
 
 The generated image stacks are then split and fed separately through
 the \gls{smlm} algorithm, since the PSF model depends on the emitted
@@ -440,43 +426,46 @@ with localisations for both channels are then analysed together.
 
 Since the methods used to obtain 3d \gls{smlm} data are wavelength
 dependent, the two channels will most likely be \e{off}, yet we
-ultimately want to overlay them. We hereby propose a calibration step,
-based on evaluating evenly dyed beads in both channels, analysing the
-localisations, and finally figuring out their offset.
+ultimately want to overlay them. We hereby propose a \x{calibration}
+step, based on evaluating evenly dyed beads in both channels,
+analysing the localisations, and finally figuring out their offset.
 
 
 \subsection{Rigid Transform}\label{s:m:rig}
 
 In first order approximation, this offset may be thought as linear, so
-the two sets are related via a \e{rigid} transform; thus only by
+the two sets are related via a \e{\x{rigid transform}}; thus only by
 rotation and translation. Such a transformation can be solved easily
 via linear algebra; the solution used here is one of the many known
-ways, using least squares and \gls{svd} based on \t{cit}.
+ways, using \x{least squares} and \gls{svd}\index{singular value
+decomposition} based on \cite{ahb87}.
 
-In this short overview, the Lines refer to the the function \tt{rig()}
+In this short overview, the lines refer to the the function \tt{rig()}
 shown in Section~\ref{s:c:rig}, where the full code is
-listed. Basically, one first calculates the centroids of the two sets
-of points \tt{p},\tt{q}, and shifts both sets to their respective
+listed. Basically, one first calculates the \x{centroid}s of the two
+sets of points \tt{p},\tt{q}, and shifts both sets to their respective
 centres, thus eliminating translation (block 1 at Lines~24--28). As a
 second step the \e{best} (least squares) transform that \e{rotates}
-the set p to the set q is found via SVD (block 2 at Lines~30--51). As
-a last step the translation between set p and q is computed using the
-known rotation (block 3 at line 53).
+the set p to the set q is found via \gls{svd} (block 2 at
+Lines~30--51). As a last step the translation between set p and q is
+computed using the known rotation (block 3 at line 53).
 
 
 \subsection{Affine Transform}\label{s:m:affine}
 
 The next more complex approach includes
-other---nonlinear---transformations like \e{shearing} or \e{scaling},
-called an \e{affine} transform. Our approach is based on \t{cit}, and
-can be viewed as a more complex variant of the rigid transform shown
-in Section~\ref{s:m:rig}, still using least squares and \acrfull{svd} to
-find the optimal affine transform in 3-dimensional euclidean space.
+other---nonlinear---transformations like \e{\x{shearing}} or
+\e{\x{scaling}}, called an \e{\x{affine transform}}. Our approach is
+based on \cite{qgy10}, and can be viewed as a more complex variant of
+the rigid transform shown in Section~\ref{s:m:rig}, still using least
+squares and \acrfull{svd} to find the optimal affine transform in
+three dimensional \x{euclidean space}, based on \cite{ahb87}.
 
-Between centering and SVD, which follow the rigid transform, a
-\e{orthogonal reduction} is performed (block 2 at Lines~37--60). Here
-the covariance matrices of both sets \tt{p} and \tt{q} are computed,
-to form their inverse via a Choleski decomposition (Lines~44--49). The
+Between centering and \gls{svd}, which both follow the rigid
+transform, a \e{\x{orthogonal reduction}} is performed (block 2 at
+Lines~37--60). Here the \x{covariance matrices} of both sets \tt{p}
+and \tt{q} are computed, to form their inverse via a \textsc{Choleski}
+decomposition\index{Choleski decomposition} (Lines~44--49). The
 already centred sets \tt{p} and \tt{q} are subsequently orthogonalised
 (Lines~51--56); so that \tt{p} and \tt{q} are now solely related by a
 rotational matrix.
@@ -486,35 +475,37 @@ rotational matrix.
 
 As a proof of concept,we performed both a rigid and an affine recovery
 on simulated data. The code for this simulations is listed in
-Section~\ref{s:c:sim}, as well as in my Git repository at
-\t{git}. First, each simulation creates a cylinder-shaped
-pseudo-random point cloud \tt{p}, and deducts some projection to get a
-second set \tt{q}, related to \tt{p} by either a rigid or an affine
-transformation.
+Section~\ref{s:c:sim}, as well as in the \x{Octave} program
+\tt{simulate.m} at my Git repository at \cite{sie21}. First, each
+simulation creates a cylinder-shaped pseudo-random point cloud \tt{p},
+and deducts some projection to get a second set \tt{q}, related to
+\tt{p} by either a rigid or an affine transformation.
 
 
 \subsection{Projected 2d NPC}\label{s:m:2dsmlm}
 
 As a second proof of work, we tested both rigid and affine recovery on
-several real dual colour \gls{smlm} data sets of \gls{npc}s of
-two-color in-focus measurements of different cells successively
-recorded in the same sample. The fluorescence images are analysed with
-\e{Thunderstorm}, a \gls{dstorm} plugin for ImageJ, to obtain 2d
-localisations based on Gaussian fits.
+several real dual colour \gls{smlm} data sets of labeled \gls{npc}s of
+two-colour in-focus measurements of different cells, successively
+recorded within the same sample. The fluorescence images are analysed
+with \e{\x{ThunderSTORM}} \cite{omk14}, a \gls{dstorm} plugin for
+\e{\x{ImageJ}}, to obtain 2d localisations based on \textsc{Gaussian}
+fits\index{gaussian fit}.
 
 Since these data sets are two dimensional, we added low-magnitude
 noise ($\mathcal{O}(10^{-3})$) as a virtual z component, so both sets
 are projected almost onto the z plane for analysis. This is necessary,
-because the singular-value-decomposition can faults on 2d data.
+because the singular-value-decomposition faults on 2d data.
 
 The resulting data sets are then analysed either a rigid or an affine
 transformation.
 
-This process is centrally governed by the octave program
-\tt{cockpit.m}, which internally uses the octave function \tt{ampel.m}
-to sort the imported data file into the two alternating color
+This process is centrally governed by the Octave program
+\tt{cockpit.m}, which internally uses the Octave function \tt{ampel.m}
+to sort the imported data file into the two alternating colour
 channels. The code is listed in Section~\ref{s:c:cockpit}, and
-Section~\ref{s:c:ampel}, as well as in my Git repository at \t{git}.
+Section~\ref{s:c:ampel}, as well as in my Git repository at
+\cite{sie21}.
 
 
 % . 
@@ -534,19 +525,48 @@ In order to enable similarly precise dual colour three dimensional
 \gls{smlm}, by using alternating excitation with red and blue laser
 light; the buffer constituents play a central role.\\
 
-The prepared samples, both beads and \gls{npc}s have been evaluated
-using \gls{gloxy} buffer, described in detail in
-Section~\ref{s:m:gloxy}, which works well with either red or blue
-excitation.\\
+The prepared samples, both beads and \gls{npc}, labeled with both
+\e{\x{Alexa Fluors}} \x{AF647} and \x{AF488} in \gls{gloxy} buffer,
+described in detail in Section~\ref{s:m:gloxy}, which works well with
+either red or blue excitation.\\
+
+
+\subsubsection{OxEA buffer protocol}
 
 Additionally the samples, both beads and \gls{npc}s have been
 evaluated using \gls{oxea} buffer, described in detail in
-Section~\ref{s:m:oxea}, which is needed if one wants to use both red and
-blue excitation.
+Section~\ref{s:m:oxea}, which is needed if one wants to use both red
+and blue excitation.\\
 
-The \gls{oxea} buffer did work, but offered notably less blinking, as
-well as was much lower \gls{snr} For the red channel compared to using
-\gls{gloxy} buffer; with the blue channel being worse still.
+For about 1~\si{\milli\liter} of OxEA buffer we used the amounts shown
+in Table~\ref{t:oxea}, to obtain above listed concentrations.\\
+
+\begin{table}[!htb]
+  \caption{Ingredients used for preparation of OxEA buffer for dual
+    colour \gls{dstorm} buffer.} \label{t:oxea}
+  \begin{tabularx}{.5\textwidth}{l X l r}
+    \hhline{====}
+    Order & Ingredient & Store & Vol / \si{\micro\liter} \\
+    \hline
+    1 & Ultra pure H$_2$O & & 600 \\
+    2 & \SI{10}{\Molar} NaOH & & 20 \\
+    3 & 10$\times$ \gls{pbs} & & 100 \\
+    4 & 60\% DL-lactate & fridge & 200 \\
+    5 & \SI{1}{\Molar} \gls{mea} & freezer & 50 \\
+    6 & OxyFluor & freezer & 30 \\
+    \hhline{====}
+  \end{tabularx}
+\end{table}
+
+The \gls{oxea} buffer did work, but offered notably less
+\x{fluorophore blinking}, as well as was much lower \gls{snr} For the
+red channel compared to using \gls{gloxy} buffer; with the blue
+channel being worse still.
+
+\subsubsection{pH}
+
+The pH of the \gls{oxea} buffer is checked using both broad range pH
+testing strips, and a digital pH meter, to be between pH~7 and pH~8.
 
 
 \section{Dual Colour Optics}
@@ -557,12 +577,12 @@ well as was much lower \gls{snr} For the red channel compared to using
 The \textsc{Zernike} modes of the PSF are shown for each of the three
 correction collar settings $\{0.13,0.17,0.19\}$, each for blue channel
 respective red channel in Figure~\ref{f:zernblue} respective
-Figure~\ref{f:zernred}.\\
+Figure~\ref{f:zernred}.
 
 For convenience the same results are additionally shown grouped by the
 the three correction collar settings $\{0.13,0.17,0.19\}$, now for
 both red and blue channel in Figure~\ref{f:zern013},
-Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
+Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.
 
 % \begin{figure*}[!t]
 %   \begin{tikzpicture}
@@ -784,12 +804,12 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
 \end{figure*}
 
 
-\clearpage\subsection{Cram\'er Rao Lower Bound}
+\clearpage\subsection{Cram\'er Rao Lower Bound}\label{s:r:crlb}
 
 The Estimated \acrfull{crlb} for different correction Collar settings
-(variing linestyles for 0.13, 0.17, 0.19) of the Olympus \SI{1.5}{\NA}
+(varying linestyles for 0.13, 0.17, 0.19) of the Olympus \SI{1.5}{\NA}
 objective; for X, Y and Z axis (top, middle, and bottom); for both red
-and blue channel (colors) is shown in
+and blue channel (colours) is shown in
 Figure~\ref{f:all}.\\
 
 Additionally plots grouped by X, Y and Z axis are shown in
@@ -856,7 +876,7 @@ settings in Figure~\ref{f:collar}.\\
   \caption{Estimated \textsc{Cram\'er Rao} lower bound for different correction
     Collar settings (variing linestyles for 0.13, 0.17, 0.19) of the
     Olympus \SI{1.5}{\NA} objective; for X, Y and Z axis (top, middle,
-    and bottom); for both red and blue channel (colors).}
+    and bottom); for both red and blue channel (colours).}
   \label{f:all}
 \end{figure*}
 ~ % dirty hack
@@ -1029,11 +1049,11 @@ settings in Figure~\ref{f:collar}.\\
 
 \clearpage\section{Two Dimensional SMLM}\label{s:r:2dsmlm}
 
-In-focus, one colour, two dimensional \gls{smlm} is performed on all
-the samples, and evaluated by \tt{Thunderstorm} via ImageJ. This gives
-a good x,y precision, an ideal reference for the later three
-dimensional localisation, whose x,y precision will most likely be much
-lower.
+\x{In-focus}, one colour, two dimensional \gls{smlm} is performed on
+all the samples, and evaluated by \e{ThunderSTORM} via
+\e{\x{ImageJ}}. This gives a good \x{x,y precision}; an ideal
+reference for the later three dimensional localisation, whose x,y
+precision will most likely be much lower.
 
 \begin{figure}[h]
   \centering
@@ -1046,8 +1066,8 @@ lower.
 Figure~\ref{f:npco} and Figure~\ref{f:npcz} show an example overview
 (respective zoom) of a set of two dimensional SMLM data of NPCs using
 \gls{dstorm} with \gls{gloxy} buffer. The labeled NPC tori are clearly
-visible, even the more or less eight-fold symmetry of the nucleoporins
-is resolved.
+visible, even the more or less eight-fold symmetry of the
+\x{nucleoporin}s is resolved.
 
 \newpage
 ~ % dirty hack
@@ -1084,9 +1104,10 @@ of validating a new method, it would be nice to quickly evaluate of
 is thus dedicated to find some metric for \e{best resolved}
 \gls{npc}s.
 
-This analysis is performed in \e{Python}, and is freely available in
-my Git repository \t{git}; both as a plain python file (.py) as well
-as in the format of a \e{Jupyter Notebook} (.ipynb).
+This analysis is performed in \e{\x{Python}}, and is freely available
+in my \e{Git repository} \cite{sie21}; both as a plain \e{Python} file
+(\e{.py}) as well as in the format of a \e{\x{Jupyter Notebook}}
+(\e{.ipynb}).
 
 A slightly shortened version of the code is also shown in
 Appendix~\ref{ch:code} for each Subsection. For the sake of
@@ -1100,18 +1121,19 @@ online.
 Here we import the used packages and the data file we obtain from
 running the \gls{smlm} algorithm.
 
+
 \subsection{Drift Correction}
 
-The \e{drift} of the setup over time can be estimated using
-\e{ImageJ}, and is then imported as \tt{drift} \t{drift}. In the
-following block the drift correction is applied to all the 130k
-localisations, shown in Figure~\ref{f:2_drift} as 3d plot of all the
-initial 370k drift corrected localisations.
+The \e{\x{drift}} of the setup over time can be estimated using
+\e{ImageJ}, and is then imported as \tt{drift}. In the following block
+the drift correction is applied to all the 130k localisations, shown
+in Figure~\ref{f:2_drift} as 3d plot of all the initial 370k drift
+corrected localisations.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{2_drift.png}
-  \caption{3d plot of all 370148 drift corrected localisations, color
+  \caption{3d plot of all 370148 drift corrected localisations, colour
     coded by photon count.}
   \label{f:2_drift}
 \end{figure}
@@ -1152,7 +1174,7 @@ down our exemplary data set by about 40\%.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.5\textwidth]{4_filter.png}
-  \caption{3d plot of all 154237 filtered localisations, color coded
+  \caption{3d plot of all 154237 filtered localisations, colour coded
     by photon count.}
   \label{f:4_filter}
 \end{figure}
@@ -1163,11 +1185,11 @@ down our exemplary data set by about 40\%.
 The 50k frames we analyse here are taken with exposure of
 \SI{20}{\m\s}, and \SI{10}{\m\s} between consecutive
 exposures. Depending on the laser intensity and the buffer composition
-the bright state has a specific half-life. This leads to one exemplary
-molecule being \e{on} for some \SI{30}{\m\s} (one frame) while some
-other is on for \SI{60}{\m\s}; and so appears in two consecutive
-frames. Since the molecule in those two frames essentially is the
-same, we can \e{track} it over time: effectively averaging the
+the bright state has a specific lifetime $\tau$. This leads to one
+exemplary molecule being \e{on} for some \SI{30}{\m\s} (one frame)
+while some other is on for \SI{60}{\m\s}; and so appears in two
+consecutive frames. Since the molecule in those two frames essentially
+is the same, we can \e{track} it over time: effectively averaging the
 location if present in multiple frames, thus reducing the amount of
 localisations while at the same time increasing their precision.
 
@@ -1177,13 +1199,13 @@ has to be adjusted based on the physical setup considering vibrations
 and the like.
 
 Figure~\ref{f:5_tracking} shows a 3d plot of the remaining 98k
-localisations, after we track the particles. So the tracking step
+localisations, after we track the particles. So the \x{tracking} step
 further shrinks down our exemplary data set by about 60\%.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.5\textwidth]{5_tracking.png}
-  \caption{3d plot of all 98456 filtered localisations, color coded by
+  \caption{3d plot of all 98456 filtered localisations, colour coded by
     photon count.}
   \label{f:5_tracking}
 \end{figure}
@@ -1193,14 +1215,14 @@ further shrinks down our exemplary data set by about 60\%.
 
 We use \gls{npc}s as a test target for our method, thus we have some
 additional knowledge, like the geometry of each individual \gls{npc}:
-they comprise two stacked \t{tori}, each about \SI{150}{\n\m} diameter
+they comprise two stacked tori, each about \SI{150}{\n\m} diameter
 (in x,y direction), and \SI{150}{\n\m} apart (in z direction).
 
 Now we can group our dataset with close to 100 thousand localisations
 to clusters of roughly this size in x,y (set \tt{dim=2}). Note that
 for the sake of completeness, we include the possibility of clustering
 in 3d to spheres in x,y,z (set \tt{dim=3}), but mind that x,y and z
-precision most often greatly varies (see Section~\t{sec}).
+precision most often greatly varies (see Section~\ref{s:r:crlb}).
 
 The parameter \tt{min\_samples} denotes the minimum amount of
 constituents a cluster must have to be considered such.
@@ -1215,14 +1237,17 @@ set by about 30\%.
 
 Figure~\ref{f:6_clustering} shows the localisations of the 658
 identified clusters (omitting 35489 localisations as noise, due to not
-belonging to a cluster), color coded by photon count.
+belonging to a cluster), colour coded by photon count.
+
+In our experiments a density based clustering algorithm \e{dbscan}
+\cite{eks96} worked better than \e{kmeans}.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.5\textwidth]{6_clustering.png}
   \caption{3d plot of the localisations of the 658 identified clusters
     (omitting 35489 localisations as noise, due to not belonging to a
-    cluster), color coded by photon count.}
+    cluster), colour coded by photon count.}
   \label{f:6_clustering}
 \end{figure}
 
@@ -1231,14 +1256,14 @@ belonging to a cluster), color coded by photon count.
 
 For all the localisations within each of these identified clusters, we
 now derive the centroid position (\tt{xmean,ymean,zmean}), with
-standard derivation (\tt{xvar,yvar,zvar}). This enables the
+standard deviation (\tt{xvar,yvar,zvar}). This enables the
 classification of the within-cluster distribution of localisations,
 alas how well they represent the anticipated \gls{npc} geometry.
 
 To obtain this \e{quality}, we compose both the quantity
 \tt{ringness}, denoting how well the cluster shapes a ring in x,y
 direction; as well as the quantity \tt{twofold}, denoting how well the
-cluster shapes two stacked tori in z direction, basically forming a
+cluster resembles two stacked tori in z direction, basically forming a
 camel-curve in z direction. To break this down to one scalar each, we
 compute the \gls{rms} of the deviations of each localisations radius
 from the cluster centre (in x,y direction) from the known \gls{npc}
@@ -1249,7 +1274,7 @@ mentioned parameters are thus called \tt{npc\_radius}, respective
 \tt{npc\_height}.
 
 Figure~\ref{f:7_filtered_clusters} shows a broad overview of the
-location of the cluster centres (not the localisations within), color
+location of the cluster centres (not the localisations within), colour
 coded by photon count. This should be considered more of a short
 sanity check than a profound analysis.
 
@@ -1257,7 +1282,7 @@ sanity check than a profound analysis.
   \centering
   \includegraphics[width=0.5\textwidth]{7_filtered_clusters.png}
   \caption{3d plot of the positions of the 451 filtered clusters,
-    color coded by photon count.}
+    colour coded by photon count.}
   \label{f:7_filtered_clusters}
 \end{figure}
 
@@ -1275,16 +1300,16 @@ For sake of completeness we also include the x,y and z variances, even
 if they do not comprise a very meaningful parameter in the particular
 case due to the \gls{npc}s geometry.
 
-Figure~\label{f:8_best_filtered_clusters} and
-Figure~\label{f:9_best_filtered_clusters}shows a 3d plot of the
-localisations within the 10 \e{best} clusters, color coded by photon
+Figure~\ref{f:8_best_filtered_clusters} and
+Figure~\ref{f:9_best_filtered_clusters}shows a 3d plot of the
+localisations within the 10 \e{best} clusters, colour coded by photon
 count respective by cluster assignment.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.5\textwidth]{8_best_filtered_clusters.png}
   \caption{3d plot of the localisations within the 10 \e{best}
-    clusters, color coded by photon count.}
+    clusters, colour coded by photon count.}
   \label{f:8_best_filtered_clusters}
 \end{figure}
 
@@ -1292,14 +1317,14 @@ count respective by cluster assignment.
   \centering
   \includegraphics[width=0.5\textwidth]{9_best_filtered_clusters.png}
   \caption{3d plot of the localisations within the 10 \e{best}
-    clusters, color coded by cluster assignment.}
+    clusters, colour coded by cluster assignment.}
   \label{f:9_best_filtered_clusters}
 \end{figure}
 
 
 \subsection{X,Y,Z Histograms}\label{s:r:xyzhist}
 
-As a further sanity check, we plot the histograms for selected
+As a further sanity check, we plot the \x{histogram}s for selected
 clusters (\tt{plot\_cluster}), in x,y and z direction; to figure out
 if the sorting did work effectively---thus the higher sorted clusters
 are indeed \e{better} examples of \gls{npc}s.
@@ -1328,19 +1353,19 @@ localisations within the \e{best} cluster (top), the \e{worst}
 
 \clearpage\section{Dual Colour 3d SMLM}\label{s:r:dcsim}
 
-In order to perform two-colour \gls{smlm} we marked \gls{npc} and bead
-samples with an equal amount of both AF488 and AF647 fluorescence
+In order to perform two-colour \gls{smlm} we marked \gls{npc}s and
+bead samples with an equal amount of both AF488 and AF647 fluorescence
 dyes.
 
-A first measurement using the Gloxy buffer worked well for the red
-channel (for which the Gloxy buffer is designed) but did not lead to a
-good SNR in the blue channel.
+A first measurement using the \gls{gloxy} buffer worked well for the
+red channel (for which the Gloxy buffer is designed) but did not lead
+to a good \gls{snr} in the blue channel.
 
-Using the OxEA buffer described in Section~\t{sec}, we got both
-channels working ok, but the overall SNR proved to be not good enough
-for drift analysis via ImageJ, or even particle tracking. There is no
-way we could try to recover the 3d transformation relating those data
-sets under this noisy conditions.
+Using the gls{oxea} buffer described in Section~\ref{s:m:oxea}, we got
+both channels working, but the overall \gls{snr} proved to be not good
+enough for drift analysis via \e{ImageJ}, or even \x{particle
+  tracking}. There is no way we could try to recover the 3d
+transformation relating those data sets under this noisy conditions.
 
 Thus we will analyse simulated data instead: based on three
 dimensional random data sets in Section~\ref{s:r:3dsim}, as well as
@@ -1578,8 +1603,6 @@ $\b{t}_s^r$ and rotation matrix $\b{R}_s^r$ is:
   \end{pmatrix}
 \end{equation}
 
-\t{t vec?}
-
 The under affine assumption (right) recovered translation vector
 $\b{t}_s^a$ and rotation matrix $\b{R}_s^a$ is:
 \begin{equation}
@@ -1632,8 +1655,6 @@ $\b{t}_r^r$ and rotation matrix $\b{R}_r^r$ is:
     0.940 & 0.000 & 0.342
   \end{pmatrix}
 \end{equation}
-
-\t{t vec?}
 
 The under affine assumption (right) recovered translation vector
 $\b{t}_r^a$ and rotation matrix $\b{R}_r^a$ is:
@@ -1688,8 +1709,6 @@ $\b{t}_a^r$ and rotation matrix $\b{R}_a^r$ is:
   \end{pmatrix}
 \end{equation}
 
-\t{t vec?}
-
 The under affine assumption (right) recovered translation vector
 $\b{t}_a^a$ and rotation matrix $\b{R}_a^a$ is:
 \begin{equation}
@@ -1711,7 +1730,8 @@ $\b{t}_a^a$ and rotation matrix $\b{R}_a^a$ is:
 \clearpage\subsection{Projected 2d NPC}\label{s:r:2dsim}
 
 Lacking proper 3d dual colour \gls{smlm} data, we choose to use
-two-dimensional Thunderstorm \gls{smlm} data for a second proof of work.
+two-dimensional \e{ThunderSTORM} \gls{smlm} data for a second proof of
+work.
 
 A close look on such generated sets already shows interesting
 behaviour: the two sets are \e{shifted}. Obviously by utilising
@@ -1725,7 +1745,7 @@ face some offset.
 The rigid recovery worked quite flawlessly, the mean rotation matrix
 $\overline{\b{R}}_r$ is almost unity within uncertainty. The mean
 translation vector $\overline{\b{t}}_r$ shows a good variance over all
-the twelve analysed sets, with mean and standard derivation of:
+the twelve analysed sets, with mean and standard deviation of:
 
 \begin{equation}
   \overline{\b{t}}_r=
@@ -1869,11 +1889,11 @@ the same cell. Thus we omitted the results.
 
 \subsection{Zernike Modes}
 
-The image stacks look ok, even if not all are perfectly
+The image stacks look good, even if not all are perfectly
 symmetrical--some errors are to be expected.\\
 
-The estimated \textsc{Zernike} modes of the PSF are mostly plausible; based on
-the modes and the order of magnitude.\\
+The estimated \textsc{Zernike} modes of the PSF are mostly plausible;
+based on the modes and the order of magnitude.\\
 
 This is further backed by the comparison of the results grouped by the
 three correction collar settings $\{0.13,0.17,0.19\}$, in
@@ -1882,7 +1902,7 @@ Figure~\ref{f:zern019}. It is quite obvious, that the results for both
 red and blue channel are in the same order of magnitude---if not quite
 similar---for most of the \textsc{Zernike} modes.\\
 
-Yet the phase Retrieval program gave the error \e{high residual error}
+Yet the phase retrieval program gave the error \e{high residual error}
 for both the red and the blue channel when using the correction collar
 settings $\{0.17,0.19\}$.
 
@@ -1894,13 +1914,13 @@ considering the fact---that we are interested in moderately defocusing
 (up to say 250~nm)---one might conclude, that the most preferable
 setting for the correction collar is 0.13.\\
 
-Yet the recommended setting for our microscope setup is 0.17! Which is
-backed by Lukas, based on the PSF stacks: One would have guessed the
-0.17 is more sensitive to z since it changes much more with different
-z positions than 0.13.
+Yet the recommended setting for our microscope setup is 0.17! Based on
+the PSF stacks one would have guessed the 0.17 is more sensitive to z
+since it changes much more with different z positions than 0.13.
 
 
-\section{3d SMLM Analysis: NPC}~\label{s:d:ananpc}
+\section{NPC Analysis}~\label{s:d:ananpc}
+
 
 \subsection{Define Scalar Quality}
 
@@ -1928,7 +1948,7 @@ following, for some of which we may suggest possible improvements.
   \tt{ringness} and \tt{twofold}, might not be derived well using
   \gls{rms}. A more sophisticated approach to quantify the clusters
   deviations to our known \gls{npc} geometry might work better, such
-  as fitting the histogram in z direction to a Gaussian.
+  as fitting the histogram in z direction to a \textsc{Gaussian}.
 \item [weighting] The equal weighting of \tt{ringness} and
   \tt{twofold} quantities are canceling each other; Some clusters
   might look very \e{ringlike}, but are not at all stacked on top of
@@ -1937,36 +1957,38 @@ following, for some of which we may suggest possible improvements.
   solve it.
 \end{description}
 
+
 \subsection{Secondary Filter}
 
-Some of the results of the \gls{npc} analysis might still prove themselves
-useful as a secondary filters. In reducing the clusters until only a
-few remain, effectively also finds the \e{best}.
+Some of the results of the \gls{npc} analysis might still prove
+themselves useful as a secondary filters. In reducing the clusters
+until only a few remain, effectively also finds the \e{best}.
 
 \begin{description}
 \item [high variance] One might want to exclude clusters with an
-  overly high variance, as these might be in fact two \gls{npc}s too close
-  to each other to be accounted separately by the clustering
+  overly high variance, as these might be in fact two \gls{npc}s too
+  close to each other to be accounted separately by the clustering
   algorithm.
 \item [low variance] Quite similarly we might exclude those clusters
   showing extremely low variance, under suspicion of being well
   concentrated---yet noise, not representing a \gls{npc} at all.
 \item [spread] Likewise we may exclude clusters spreading far in z,
-  due to our knowledge of the \gls{npc} heigth, as well as in x,z due to the
-  \gls{npc}s well defined radius.
+  due to our knowledge of the \gls{npc} height, as well as in x,z due
+  to the \gls{npc}s well defined radius.
 \end{description}
 
 In the end, possessing a list of the clusters position allows for a
 much easier way to plot some of them manually, than to zoom in on a
 plot of thousands of localisations repeatedly.
 
+
 \section{Dual Colour Projection}
 
-Simply put, the algorithm \tt{rig()} finds the \e{best}
-rigid transformation, whatever the real relation is. This poses a
-serious caveat for experimental data, since one is usually not in
-possession of any form of ground truth to check whether the result is
-plausible or not.
+Simply put, the algorithm \tt{rig()} finds the \e{best} rigid
+transformation, whatever the real relation is. This poses a serious
+caveat for experimental data, since one is usually not in possession
+of any form of ground truth to check whether the result is plausible
+or not.
 
 \subsection{SMLM Simulations}\label{d:dcsim}
 
@@ -1978,8 +2000,8 @@ recovery of a assumed rigid transform of sets \e{not} related in such
 a way (bottom row) does not yield a significant solution.\\
 
 A closer inspection of the respective recovered translation vectors
-$\b{t}$ and rotation matrices $\b{R}$ in Section~\ref{s:r:dcsim} enables
-a deeper understanding of the involved misconceptions---that
+$\b{t}$ and rotation matrices $\b{R}$ in Section~\ref{s:r:dcsim}
+enables a deeper understanding of the involved misconceptions---that
 ultimately question this approach.
 
 
@@ -2005,7 +2027,7 @@ for the rigid recovery. The affine recovery is slightly off, but
 somewhat acceptable.
 
 
-\subsubsection{Rigid}
+\subsubsection{Affine}
 
 Comparison of the respective recovered translation vectors
 $\b{t}_a^{r,a}$ to the ground truth $\b{t}_a^{t}$ show very little
@@ -2041,7 +2063,7 @@ depths. This yields a full PSF model to be used for defocus 3d
 
 \subsection{Correction Collar}
 
-The best setting of the Correction Collar for the Olympus
+The best setting of the correction collar for the Olympus
 \SI{1.5}{\NA} objective is shown to be 0.13. Here we find the
 preferable compromise between x,y precision and z precision, in the
 regime between about 0 and \SI{250}{\micro\meter}.
@@ -2065,9 +2087,6 @@ the results of the \gls{npc} analysis might still prove themselves
 useful as a secondary filters.
 
 
-\section{Dual Colour 3d SMLM}
-
-
 \section{Dual Colour Buffer}
 
 The prepared samples, both beads and \gls{npc}s have been evaluated
@@ -2082,7 +2101,7 @@ was not of high enough precision to be analysed meaningfully. We thus
 propose further investigation in buffers used for dual colour SMLM.
   
 
-\subsection{Simulation}
+\section{Dual Colour Simulation}
 
 Concluding, one best uses an rigid recovery for a rigid problem, or an
 affine recovery for an affine problem, as shown in Table~\ref{t:t} and
@@ -2120,14 +2139,14 @@ Due to the convexity of the problem (there are infinitely many
 transformations), the recovery of a translation vector under the
 assumption of at least dome rotation involved is not really possible,
 as shown in Table~\ref{t:t} and Table~\ref{t:r}. This poses a
-dangerous caveat for the dual colour \gls{smlm} analysis, where we cannot
-rule out rotations.
+dangerous caveat for the dual colour \gls{smlm} analysis, where we
+cannot rule out rotations.
 
 
 \subsection{Projected 2d NPC}
 
 As a second proof of work, we tested both rigid and affine recovery on
-several real dual colour \gls{smlm} data sets of two color in focus
+several real dual colour \gls{smlm} data sets of two colour in focus
 measurements of different cells successively recorded in the same
 sample.
 
@@ -2141,7 +2160,7 @@ The rigid recovery worked quite flawlessly, the mean rotation matrix
 $\overline{\b{R}}_r$ is almost unity within uncertainty. Yet the mean
 translation vector $\overline{\b{t}}_r$ shows a high variance (at
 least on x axis) over all the twelve analysed sets, with mean and
-standard derivation of:
+standard deviation of:
 
 \begin{equation}
   \overline{\b{t}}_r=
@@ -2184,9 +2203,7 @@ A similar analysis assuming an affine transformation though fails
 completely, this method simply cannot work on two dimensional data.
 
 
-
 \appendix
-
 
 
 \chapter{Code}\label{ch:code}
@@ -2863,7 +2880,7 @@ function [assignments,C] = dbscan(X,minpts,EPS)
 endfunction
 \end{minted}
 
-\subsection{Simulate Dual Chanel 3d SMLM Data: simulate.m}\label{s:c:sim}
+\subsection{Simulate Dual Colour 3d SMLM Data: simulate.m}\label{s:c:sim}
 \begin{minted}{octave}
 #!/bin/octave
 ## @ moritz siegel
@@ -2954,11 +2971,9 @@ endif
 
 \clearpage
 
-% \bibliography{bibliography}
+\bibliography{bibliography}
 
-% \bibliographystyle{apalike} % 'alpha' for 3 letters + year
-
-\t{bibliography}
+\bibliographystyle{apalike} % 'alpha' for 3 letters + year
 
 
 % .                   ___   ___  ___  ___   ___  ___   ___ 
@@ -3007,9 +3022,8 @@ endif
 
 \clearpage
 
-% \printindex
+\printindex
 
-\t{index}
 
 % .  ___  ___   ___                    ___           ___        ___              
 % . `._|=|   |=|_.'   .'| |`.     .'|=|_.'      .'|=|_.'   .'| |   |   .'|=|`.   

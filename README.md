@@ -16,7 +16,7 @@ A Documented walkthrough with examples:
 - npc_clustering.ipynb
 - npc_clustering.py
 
-![clusters](project/figures/6_clustering.png) ![clusters](project/figures/8_best_filtered_clusters.png)
+![clusters](project/figures/6_clustering.png) | ![clusters](project/figures/8_best_filtered_clusters.png)
 
 
 ## Dual Colour Projection
@@ -28,7 +28,7 @@ A Octave bundle for rigid & affine projections in 3d euclidean space:
 - rig.m
 - affine.m
 
-![rigid](data/210634_sim/simulation_rigid_2021_06_24_170854_affine/affine_5_affine_rotated_vs_shifted.png) ![affine](data/210634_sim/simulation_affine_2021_06_24_174933_rigid/affine_5_affine_rotated_vs_shifted.png)
+![rigid](data/210634_sim/simulation_rigid_2021_06_24_170854_affine/affine_5_affine_rotated_vs_shifted.png) | ![affine](data/210634_sim/simulation_affine_2021_06_24_174933_rigid/affine_5_affine_rotated_vs_shifted.png)
 
 
 ### Cockpit

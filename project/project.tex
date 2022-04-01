@@ -149,14 +149,14 @@
 % .
 \clearpage\chapter{Introduction}
 
-The ultimate goal of this thesis is to facilitate dual colour three
-dimensional single molecule microscopy, by alternating excitation with
-different lasers; but still measuring only one channel.\\
-
 \gls{smlm} is one of the many microscope techniques to circumvent
 \textsc{Abbe’s} \x{diffraction limit}, enabling the study of
 structures smaller than half the wavelength of light; thus reaching
-\x{super resolution} \x{fluorescence microscopy}.
+\x{super resolution} \x{fluorescence microscopy}.\\
+
+The ultimate goal of this thesis is to facilitate dual colour three
+dimensional single molecule microscopy, by alternating excitation with
+different lasers; but still measuring only one channel.
 
 
 \section{Fluorescence Microscopy}
@@ -168,13 +168,16 @@ to study organic substances.
 The specimen is illuminated with laser light, exciting the respective
 \x{fluorophores}; causing them to emit (much weaker) light on a
 slightly longer wavelength. After separation from excitation light
-using spectral filters, this image is captured by a sensitive
-\gls{scmos} camera.
+using spectral filters, this image is captured by a sensitive camera
+like a \gls{emccd} (an alternative would be a \gls{scmos}).
 
 However, fluorophores that are bound to the specimen surface and those
 in the surrounding medium exist in an equilibrium state; When exciting
 with a conventional fluorescence microscope, the fluorophores bound to
-the surface are often overwhelmed by the background fluorescence.
+the surface are often overwhelmed by the background fluorescence
+\t{ref}.
+
+\t{rewrite}
 
 
 \section{Total Internal Reflection}\index{total internal reflection}
@@ -184,10 +187,10 @@ only illuminating the bound fluorophores, \gls{tirf} microscopy can be
 used. This is a type of microscope with which a thin region of a
 specimen, usually less than 200 nanometers can be observed. This is
 used notably to study constituents of and interaction with cellular
-surfaces, such as cell adhesion or binding of antibodies.
+surfaces, such as cell adhesion or binding of antibodies \t{ref}.
 
 
-\section{Single Molecule Location}\index{single molecule localisation}
+\section{Single Molecule Localisation}\index{single molecule localisation}
 
 The basic principle of all \gls{smlm} techniques is to separate the
 signal of neighbouring individual emitters in time, which allows to
@@ -195,11 +198,11 @@ determine their positions with nanometer precision.
 
 This is done with \gls{storm}, which was invented simultaneously by
 different research groups, and has since the mid 2000s become the most
-widely used technique for \gls{smlm}. In order to prevent two
-fluorophores that are near by each other to overlap their signals,
-which prohibits distinction and so ultimately limits the obtainable
-resolution; \gls{storm} simply suppresses the emission of a photon
-99\% of the time.
+widely used technique for \gls{smlm} \t{ref}. In order to prevent two
+neighbouring fluorophores to overlap their signals, which prohibits
+distinction and so ultimately limits the obtainable resolution;
+\gls{storm} simply suppresses the emission of a photon 99\% of the
+time \t{explain}.
 
 During \gls{storm} a few of the fluorophores are randomly activated to
 a \e{on state}, emit light for some time $\tau$, and then fall back
@@ -245,7 +248,7 @@ fluorescence molecule.
 
 Fitting a full point spread function (PSF)---using prior calculated
 \textsc{Zernike} Modes---to such a stack of images containing reasonably spaced
-fluorescence signals even yields a list of 3d localisations.
+fluorescence signals even yields a list of 3d localisations \t{ref}.
 
 
 % .                     ___  ___  ___   ___                                      ___   ___ 
@@ -370,9 +373,13 @@ It is possible to use different excitations to simultaneously measure
 different fluorescence markers, but for that the point spread function
 has to known for each wavelength. So the PSFs are estimated both for
 red and blue laser light, with the \x{phase retrieval} program by
-\cite{zkr18}; each on a stack of 50000~\gls{dstorm} images of
-\SI{100}{\nm} \x{beads} stained with fluorescence dyes for both red
-(\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser light.
+\cite{zkr18}. As a sort of \e{ground truth} due to their well known
+geometry, \SI{100}{\nm} \x{beads} stained with fluorescence dyes are
+used. For both red (\SI{645}{\nm}) and blue (\SI{488}{\nm}) laser
+light, a stack of 50~\gls{dstorm} images is taken; each at focal
+depths (from \SI{-1600}{\nm} to \SI{+1600}{\nm} in \SI{200}{\nm}
+steps). the 17~stacks are averaged, and fed into the phase retrieval
+program as a \tt{tiff} file, to estimate the wavelength specific PSF.
 
 
 \subsection{Aberration Correction Collar}
@@ -413,11 +420,10 @@ background (100).\\
 
 \section{Dual Colour Projection}
 
-The ultimate goal of this thesis is to facilitate dual colour
-\gls{smlm}, by alternating excitation with different lasers, yet still
-measuring only one channel. The alternation ensures the comparability
-of the two sets of images; so that they are affected by \x{drift} over
-time, \x{bleaching}, etc. in the same way.
+Since we measure excitation with different lasers on the same channel,
+we propose alternating the sets to ensure the comparability of the two
+sets of images; so that they are affected by \x{drift} over time,
+\x{bleaching}, etc. in the same way.
 
 The generated image stacks are then split and fed separately through
 the \gls{smlm} algorithm, since the PSF model depends on the emitted
@@ -1116,6 +1122,9 @@ visible, even the more or less eight-fold symmetry of the
   \label{f:npcz}
 \end{figure}
 
+\t{you could add a scheme of the NPC so that it is clear that what we
+  see in this pictures resembles the real 8-fold structure of the
+  pore}
 
 \clearpage\section{Three Dimensional SMLM}\label{s:r:ana}
 
@@ -1253,6 +1262,8 @@ additional knowledge, like the geometry of each individual \gls{npc}:
 they comprise two stacked tori, each about \SI{150}{\nano\m} diameter
 (in x,y direction), and \SI{150}{\nano\m} apart (in z direction).
 
+\t{now the scheme would be really helpful}
+
 Now we can group our dataset with close to 100 thousand localisations
 to clusters of roughly this size in x,y (set \tt{dim=2}). Note that
 for the sake of completeness, we include the possibility of clustering
@@ -1386,6 +1397,10 @@ localisations within the \e{best} cluster (top), the \e{worst}
 \end{figure}
 
 
+\t{In this section I am missing one figure that would show xy and z(x or
+y) projection of the NPC to really see if we found the right thing}
+
+
 \clearpage\section{Dual Colour 3d SMLM}\label{s:r:dcsim}
 
 In order to perform two-colour \gls{smlm} we marked \gls{npc}s and
@@ -1396,11 +1411,12 @@ A first measurement using the \gls{gloxy} buffer worked well for the
 red channel (for which the Gloxy buffer is designed) but did not lead
 to a good \gls{snr} in the blue channel.
 
-Using the gls{oxea} buffer described in Section~\ref{s:m:oxea}, we got
-both channels working, but the overall \gls{snr} proved to be not good
-enough for drift analysis via \e{ImageJ}, or even \x{particle
+Using the \gls{oxea} buffer described in Section~\ref{s:m:oxea}, we
+got both channels working, but the overall \gls{snr} proved to be not
+good enough for drift analysis via \e{ImageJ}, or even \x{particle
   tracking}. There is no way we could try to recover the 3d
-transformation relating those data sets under this noisy conditions.
+transformation relating those data sets under this noisy conditions
+\t{image}.
 
 Thus we will analyse simulated data instead: based on three
 dimensional random data sets in Section~\ref{s:r:3dsim}, as well as
@@ -1946,8 +1962,8 @@ settings $\{0.17,0.19\}$.
 
 Based on the Figures~\ref{f:axes} and Figure~\ref{f:collar}, and
 considering the fact---that we are interested in moderately defocusing
-(up to say 250~nm)---one might conclude, that the most preferable
-setting for the correction collar is 0.13.\\
+(up to say \SI{250}{\nano\meter})---one might conclude, that the most
+preferable setting for the correction collar is 0.13. \t{why?}\\
 
 Yet the recommended setting for our microscope setup is 0.17! Based on
 the PSF stacks one would have guessed the 0.17 is more sensitive to z
@@ -2084,6 +2100,9 @@ completely failing.
 % .       
 \chapter{Conclusion}
 
+\t{I would fuse this with the above discussion or avoid making the
+  subchapters here}
+
 
 \section{Dual Colour Optics}
 
@@ -2101,7 +2120,7 @@ depths. This yields a full PSF model to be used for defocus 3d
 The best setting of the correction collar for the Olympus
 \SI{1.5}{\NA} objective is shown to be 0.13. Here we find the
 preferable compromise between x,y precision and z precision, in the
-regime between about 0 and \SI{250}{\micro\meter}.
+regime between about 0 and \SI{250}{\nano\meter}.
 
 
 \section{Three Dimensional SMLM}
@@ -2127,7 +2146,7 @@ useful as a secondary filters.
 The prepared samples, both beads and \gls{npc}s have been evaluated
 using \gls{gloxy} buffer and \gls{oxea} buffer.
 
-The two channels (red and blue) showed gross differences in, blinking
+The two channels (red and blue) showed great differences in blinking
 speed, \e{dark state} and \e{bright state} lifetime, Signal and
 background magnitude as well as \gls{snr}.
 

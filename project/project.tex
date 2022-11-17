@@ -149,21 +149,109 @@
 % .
 \clearpage\chapter{Introduction}
 
-\gls{smlm} is one of the many microscope techniques to circumvent
-\textsc{Abbe’s} \x{diffraction limit}, enabling the study of
-structures smaller than half the wavelength of light; thus reaching
-\x{super resolution} \x{fluorescence microscopy}.\\
+For centuries humans use optical microscopes from magnifying glasses
+to telescopes to study things smaller than our human eye is able to
+resolve. Because of electro-magnetic phenomena like interference,
+using visible light limits the obtainable resolution to
+about \SI{200}{nm}--depending witch of the two definitions of
+\x{resolution} \textsc{Abbe} or \textsc{Rayleigh} is used. Many recent
+microscope techniques like X-ray microscopy, electron microscopy or
+atomic force microscopy enable resolutions far beyond optical
+microscopy. Most of these techniques work fine for solids, but are
+lethal to living organisms, hence optical microscopy is still
+ubiquitous in life-science.\\
+
+The nobel-price \cite{np14} awarded technique of \gls{smlm} has become
+one of many microscope techniques to circumvent \textsc{Abbe’s}
+\x{diffraction limit}, enabling the study of living structures smaller
+than half the wavelength of light; thus reaching \x{super resolution}
+\x{fluorescence microscopy}.\\
 
 The ultimate goal of this thesis is to facilitate dual colour three
 dimensional single molecule microscopy, by alternating excitation with
-different lasers; but still measuring only one channel.
+different lasers while measuring on the same single channel.
 
+\section{Fluorescence}
+
+The phenomenon of fluorescence exceeds classical optics, thus can only
+be fully described using quantum mechanics. Here a simplified model is
+used to explain the concepts necessary for \gls{smlm}. Electromagnetic
+radiation in the form of a photon $h\nu_{ex}$ can be absorbed by a
+molecule, lifting the molecule from its \x{ground state} $S_0$ to a
+higher state $S_1$--albeit losing some energy $\Delta E$ in the form
+of heat dissipation of excited \x{vibrational states}:
+
+\begin{equation}
+  S_0 + h\nu_{ex} \rightarrow  S_1 + \Delta E
+\end{equation}
+
+where $\nu_{ex}$ denotes the \e{excitation} frequency of the
+incoming photon, and $h$ the Planck constant.
+
+Some molecules called \x{fluorophores} tend to show the opposite
+reaction immediately after irradiation: The emittance of a
+fluorescence photon $h\nu_{em}$:
+
+\begin{equation}
+  S_1 \rightarrow  S_0 + h\nu_{em} + \Delta E
+\end{equation}
+
+Due to dissipation, the frequency of the emitted photons is lower than
+those of the initially absorbed photons:
+
+\begin{equation}
+  \nu_{em} \le \nu_{ex}
+\end{equation}
+
+which leads to the discrimination between
+\textsc{Rayleigh} and \textsc{Stokes} shift:
+
+\[ \nu_{em}
+  \begin{cases}
+    = \nu_{ex} & \quad \text{\x{\textsc{Rayleigh} shift}}\\
+    < \nu_{ex} & \quad \text{\x{\textsc{Stokes} shift}}
+  \end{cases}
+\]
+
+Both processes happen by chance, which generally is viewed as a
+probability within quantum mechanics. This leads to the stochastic
+variables of the \x{rate} $\rho$ that we can measure in experiments as
+occurrence per time, and the \x{lifetime} $\tau$ of a given state as
+the time between excitation and emission.
+
+Many fluorophores have other transition paths that are somewhat
+rare. Notably is the radiation-free \x{inter-system crossing} to a
+\x{triplet} state $T_1$. This state may have a long lifetime of up to
+hours, until it eventually falls back to ground state. Emitting a much
+lower energy photon $h\nu$, albeit for a long due the stable nature of
+the triplet state, this effect was once considered a separate
+phenomenon termed \x{phosphorescence}.
+
+\t{pic}
+
+While in the triplet state, the molecule can not absorb a photon to
+get \e{back} to the excited state $S_1$, staying dark until it
+falls back to ground state $S_0$.
+
+Some chemical reaction might change the molecules characteristics so
+it loses the ability to fluorescence, which is called
+\e{\x{photo-bleaching}}. Some other reaction may re-enable the
+fluorescence, that is one of the reasons for the use of \x{buffers} in
+\gls{smlm}.
+
+\t{pic}
+
+\t{dark state}
+
+\t{bleaching}
 
 \section{Fluorescence Microscopy}
 
-Fluorescence microscopy is an optical microscopy technique using
-fluorescence instead of reflection or transmission of light, foremost
-to study organic substances.
+Fluorescence microscopy refers to a group of optical microscopy
+techniques using fluorescence instead of reflection or transmission of
+light, foremost to study organic substances. 
+
+\t{preparation}
 
 The specimen is illuminated with laser light, exciting the respective
 \x{fluorophores}; causing them to emit (much weaker) light on a
@@ -171,11 +259,11 @@ slightly longer wavelength. After separation from excitation light
 using spectral filters, this image is captured by a sensitive camera
 like a \gls{emccd} (an alternative would be a \gls{scmos}).
 
-However, fluorophores that are bound to the specimen surface and those
-in the surrounding medium exist in an equilibrium state; When exciting
-with a conventional fluorescence microscope, the fluorophores bound to
-the surface are often overwhelmed by the background fluorescence
-\t{ref}.
+% However, fluorophores that are bound to the specimen surface and those
+% in the surrounding medium exist in an equilibrium state; When exciting
+% with a conventional fluorescence microscope, the fluorophores bound to
+% the surface are often overwhelmed by the background fluorescence
+% \t{ref}.
 
 \t{rewrite}
 

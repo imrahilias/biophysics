@@ -5,13 +5,13 @@
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 \documentclass[11pt, a4paper, oneside, twocolumn]{report}
-% .  ___   ___        ___  ___  ___   ___  ___  ___   ___              ___         ___   ___   ___ 
-% . |   |=|_.'   .'|=|_.' `._|=|   |=|_.' `._|=|   |=|_.'   .'|   .'| |   |   .'|=|_.'  |   |=|_.' 
-% . `.  |      .'  |  ___      |   |           |   |      .'  | .'  |\|   | .'  |___    `.  |      
-% .   `.|=|`.  |   |=|_.'      |   |           |   |      |   | |   | |   | |   |`._|=.   `.|=|`.  
-% .  ___  |  `.|   |  ___      `.  |           `.  |      |   | |   | |  .' `.  |  __||  ___  |  `.
-% .  `._|=|___||___|=|_.'        `.|             `.|      |___| |___| |.'     `.|=|_.''  `._|=|___|
-% .                                                                                                
+% .
+% .            |   |  _)                  
+% .   __|  _ \ __| __| | __ \   _` |  __| 
+% . \__ \  __/ |   |   | |   | (   |\__ \ 
+% . ____/\___|\__|\__|_|_|  _|\__, |____/ 
+% .                           |___/       
+% .
 %% packages --------------------------------------------------------------------
 \usepackage{hyphenations} % thats my own hyphenation list
 % \usepackage[english]{babel}
@@ -68,24 +68,23 @@
 \newcommand{\n}{\textnormal}
 \newcommand{\m}{\mathrm}
 \newcommand{\x}[1]{#1\index{#1}}
-% .        ___                          ___   ___  ___   ___                    __   ___   ___  
-% .   .'|=|_.'    .'|        .'|=|`.   |   |=|_.' |   |=|_.'   .'|=|`.     .'|=|  | |   | |   | 
-% . .'  |___    .'  |      .'  | |  `. `.  |      `.  |      .'  | |  `. .'  | |  | `.  |_|  .' 
-% . |   |`._|=. |   |      |   | |   |   `.|=|`.    `.|=|`.  |   |=|   | |   |=|.'    `.   .'   
-% . `.  |  __|| |   |  ___ `.  | |  .'  ___  |  `. ___  |  `.|   | |   | |   |  |`.    |   |    
-% .   `.|=|_.'' |___|=|_.'   `.|=|.'    `._|=|___| `._|=|___||___| |___| |___|  |_|    |___|    
-% .                                                                                             
+% .
+% .        |                                  
+% .   _` | |  _ \   __|  __|  _` |  __| |   | 
+% .  (   | | (   |\__ \\__ \ (   | |    |   | 
+% . \__, |_|\___/ ____/____/\__,_|_|   \__, | 
+% . |___/                              ____/  
+% .
 \makeindex
 \makeglossaries % definitions in a separate file and load it in the preamble after \makeglossaries
 % \loadglsentries{glossary} % also disable option "nomain"
 \loadglsentries{acronyms}
-% .  ___  ___   ___        ___  ___   ___                   ___ 
-% . `._|=|   |=|_.'   .'| `._|=|   |=|_.'   .'|        .'|=|_.' 
-% .      |   |      .'  |      |   |      .'  |      .'  |  ___ 
-% .      |   |      |   |      |   |      |   |      |   |=|_.' 
-% .      `.  |      |   |      `.  |      |   |  ___ |   |  ___ 
-% .        `.|      |___|        `.|      |___|=|_.' |___|=|_.' 
-% .                                                            
+% 
+% .  |  _) |   |      
+% .  __| | __| |  _ \ 
+% .  |   | |   |  __/ 
+% . \__|_|\__|_|\___|
+% 
 \begin{document}
 \begin{titlepage}
   \onecolumn
@@ -117,12 +116,11 @@
   \small{\href{mailto:moritz.siegel@tuwien.ac.at}{moritz.siegel@tuwien.ac.at}}\\
   \small{\url{https://github.com/imrahilias/biophysics}}\\
 \end{titlepage}
-% .                    _    ___   ___  ___  ___   ___        __                     ___  ___  ___   ___ 
-% .   .'|=|`.     .'|=| `. |   |=|_.' `._|=|   |=|_.'   .'|=|  |   .'|=|`.     .'|=|_.' `._|=|   |=|_.' 
-% . .'  | |  `. .'  | | .' `.  |           |   |      .'  | |  | .'  | |  `. .'  |           |   |      
-% . |   |=|   | |   |=|'.    `.|=|`.       |   |      |   |=|.'  |   |=|   | |   |           |   |      
-% . |   | |   | |   | |  |  ___  |  `.     `.  |      |   |  |`. |   | |   | `.  |  ___      `.  |      
-% . |___| |___| |___|=|_.'  `._|=|___|       `.|      |___|  |_| |___| |___|   `.|=|_.'        `.|      
+% .
+% .        |          |                  |   
+% .   _` | __ \   __| __|  __| _` |  __| __| 
+% .  (   | |   |\__ \ |   |   (   | (    |   
+% . \__,_|_.__/ ____/\__|_|  \__,_|\___|\__| 
 % .
 % \clearpage \onecolumn \chapter*{Abstract}
 % asdf
@@ -131,22 +129,20 @@
 % 
 % \section*{Keywords}
 % asdf\\
-% .  ___  ___   ___                    ___ 
-% . `._|=|   |=|_.'   .'|=|`.     .'|=|_.' 
-% .      |   |      .'  | |  `. .'  |      
-% .      |   |      |   | |   | |   |      
-% .      `.  |      `.  | |  .' `.  |  ___ 
-% .        `.|        `.|=|.'     `.|=|_.' 
-% .                                        
+% .
+% .  |              
+% .  __|  _ \   __| 
+% .  |   (   | (    
+% . \__|\___/ \___|
+% .       
 \clearpage \tableofcontents
 % \clearpage \listoftodos % conflict: comment out \listoftodos when externalizing tikz, or use "\tikzexternalize[optimize=false"
-% .              ___   ___  ___   ___        __              
-% .   .'|   .'| |   | `._|=|   |=|_.'   .'|=|  |   .'|=|`.   
-% . .'  | .'  |\|   |      |   |      .'  | |  | .'  | |  `. 
-% . |   | |   | |   |      |   |      |   |=|.'  |   | |   | 
-% . |   | |   | |  .'      `.  |      |   |  |`. `.  | |  .' 
-% . |___| |___| |.'          `.|      |___|  |_|   `.|=|.'   
 % .
+% . _)       |             
+% .  | __ \  __|  __| _ \  
+% .  | |   | |   |   (   | 
+% . _|_|  _|\__|_|  \___/  
+% .                      
 \clearpage\chapter{Introduction}
 
 For centuries humans use optical microscopes from magnifying glasses
@@ -171,7 +167,7 @@ The ultimate goal of this thesis is to facilitate dual colour three
 dimensional single molecule microscopy, by alternating excitation with
 different lasers while measuring on the same single channel.
 
-\section{Fluorescence}
+\section{Fluorescence}\label{i:fl}
 
 The phenomenon of fluorescence exceeds classical optics, thus can only
 be fully described using quantum mechanics. Here a simplified model is
@@ -213,6 +209,12 @@ which leads to the discrimination between
   \end{cases}
 \]
 
+\begin{figure}[h]
+  \centering \includegraphics[width=0.5\textwidth]{jablonski_2.png}
+  \caption{asdf, \cite{asdf}.}
+  \label{f:asdf}
+\end{figure}
+
 Both processes happen by chance, which generally is viewed as a
 probability within quantum mechanics. This leads to the stochastic
 variables of the \x{rate} $\rho$ that we can measure in experiments as
@@ -227,23 +229,24 @@ lower energy photon $h\nu$, albeit for a long due the stable nature of
 the triplet state, this effect was once considered a separate
 phenomenon termed \x{phosphorescence}.
 
-\t{pic}
+
 
 While in the triplet state, the molecule can not absorb a photon to
 get \e{back} to the excited state $S_1$, staying dark until it
 falls back to ground state $S_0$.
 
-Some chemical reaction might change the molecules characteristics so
-it loses the ability to fluorescence, which is called
-\e{\x{photo-bleaching}}. Some other reaction may re-enable the
-fluorescence, that is one of the reasons for the use of \x{buffers} in
-\gls{smlm}.
+Some chemical reaction like oxidation might change the molecules
+characteristics so it loses the ability to fluorescence for good,
+which is called \e{\x{photobleaching}}. Some other reaction may
+re-enable the fluorescence, that is one of the reasons for the use of
+oxygen-depleted \x{buffers} in \gls{smlm}.
 
-\t{pic}
+\begin{figure}[h]
+  \centering \includegraphics[width=0.5\textwidth]{alexa.png}
+  \caption{asdf, \cite{asdf}.}
+  \label{f:asdf}
+\end{figure}
 
-\t{dark state}
-
-\t{bleaching}
 
 \section{Fluorescence Microscopy}
 
@@ -251,13 +254,22 @@ Fluorescence microscopy refers to a group of optical microscopy
 techniques using fluorescence instead of reflection or transmission of
 light, foremost to study organic substances. 
 
-\t{preparation}
+Since most molecules are not showing fluorescence, one needs a way to
+attach fluorophores to the specimen of question. One widespread
+example specimen preparation are polystyrene \e{\x{beads}}, that are
+soaked in a fluorophore solution. When analysing cell constituents,
+like in our case the \e{nuclear pore complex}, one must find a way to
+bind fluorophores to specific structures, like proteins with the use
+of antibodies. This process is complicated, a detailed explanation
+would exceed the scope of this paper. The interested reader is
+referred to /t{ref}.
 
 The specimen is illuminated with laser light, exciting the respective
 \x{fluorophores}; causing them to emit (much weaker) light on a
 slightly longer wavelength. After separation from excitation light
 using spectral filters, this image is captured by a sensitive camera
-like a \gls{emccd} (an alternative would be a \gls{scmos}).
+like a \gls{emccd}.
+%(an alternative would be a \gls{scmos}).
 
 % However, fluorophores that are bound to the specimen surface and those
 % in the surrounding medium exist in an equilibrium state; When exciting
@@ -280,34 +292,44 @@ surfaces, such as cell adhesion or binding of antibodies \t{ref}.
 
 \section{Single Molecule Localisation}\index{single molecule localisation}
 
-The basic principle of all \gls{smlm} techniques is to separate the
-signal of neighbouring individual emitters in time, which allows to
-determine their positions with nanometer precision.
+In order to prevent two neighbouring fluorophores to overlap, which
+prohibits distinction and so ultimately limits the obtainable
+resolution; the basic principle of all \gls{smlm} techniques is to
+separate the signal of neighbouring individual emitters in \e{time},
+which allows to determine their positions with nanometer precision.
 
-This is done with \gls{storm}, which was invented simultaneously by
-different research groups, and has since the mid 2000s become the most
-widely used technique for \gls{smlm} \t{ref}. In order to prevent two
-neighbouring fluorophores to overlap their signals, which prohibits
-distinction and so ultimately limits the obtainable resolution;
-\gls{storm} simply suppresses the emission of a photon 99\% of the
-time \t{explain}.
+There are many similar methods like \gls{storm}, which was invented
+simultaneously by different research groups, and has since the mid
+2000s become the most widely used technique for \gls{smlm} \t{ref}.
 
-During \gls{storm} a few of the fluorophores are randomly activated to
-a \e{on state}, emit light for some time $\tau$, and then fall back
-into the \e{off (dark) state}, resulting in fluorophore
-\e{blinking}. This has to be repeated many times, until all the
-fluorophores have been \e{on} several times stochastically; in our
-case yielding 50k frames, each consisting of many, but mostly not
-neighbouring emitters.
+First, all fluorophores are put to their triplet state with intense
+laser light of appropriate frequency, in our case . In our experimental setup this means the live image gets
+darker the more fluorophores reside in the triplet state, until dark
+enough to start the recording (usually a few seconds).
+
+Now that most fluorophores reside in their dark state, upon laser
+activation with typically \SI{405}{\nm}, only the very few residing
+others switch to their \e{on} state. They repeatedly emit light by
+alternating between singlet state $S_1$ and ground state $S_0$ as
+described in section \ref{i:fl}. For some fractures of a second this
+results in fluorophore \e{blinking}, until they fall back into their
+\e{off} states. This somewhat static image is recorded, think of it as
+a snapshot of the night sky with a shutter speed of 1/50~s. This
+process has to be repeated many times, until all the fluorophores have
+been \e{on} several times stochastically. In our case this yields
+50000 frames, each consisting of many, but mostly not neighbouring
+emitters.
+
+\t{pic np?}
 
 
 \section{Two Dimensional SMLM}
 
 For obtaining 2d localisations, it is convenient and most often
-precise enough to fit a \textsc{\x{Gaussian}} to each of the diffuse dots
-in the frame, in order to estimate their centre---thus, the position
-of the fluorophore. For this thesis we used the ImageJ plugin
-\e{ThunderSTORM} \cite{omk14} for this task.
+precise enough to fit a \textsc{\x{Gaussian}} to each of the diffuse
+dots in the frame, in order to estimate their centre---thus, the
+position of the fluorophore in sub-pixel resolution. For this thesis
+we used the ImageJ plugin \e{ThunderSTORM} \cite{omk14} for this task.
 
 \begin{figure}[h]
   \centering \includegraphics[width=0.5\textwidth]{2dsmlm.png}
@@ -338,14 +360,12 @@ Fitting a full point spread function (PSF)---using prior calculated
 \textsc{Zernike} Modes---to such a stack of images containing reasonably spaced
 fluorescence signals even yields a list of 3d localisations \t{ref}.
 
-
-% .                     ___  ___  ___   ___                                      ___   ___ 
-% .   .'|\/|`.     .'|=|_.' `._|=|   |=|_.'   .'| |`.     .'|=|`.     .'|=|`.   |   |=|_.' 
-% . .'  |  |  `. .'  |  ___      |   |      .'  | |  `. .'  | |  `. .'  | |  `. `.  |      
-% . |   |  |   | |   |=|_.'      |   |      |   |=|   | |   | |   | |   | |   |   `.|=|`.  
-% . |   |  |   | |   |  ___      `.  |      |   | |   | `.  | |  .' |   | |  .'  ___  |  `.
-% . |___|  |___| |___|=|_.'        `.|      |___| |___|   `.|=|.'   |___|=|.'    `._|=|___|
-% .                                                                                     
+% .
+% .                 |   |               |      
+% .  __ `__ \   _ \ __| __ \   _ \   _` |  __| 
+% .  |   |   |  __/ |   | | | (   | (   |\__ \ 
+% . _|  _|  _|\___|\__|_| |_|\___/ \__,_|____/ 
+% .
 \clearpage\chapter{Methods}
 
 
@@ -636,15 +656,12 @@ projection demands sets of the same size. Brief parameter tuning
 reveals: Whatever parameters, some regions most likely will have to be
 excluded.
 
-
-% . 
-% .        __         ___  ___   ___  ___                    ___  ___   ___  ___   ___ 
-% .   .'|=|  |   .'|=|_.' |   |=|_.' |   | |`.     .'|      `._|=|   |=|_.' |   |=|_.' 
-% . .'  | |  | .'  |  ___ `.  |      |   | |  `. .'  |           |   |      `.  |      
-% . |   |=|.'  |   |=|_.'   `.|=|`.  |   | |   | |   |           |   |        `.|=|`.  
-% . |   |  |`. |   |  ___  ___  |  `.`.  | |   | |   |  ___      `.  |       ___  |  `.
-% . |___|  |_| |___|=|_.'  `._|=|___|  `.|=|___| |___|=|_.'        `.|       `._|=|___|
 % .                           
+% .                      | |        
+% .   __| _ \  __| |   | | __|  __| 
+% .  |    __/\__ \ |   | | |  \__ \ 
+% . _|  \___|____/\__,_|_|\__|____/
+% .
 \clearpage\chapter{Results}
 
 
@@ -2009,17 +2026,14 @@ the same cell. Thus we omitted the results.
   \label{f:npc_rigid}
 \end{figure*}
 
-
 \twocolumn
 
-
-% .                    ___   ___        ___  ___         ___   ___  ___   ___                          ___  
-% .   .'|=|`.     .'| |   |=|_.'   .'|=|_.' |   | |`.   |   |=|_.' |   |=|_.'   .'|   .'|=|`.     .'| |   | 
-% . .'  | |  `. .'  | `.  |      .'  |      |   | |  `. `.  |      `.  |      .'  | .'  | |  `. .'  |\|   | 
-% . |   | |   | |   |   `.|=|`.  |   |      |   | |   |   `.|=|`.    `.|=|`.  |   | |   | |   | |   | |   | 
-% . |   | |  .' |   |  ___  |  `.`.  |  ___ `.  | |   |  ___  |  `. ___  |  `.|   | `.  | |  .' |   | |  .' 
-% . |___|=|.'   |___|  `._|=|___|  `.|=|_.'   `.|=|___|  `._|=|___| `._|=|___||___|   `.|=|.'   |___| |.'   
-% .                   
+% .
+% .      |_)                          _)             
+% .   _` | |  __|  __| |   |  __|  __| |  _ \  __ \  
+% .  (   | |\__ \ (    |   |\__ \\__ \ | (   | |   | 
+% . \__,_|_|____/\___|\__,_|____/____/_|\___/ _|  _|
+% .
 \clearpage\chapter{Discussion}
 
 
@@ -2177,15 +2191,12 @@ matrices $\b{R}_a^{r,a}$ to the ground truth $\b{R}_a^{t}$ shows show
 good agreement for the affine recovery, with the rigid recovery
 completely failing.
 
-
-
-% .        ___                    ___         ___             ___         ___   ___                          ___  
-% .   .'|=|_.'   .'|=|`.     .'| |   |   .'|=|_.'   .'|      |   | |`.   |   |=|_.'   .'|   .'|=|`.     .'| |   | 
-% . .'  |      .'  | |  `. .'  |\|   | .'  |      .'  |      |   | |  `. `.  |      .'  | .'  | |  `. .'  |\|   | 
-% . |   |      |   | |   | |   | |   | |   |      |   |      |   | |   |   `.|=|`.  |   | |   | |   | |   | |   | 
-% . `.  |  ___ `.  | |  .' |   | |  .' `.  |  ___ |   |  ___ `.  | |   |  ___  |  `.|   | `.  | |  .' |   | |  .' 
-% .   `.|=|_.'   `.|=|.'   |___| |.'     `.|=|_.' |___|=|_.'   `.|=|___|  `._|=|___||___|   `.|=|.'   |___| |.'   
-% .       
+% .
+% .                        |           _)             
+% .   __|  _ \  __ \   __| | |   |  __| |  _ \  __ \  
+% .  (    (   | |   | (    | |   |\__ \ | (   | |   | 
+% . \___|\___/ _|  _|\___|_|\__,_|____/_|\___/ _|  _| 
+% .
 \chapter{Conclusion}
 
 \t{I would fuse this with the above discussion or avoid making the
@@ -3102,31 +3113,24 @@ endif
 
 \twocolumn
 
-
-% .        _                _   
-% .   .'|=| `.   .'|   .'|=| `. 
-% . .'  | | .' .'  | .'  | | .' 
-% . |   |=|'.  |   | |   |=|'.  
-% . |   | |  | |   | |   | |  | 
-% . |___|=|_.' |___| |___|=|_.' 
-% . 
-
+% .
+% .  |    _) |     
+% .  __ \  | __ \  
+% .  |   | | |   | 
+% . _.__/ _|_.__/
+% .
 \clearpage
 
 \bibliography{bibliography}
 
 \bibliographystyle{apalike} % 'alpha' for 3 letters + year
 
-
-% .                   ___   ___  ___  ___   ___  ___   ___ 
-% .   .'|        .'| |   |=|_.' `._|=|   |=|_.' |   |=|_.' 
-% . .'  |      .'  | `.  |           |   |      `.  |      
-% . |   |      |   |   `.|=|`.       |   |        `.|=|`.  
-% . |   |  ___ |   |  ___  |  `.     `.  |       ___  |  `.
-% . |___|=|_.' |___|  `._|=|___|       `.|       `._|=|___|
 % .
-
-
+% .  |_)      |        
+% .  | |  __| __|  __| 
+% .  | |\__ \ |  \__ \ 
+% . _|_|____/\__|____/ 
+% .
 \clearpage \listoftables
 
 
@@ -3139,42 +3143,32 @@ endif
 
 % \clearpage \listoflistings
 
-
-% .        ___                          ___   ___  ___   ___                    __   ___   ___  
-% .   .'|=|_.'    .'|        .'|=|`.   |   |=|_.' |   |=|_.'   .'|=|`.     .'|=|  | |   | |   | 
-% . .'  |___    .'  |      .'  | |  `. `.  |      `.  |      .'  | |  `. .'  | |  | `.  |_|  .' 
-% . |   |`._|=. |   |      |   | |   |   `.|=|`.    `.|=|`.  |   |=|   | |   |=|.'    `.   .'   
-% . `.  |  __|| |   |  ___ `.  | |  .'  ___  |  `. ___  |  `.|   | |   | |   |  |`.    |   |    
-% .   `.|=|_.'' |___|=|_.'   `.|=|.'    `._|=|___| `._|=|___||___| |___| |___|  |_|    |___|    
-% . 
-
+% .
+% .        |                                  
+% .   _` | |  _ \   __|  __|  _` |  __| |   | 
+% .  (   | | (   |\__ \\__ \ (   | |    |   | 
+% . \__, |_|\___/ ____/____/\__,_|_|   \__, | 
+% . |___/                              ____/  
+% .
 \onecolumn
 
-%\glsaddallunused % add all unused terms to the glossary without including a phantom page number
+% \glsaddallunused % add all unused terms to the glossary without including a phantom page number
 \clearpage \printacronyms
 
+% .
+% . _)           |            
+% .  | __ \   _` |  _ \\ \  / 
+% .  | |   | (   |  __/ `  <  
+% . _|_|  _|\__,_|\___| _/\_\ 
+% .
+\clearpage \printindex
 
-% .              ___                     ___  ___   ___  
-% .   .'|   .'| |   |   .'|=|`.     .'|=|_.' |   | |   | 
-% . .'  | .'  |\|   | .'  | |  `. .'  |  ___ `.  | |  .' 
-% . |   | |   | |   | |   | |   | |   |=|_.'  .` |=| `.  
-% . |   | |   | |  .' |   | |  .' |   |  ___ |   | |   | 
-% . |___| |___| |.'   |___|=|.'   |___|=|_.' |___| |___| 
-% . 
-
-\clearpage
-
-\printindex
-
-
-% .  ___  ___   ___                    ___           ___        ___              
-% . `._|=|   |=|_.'   .'| |`.     .'|=|_.'      .'|=|_.'   .'| |   |   .'|=|`.   
-% .      |   |      .'  | |  `. .'  |  ___    .'  |  ___ .'  |\|   | .'  | |  `. 
-% .      |   |      |   |=|   | |   |=|_.'    |   |=|_.' |   | |   | |   | |   | 
-% .      `.  |      |   | |   | |   |  ___    |   |  ___ |   | |  .' |   | |  .' 
-% .        `.|      |___| |___| |___|=|_.'    |___|=|_.' |___| |.'   |___|=|.'   
-% . 
-
+% .
+% .  |   |                          | 
+% .  __| __ \   _ \   _ \ __ \   _` | 
+% .  |   | | |  __/   __/ |   | (   | 
+% . \__|_| |_|\___| \___|_|  _|\__,_|
+% .
 \end{document}
 % LocalWords:  Universit Velas scmos tirf ImageJ ThunderSTORM dstorm
 % LocalWords:  mle fminunc Noll gloxy Sigma-Aldrich pbs oxea OxyFlour

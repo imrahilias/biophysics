@@ -210,16 +210,21 @@ which leads to the discrimination between
 \]
 
 \begin{figure}[h]
-  \centering \includegraphics[width=0.5\textwidth]{jablonski_2.png}
-  \caption{asdf, \cite{asdf}.}
+  \centering
+  \includegraphics[width=0.5\textwidth]{jablonski.png}
+  \caption{
+    Jablonski diagram including vibrational levels for absorbance,
+    non-radiative decay, and fluorescence. Obtained under CC0 license from
+    \cite{ja22}.
+  }
   \label{f:asdf}
 \end{figure}
 
-Both processes happen by chance, which generally is viewed as a
-probability within quantum mechanics. This leads to the stochastic
-variables of the \x{rate} $\rho$ that we can measure in experiments as
-occurrence per time, and the \x{lifetime} $\tau$ of a given state as
-the time between excitation and emission.
+Both processes happen by chance, which leads to the stochastic
+variables of the \x{rate} of a process $\rho$ that we can measure in
+experiments as occurrence per time, and the \x{lifetime} $\tau$ of a
+given state as the time between excitation and emission.
+An examplary description is given as a 
 
 Many fluorophores have other transition paths that are somewhat
 rare. Notably is the radiation-free \x{inter-system crossing} to a
@@ -229,23 +234,25 @@ lower energy photon $h\nu$, albeit for a long due the stable nature of
 the triplet state, this effect was once considered a separate
 phenomenon termed \x{phosphorescence}.
 
+While a fluorophore in its ground state $S_0$ can shift to its excited
+state $S_1$, a fluorophore in the triplet state could not absorb the
+same photon to get \e{back} to the excited state $S_1$ ( at least not
+of similar energy). It stays dark until it falls back to ground state
+$S_0$.
 
+There are many known issues related to fluorophores, a proper
+treatment of experimental pitfalls exceed the scope of this work. One
+of the more frequent issues is called \e{\x{photobleaching}}: Some
+chemical reaction like oxidation might change the molecules
+characteristics so it loses the ability to fluorescence for good. Some
+other reaction may re-enable the fluorescence, that is one of the
+reasons for the use of oxygen-depleted \x{buffers} in \gls{smlm}.
 
-While in the triplet state, the molecule can not absorb a photon to
-get \e{back} to the excited state $S_1$, staying dark until it
-falls back to ground state $S_0$.
-
-Some chemical reaction like oxidation might change the molecules
-characteristics so it loses the ability to fluorescence for good,
-which is called \e{\x{photobleaching}}. Some other reaction may
-re-enable the fluorescence, that is one of the reasons for the use of
-oxygen-depleted \x{buffers} in \gls{smlm}.
-
-\begin{figure}[h]
-  \centering \includegraphics[width=0.5\textwidth]{alexa.png}
-  \caption{asdf, \cite{asdf}.}
-  \label{f:asdf}
-\end{figure}
+% \begin{figure}[h]
+%   \centering \includegraphics[width=0.5\textwidth]{alexa.png}
+%   \caption{asdf, \cite{alexa}.}
+%   \label{f:alexa}
+% \end{figure}
 
 
 \section{Fluorescence Microscopy}
@@ -261,49 +268,70 @@ soaked in a fluorophore solution. When analysing cell constituents,
 like in our case the \e{nuclear pore complex}, one must find a way to
 bind fluorophores to specific structures, like proteins with the use
 of antibodies. This process is complicated, a detailed explanation
-would exceed the scope of this paper. The interested reader is
-referred to /t{ref}.
+would exceed the scope of this paper.
 
 The specimen is illuminated with laser light, exciting the respective
 \x{fluorophores}; causing them to emit (much weaker) light on a
 slightly longer wavelength. After separation from excitation light
 using spectral filters, this image is captured by a sensitive camera
 like a \gls{emccd}.
-%(an alternative would be a \gls{scmos}).
 
-% However, fluorophores that are bound to the specimen surface and those
-% in the surrounding medium exist in an equilibrium state; When exciting
-% with a conventional fluorescence microscope, the fluorophores bound to
-% the surface are often overwhelmed by the background fluorescence
-% \t{ref}.
+The accuracy of fluorescence microscopy heavily relies on the
+\gls{snr} of the emitted light. If it is used to analyse translucent
+three dimensional structures, like cells, out of focus fluorophores
+become a problem.
 
-\t{rewrite}
+If one would excite all those fluorophores by using a laser like a
+flashlight, the emitted fluorescence light from the whole cell would
+mix and ultimately not allow for a precise localisation of the surface
+attached to the cover slip. Yet for the study on the scale of membrane
+constituents only the surface of the cell attached to the cover slip
+is of interest, not the whole cell. One way to restrict the
+fluorescence to a thin layer, is to only excite a thin layer in the
+first place.
 
 
 \section{Total Internal Reflection}\index{total internal reflection}
 
-To restrict the excitation to a thin layer of the specimen, and so
-only illuminating the bound fluorophores, \gls{tirf} microscopy can be
-used. This is a type of microscope with which a thin region of a
-specimen, usually less than 200 nanometers can be observed. This is
-used notably to study constituents of and interaction with cellular
-surfaces, such as cell adhesion or binding of antibodies \t{ref}.
+To restrict the excitation to a thin layer of the specimen, usually
+less than 200 nanometers, \gls{tirf} microscopy can be used. As the
+name suggests \gls{tirf} makes use of the fact that radiation with an
+incident angle greater than the critical angle of the border between
+two media is totally reflected (based on Snell’s law of
+refraction). Yet due to the quantum mechanical nature of
+electromagnetic radiation, a tiny part of the energy passes into the
+other medium, with its intensity perpendicular to the border
+decreasing exponentially with distance to it. This leads to a
+\e{\x{evanescent field}} or \e{\x{evanescent wave}}, with a depth of a
+few \SI{100}{nm} for visible light. \gls{tirf} microscopy uses this by
+shining a laser onto the cover slip at a supercritical angle, and so
+solely excites the few hundred nanometers of the cell wall attached to
+the cover slip. TIRF results in a thin slice of the three dimensional
+specimen, which may either be treated as flat surface by 2d
+localisation, or as a thin 3d space by appropriate 3d localisation
+techniques.
 
 
 \section{Single Molecule Localisation}\index{single molecule localisation}
 
 In order to prevent two neighbouring fluorophores to overlap, which
 prohibits distinction and so ultimately limits the obtainable
-resolution; the basic principle of all \gls{smlm} techniques is to
-separate the signal of neighbouring individual emitters in \e{time},
-which allows to determine their positions with nanometer precision.
+resolution; the basic principle of \gls{dstorm} and many other
+\gls{smlm} techniques is to separate the signal of neighbouring
+individual emitters in \e{time}, which allows to determine their
+positions with a precision only limited by its intensity:
 
-There are many similar methods like \gls{storm}, which was invented
-simultaneously by different research groups, and has since the mid
-2000s become the most widely used technique for \gls{smlm} \t{ref}.
+\begin{equation}
+  \Delta x = \frac{ \Delta k }{ \sqrt{n} }
+\end{equation}
+
+where $\Delta x$ is the localisation precision, $\Delta k$ is the
+\gls{fwhm} of the \gls{psf} and $n$ is the intensity as number of
+collected photons.
 
 First, all fluorophores are put to their triplet state with intense
-laser light of appropriate frequency, in our case . In our experimental setup this means the live image gets
+laser light of appropriate frequency depending on the fluorophore
+used. In our experimental setup this means the live image gets visibly
 darker the more fluorophores reside in the triplet state, until dark
 enough to start the recording (usually a few seconds).
 
@@ -313,14 +341,13 @@ others switch to their \e{on} state. They repeatedly emit light by
 alternating between singlet state $S_1$ and ground state $S_0$ as
 described in section \ref{i:fl}. For some fractures of a second this
 results in fluorophore \e{blinking}, until they fall back into their
-\e{off} states. This somewhat static image is recorded, think of it as
-a snapshot of the night sky with a shutter speed of 1/50~s. This
-process has to be repeated many times, until all the fluorophores have
-been \e{on} several times stochastically. In our case this yields
+\e{off} states. This somewhat static image is recorded, much like a
+snapshot of the night sky with a shutter speed of 1/50~s.
+
+This process has to be repeated many times, until all the fluorophores
+have been \e{on} several times stochastically. In our case this yields
 50000 frames, each consisting of many, but mostly not neighbouring
 emitters.
-
-\t{pic np?}
 
 
 \section{Two Dimensional SMLM}
@@ -357,8 +384,9 @@ defocus, one can guess the defocus and thus the z coordinate of the
 fluorescence molecule.
 
 Fitting a full point spread function (PSF)---using prior calculated
-\textsc{Zernike} Modes---to such a stack of images containing reasonably spaced
-fluorescence signals even yields a list of 3d localisations \t{ref}.
+\textsc{Zernike} Modes---to such a stack of images containing
+reasonably spaced fluorescence signals even yields a list of 3d
+localisations, as explained in detail in \ref{zbv20}.
 
 % .
 % .                 |   |               |      
@@ -418,13 +446,23 @@ but for \gls{smlm} this is not going to be precise enough. In this
 thesis we employ a \gls{psf} model\index{point spread function model}
 expressed in a \textsc{Zernike}\index{Zernike modes} modes basis using
 \textsc{Noll}\index{Noll coefficients} coefficients ranging from 2 to
-37 (3rd order \x{spherical aberration}) plus the 4th order spherical
+37 (3rd order \x{spherical aberration}s) plus the 4th order spherical
 mode $Z_{56}$ \cite{zkr18}:
 
 \begin{equation}
 \Phi = a_{56}Z_{56} + \sum_{i=1}^{37}{ a_iZ_i }
 \end{equation}
 
+
+\begin{figure}[h]
+  \centering \includegraphics[width=0.5\textwidth]{zern.png}
+  \caption{
+    The first 21 Zernike polynomials, ordered vertically by radial
+    degree and horizontally by azimuthal degree, obtained under CC-BY-SA
+    license from \cite{zern}.
+  }
+  \label{f:zern}
+\end{figure}
 
 \section{STORM \& dSTORM}\label{s:m:storm}
 
@@ -436,16 +474,16 @@ a high rate of \x{photoswitching} and minimal
 
 \subsection{Gloxy Buffer}\label{s:m:gloxy}
 
-The principle of \gls{storm} is based on an appropriate \e{\x{storm
-buffer}}, which suppresses the activation of the \e{\x{bright state}},
-and limits the amount of oxygen, the main source of photobleaching.
+The principle of \gls{storm} on cells is based on an appropriate
+\e{\x{storm buffer}}, which suppresses the activation of the
+\e{\x{bright state}}, and limits the amount of oxygen, the main source
+of photobleaching.
 
-Single channel \gls{smlm} may employ the same buffer for both
-\x{excitation wavelengths}, in our case at \SI{645}{\nm} (red)
-respective at \SI{488}{\nm} (blue). After its central ingredients
-\x{glucose} and \x{glucose oxidase}, the buffer we used throughout this paper
-for all single channel measurements unless noted otherwise is called
-\acrshort{gloxy} buffer\index{Gloxy buffer}.
+Single color \gls{smlm} at \SI{645}{\nm} (red) employs the
+\acrshort{gloxy} buffer\index{Gloxy buffer}, so called after its
+central ingredients \x{glucose} and \x{glucose oxidase}. We used
+throughout this paper for all single channel measurements at
+\SI{645}{\nm} unless noted otherwise.
 
 \subsubsection{Gloxy buffer concentration}
 \begin{itemize}
@@ -459,12 +497,12 @@ for all single channel measurements unless noted otherwise is called
 \subsection{OxEA Buffer}\label{s:m:oxea}
 
 Dual colour fluorescence microscopy poses novel challenges to find a
-proper \gls{dstorm} buffer, that works for both excitation wavelengths
-simultaneously---thus two distinct fluorophores AF647 and
-AF488---without interfering with each other. The buffer composition we
-used is based on \cite{nab16}, and called \acrshort{oxea}\index{OxEA
-  buffer} after its main ingredients \x{OxyFlour} and
-\gls{mea}\index{mercaptoethylamine hydrochloride}:
+proper \gls{dstorm} buffer, that simultaneously works for two distinct
+fluorophores AF647 and AF488---thus both excitation
+wavelengths---without interfering with each other. The buffer
+composition we used is based on \cite{nab16}, and called
+\acrshort{oxea}\index{OxEA buffer} after its main ingredients
+\x{OxyFlour} and \gls{mea}\index{mercaptoethylamine hydrochloride}:
 
 \subsubsection{OxEA buffer concentration}
 \begin{itemize}
@@ -502,7 +540,12 @@ correction collar $\{0.13,0.17,0.19\}$; using the program by
 \cite{zkr18}, described in Section~\ref{s:m:psf}.
 
 
-\subsection{Cram\'er Rao Lower Bound}\index{Cram\'er Rao lower bound}
+\subsection{Cram\'er Rao Lower Bound}\index{Cram\'er Rao lower bound}\label{s:m:crlb}
+
+The \gls{crlb} gives the theoretical limit for the localization
+precision (with any unbiased estimator). A detailed description would
+exceed the scope of this paper, the interested reader is referred to a
+rather recent tutorial \cite{cwo16}.
 
 In order to find the best correction collar setting of the Olympus
 \SI{1.5}{\NA} objective for \gls{smlm}, the \gls{crlb} is computed
@@ -667,29 +710,38 @@ excluded.
 
 \section{Dual Colour Buffer}
 
+\subsubsection{Beads}
+
+The beads (polystyrene spheres) we use for calibration of the phase
+retrieval algorithm are soaked in \e{\x{Alexa Fluors}} \x{AF647}
+respective \x{AF488} and imaged in pure water.
+
+Living cells like our prepared \gls{npc} samples are labeled with both
+\e{\x{Alexa Fluors}} \x{AF647} and \x{AF488} in \gls{gloxy} buffer,
+described in detail in Section~\ref{s:m:gloxy}.
+
+Gloxy is designed for Alexa Fluor AF647 and works with it as
+expected. The buffer failed for \x{AF488} excitation with appropriate
+light: The recorded intensity quickly degraded due to bleaching to
+about an order of magnitude lower than for AF647.
+
 In order to enable similarly precise dual colour three dimensional
 \gls{smlm}, by using alternating excitation with red and blue laser
-light; the buffer constituents play a central role.\\
-
-The prepared samples, both beads and \gls{npc}, labeled with both
-\e{\x{Alexa Fluors}} \x{AF647} and \x{AF488} in \gls{gloxy} buffer,
-described in detail in Section~\ref{s:m:gloxy}, which works well with
-either red or blue excitation.\\
+light the buffer constituents were found to play a central role.\\
 
 
 \subsubsection{OxEA buffer protocol}
 
-Additionally the samples, both beads and \gls{npc}s have been
-evaluated using \gls{oxea} buffer, described in detail in
-Section~\ref{s:m:oxea}, which is needed if one wants to use both red
-and blue excitation.\\
+Finally the \gls{npc} samples have been evaluated using \gls{oxea}
+buffer, described in detail in Section~\ref{s:m:oxea}.  OxEA was found
+to work well with either red or blue excitation.
 
 For about 1~\si{\milli\liter} of OxEA buffer we used the amounts shown
 in Table~\ref{t:oxea}, to obtain above listed concentrations.\\
 
 \begin{table}[!htb]
   \caption{Ingredients used for preparation of OxEA buffer for dual
-    colour \gls{dstorm} buffer.} \label{t:oxea}
+    colour \gls{dstorm}.} \label{t:oxea}
   \begin{tabularx}{.5\textwidth}{l X l r}
     \hhline{====}
     Order & Ingredient & Store & Vol / \si{\micro\liter} \\
@@ -709,6 +761,11 @@ The \gls{oxea} buffer did work, but offered notably less
 red channel compared to using \gls{gloxy} buffer; with the blue
 channel being worse still.
 
+Nevertheless OxEA clearly beat Gloxy in being able to buffer both
+AF647 and AF488 simultaneously, thus was used in all further
+measurements.
+
+
 \subsubsection{pH}
 
 The pH of the \gls{oxea} buffer is checked using both broad range pH
@@ -718,17 +775,42 @@ testing strips, and a digital pH meter, to be between pH~7 and pH~8.
 \section{Dual Colour Optics}
 
 
-\subsection{Zernike Modes}
+\subsection{Zernike Modes}\label{s:r:zern}
 
-The \textsc{Zernike} modes of the PSF are shown for each of the three
-correction collar settings $\{0.13,0.17,0.19\}$, each for blue channel
-respective red channel in Figure~\ref{f:zernblue} respective
-Figure~\ref{f:zernred}.
+The calculated \textsc{Zernike} modes of the PSF are shown for each of
+the three correction collar settings $\{0.13,0.17,0.19\}$, each for
+blue channel respective red channel in Figure~\ref{f:zernblue}
+respective Figure~\ref{f:zernred}.
 
 For convenience the same results are additionally shown grouped by the
 the three correction collar settings $\{0.13,0.17,0.19\}$, now for
 both red and blue channel in Figure~\ref{f:zern013},
-Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.
+Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.\\
+
+The aim is now to find a correction collar setting where the
+\textsc{Zernike} modes are both low and similar for red and blue
+excitation.
+
+As an overview the various settings lead to distinguishable
+\textsc{Zernike} modes, yet in a similar order of magnitude (from 0 to
+about 0.1~au), as can be seen in all the mentioned figures.
+
+As an example: In Figure~\ref{f:zern017} showing setting of $0.17$,
+one can see that there is a huge difference in \textsc{Zernike} mode
+number 22; red light at 0.01, where blue light gives 0.06.
+
+We can also clearly see that for the setting of $0.13$ the aberrations
+for red mostly exceed those of blue light, indicating that this might
+not be a good choice \textsc{Zernike} mode wise.
+
+On the other hand we can see that while equal for red and blue the
+\textsc{Zernike} modes for setting 0.19 features high lower orders,
+which even if evenly for both colors is not desirable.
+
+A closer inspection suggests that at setting 0.19 the magnitude of the
+calculated \textsc{Zernike} modes is quite similar to the one with
+setting 0.17, yet slightly higher in all respects; which supports
+ruling out the correction color setting 0.19.
 
 % \begin{figure*}[!t]
 %   \begin{tikzpicture}
@@ -952,15 +1034,45 @@ Figure~\ref{f:zern017} and Figure~\ref{f:zern019}.
 
 \clearpage\subsection{Cram\'er Rao Lower Bound}\label{s:r:crlb}
 
-The Estimated \acrfull{crlb} for different correction Collar settings
-(varying linestyles for 0.13, 0.17, 0.19) of the Olympus \SI{1.5}{\NA}
-objective; for X, Y and Z axis (top, middle, and bottom); for both red
-and blue channel (colours) is shown in
-Figure~\ref{f:all}.\\
+The Estimated \acrfull{crlb} are calculated for different correction
+collar settings as shown in section \ref{s:m:crlb} using the
+\textsc{Zernike} modes described in section \ref{s:r:zern}.\\
 
-Additionally plots grouped by X, Y and Z axis are shown in
-Figure~\ref{f:axes}, as well as grouped by different correction Collar
-settings in Figure~\ref{f:collar}.\\
+All results are shown together in Figure~\ref{f:all}; the different
+correction collar settings (varying linestyles for 0.13, 0.17, 0.19)
+of the Olympus \SI{1.5}{\NA} objective; for $X$, $Y$ and $Z$ axis
+(top, middle, and bottom); for both red and blue channel (colours).\\
+
+Additionally plots grouped by $X, Y$ and $Z$ axis are shown in
+Figure~\ref{f:axesr} for red light and Figure~\ref{f:axesb} for blue
+light. Finally plots grouped by different correction collar settings
+are shown in Figure~\ref{f:collarr} respective
+Figure~\ref{f:collarb}.\\
+
+The \gls{crlb} presents an estimation of the obtainable resolution
+both lateral ($X$,$Y$) as well as depth ($Z$).
+
+Obviously the various correction collar settings lead to different
+obtainable resolution. For SMLM we are interested in defocusing some
+\SI{200}{nm}, so we want the lowest possible $X,Y$ and $Z$ \gls{crlb}
+values, ideally for both red and blue.\\
+
+From \ref{f:all} it can be seen that the \gls{crlb} values are roughly
+the same for red and blue light. So we only need to select the
+correction collar with the best overall resolution, thus the lowest
+\gls{crlb} values. An inspection of Figure~\ref{f:collarr} hints to
+the exclusion of the 0.19 setting, as the depth ($Z$) \gls{crlb} is
+quite high in the range between 0 and \SI{250}{nm}.
+
+On the one hand both the $X$ and $Y$ \gls{crlb} values for correction
+collar setting 0.19 and 0.17 are lower than 0.13 in the range between
+0 and \SI{250}{nm}. On the other hand the depth resolution $Z$
+\gls{crlb} values for 0.19 and 0.17 are much higher than for 0.13.
+
+Considering both the lateral ($X$,$Y$) as well as depth ($Z$)
+resolution, we might consider 0.13 or 0.17 both offer a good
+compromise. 0.13 features better depth while worse lateral resolution,
+and 0.17 vica versa.
 
 \begin{figure*}[!t]
   \begin{tikzpicture}
@@ -1041,7 +1153,7 @@ settings in Figure~\ref{f:collar}.\\
         xticklabels={,,},
         ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
         grid=major,
-        legend entries={0.13 X,0.13 X,0.13 X},
+        legend entries={0.13 X,0.17 X,0.19 X},
         % legend pos = north west,
         ]
         \addplot[color=teal]
@@ -1065,7 +1177,7 @@ settings in Figure~\ref{f:collar}.\\
         xticklabels={,,},
         ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
         grid=major,
-        legend entries={0.17 Y,0.17 Y,0.17 Y},
+        legend entries={0.13 Y,0.17 Y,0.19 Y},
         % legend pos = north west,
         ]
         \addplot[color=teal]
@@ -1088,7 +1200,7 @@ settings in Figure~\ref{f:collar}.\\
         xlabel={Z Position / \n{nm}},
         ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
         grid=major,
-        legend entries={0.19 Z,0.19 Z,0.19 Z},
+        legend entries={0.13 Z,0.17 Z,0.19 Z},
         legend pos = north west,
         ]
         \addplot[color=teal]
@@ -1100,11 +1212,11 @@ settings in Figure~\ref{f:collar}.\\
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
-  \caption{ Estimated \textsc{Cram\'er Rao} lower bound for different correction
-    Collar settings (teal: 0.13, orange: 0.17, purple: 0.19) of the
-    Olympus \SI{1.5}{\NA} objective; grouped by X, Y and Z axis (top,
-    middle, and bottom).}
-  \label{f:axes}
+  \caption{ Estimated \textsc{Cram\'er Rao} lower bound for blue light
+    for different correction Collar settings (teal: 0.13, orange: 0.17,
+    purple: 0.19) of the Olympus \SI{1.5}{\NA} objective; grouped by X, Y
+    and Z axis (top, middle, and bottom).}
+  \label{f:axesb}
 \end{figure}
 % 
 \begin{figure}[!t]
@@ -1185,11 +1297,177 @@ settings in Figure~\ref{f:collar}.\\
       \end{axis}
     \end{tikzpicture}
   \end{subfigure}
-  \caption{ Estimated \textsc{Cram\'er Rao} lower bound for X, Y and Z axis
-    (teal, orange and purple lines); grouped by different correction
-    Collar settings (top: 0.13, middle: 0.17, bottom: 0.19) of the
-    Olympus \SI{1.5}{\NA} objective.}
-  \label{f:collar}
+  \caption{ Estimated \textsc{Cram\'er Rao} lower bound for blue light
+    for X, Y and Z axis (teal, orange and purple lines); grouped by
+    different correction Collar settings (top: 0.13, middle: 0.17, bottom:
+    0.19) of the Olympus \SI{1.5}{\NA} objective.}
+  \label{f:collarb}
+\end{figure}
+
+
+% 
+\begin{figure}[!t]
+  \begin{subfigure}[t!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 X,0.17 X,0.19 X},
+        % legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_013_red2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_017_red2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_019_red2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 Y,0.17 Y,0.19 Y},
+        % legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_013_red2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_017_red2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_019_red2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        xlabel={Z Position / \n{nm}},
+        ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 Z,0.17 Z,0.19 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_013_red2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_017_red2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_019_red2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \caption{ Estimated \textsc{Cram\'er Rao} lower bound for red light
+    for different correction Collar settings (teal: 0.13, orange: 0.17,
+    purple: 0.19) of the Olympus \SI{1.5}{\NA} objective; grouped by X, Y
+    and Z axis (top, middle, and bottom).}
+  \label{f:axesr}
+\end{figure}
+% 
+\begin{figure}[!t]
+  \begin{subfigure}[t!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        ymin=0,
+        ymax=60,        
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
+        grid=major,
+        legend entries={0.13 X,0.13 Y,0.13 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_013_red2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_013_red2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_013_red2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        ymin=0,
+        ymax=60,
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        % xlabel={Z Position / \n{nm}},
+        xticklabels={,,},
+        ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
+        grid=major,
+        legend entries={0.17 X,0.17 Y,0.17 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_017_red2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_017_red2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_017_red2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \begin{subfigure}[b!]{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        ymin=0,
+        ymax=60,
+        enlargelimits=false,
+        smooth,
+        grid=both,
+        grid style=dashed,
+        xlabel={Z Position / \n{nm}},
+        ylabel={\textsc{Cram\'er Rao} lower bound / \n{nm}},
+        grid=major,
+        legend entries={0.19 X,0.19 Y,0.19 Z},
+        legend pos = north west,
+        ]
+        \addplot[color=teal]
+        table [ x=n, y=x, col sep=comma ] {crlb/crall_019_red2.csv };
+        \addplot[color=orange ]
+        table [ x=n, y=y, col sep=comma ] {crlb/crall_019_red2.csv};
+        \addplot[color=violet ]
+        table [ x=n, y=z, col sep=comma ] {crlb/crall_019_red2.csv};
+      \end{axis}
+    \end{tikzpicture}
+  \end{subfigure}
+  \caption{ Estimated \textsc{Cram\'er Rao} lower bound for red light
+    for X, Y and Z axis (teal, orange and purple lines); grouped by
+    different correction Collar settings (top: 0.13, middle: 0.17, bottom:
+    0.19) of the Olympus \SI{1.5}{\NA} objective.}
+  \label{f:collarr}
 \end{figure}
 
 
@@ -1213,7 +1491,11 @@ Figure~\ref{f:npco} and Figure~\ref{f:npcz} show an example overview
 (respective zoom) of a set of two dimensional SMLM data of NPCs using
 \gls{dstorm} with \gls{gloxy} buffer. The labeled NPC tori are clearly
 visible, even the more or less eight-fold symmetry of the
-\x{nucleoporin}s is resolved.
+\x{nucleoporin}s is resolved.\\
+
+For comparison Figure\ref{f:npc} shows a reconstruction of a human
+\gls{npc} from \cite{npc} where the eight-fold symmetry is clearly
+visible.
 
 \newpage
 ~ % dirty hack
@@ -1227,9 +1509,19 @@ visible, even the more or less eight-fold symmetry of the
   \label{f:npcz}
 \end{figure}
 
-\t{you could add a scheme of the NPC so that it is clear that what we
-  see in this pictures resembles the real 8-fold structure of the
-  pore}
+~ % dirty hack
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{npc/npc3.jpg}
+  \caption{Cytoplasmic face of the human NPC.  Near-atomic composite
+    structure of the NPC generated by docking high-resolution crystal
+    structures into a cryo‑ET reconstruction of an intact human NPC. The
+    symmetric core, embedded in the nuclear envelope, is decorated with
+    NUP358 (red) domains bound to Ran (gray), flexibly projected into the
+    cytoplasm, and CFNCs (pink) overlooking the central transport
+    channel. Figure and description from \cite{npc}.}
+  \label{f:npc}
+\end{figure}
 
 \clearpage\section{Three Dimensional SMLM}\label{s:r:ana}
 
@@ -2057,15 +2349,25 @@ similar---for most of the \textsc{Zernike} modes.\\
 
 Yet the phase retrieval program gave the error \e{high residual error}
 for both the red and the blue channel when using the correction collar
-settings $\{0.17,0.19\}$.
+settings $\{0.17,0.19\}$. This error indicates that the obtained
+images are distorted in a way the phase retrieval program cannot
+perceive and correct for. There might be many different reasons for
+that, a thorough inspection of the theoretical background of the given
+phase retrieval program far exceeds the scope of this work. But since
+the correction setting is solely meant for enhancing the resulting
+images (less distortion), we can conclude that the settings
+$\{0.17,0.19\}$ do not work in this way. Even if the setting of $0.17$
+is recommended by the manufacturer for our microscope, this might not
+give the best results in our downstream pipeline, and the setting of
+$0.13$ should be used nevertheless.
 
 
 \subsection{Correction Collar}
 
-Based on the Figures~\ref{f:axes} and Figure~\ref{f:collar}, and
+Based on the Figures~\ref{f:axesb} and Figure~\ref{f:collarb}, and
 considering the fact---that we are interested in moderately defocusing
 (up to say \SI{250}{\nano\meter})---one might conclude, that the most
-preferable setting for the correction collar is 0.13. \t{why?}\\
+preferable setting for the correction collar is 0.13.\\
 
 Yet the recommended setting for our microscope setup is 0.17! Based on
 the PSF stacks one would have guessed the 0.17 is more sensitive to z

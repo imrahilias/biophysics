@@ -1,7 +1,7 @@
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 % arara: bibtex
 % arara: makeglossaries
-%% arara: makeindex
+%% arara: makeuaindex
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 % arara: lualatex: { shell: true, synctex: true, interaction: nonstopmode }
 \documentclass[11pt, a4paper, oneside, twocolumn]{report}
@@ -21,6 +21,7 @@
 \usepackage{
   amsmath,
   amssymb,
+  floatpag,
   graphicx,
   hhline,
   hyphenat,
@@ -31,6 +32,7 @@
   pdfpages,
   pgfplots,
   siunitx,
+  soul,
   subcaption,
   tabularx,
   tikzinput,
@@ -50,7 +52,7 @@
 } % TikZ doesnt know the twocolumn thing
 \usetikzlibrary{external}
 \usetikzlibrary{calc}
-\tikzexternalize[optimize=true,prefix=tikz/] % externalize tikz, much faster, many conflicts!
+\tikzexternalize[optimize=false,prefix=tikz/] % externalize tikz, much faster, many conflicts!
 \setcounter{secnumdepth}{2} % set level of depth for numbering
 \graphicspath{{figures/}}
 \renewcommand{\arraystretch}{1.2} % streches row heigth in arrays (and tables)
@@ -136,7 +138,7 @@
 % . \__|\___/ \___|
 % .       
 \clearpage \tableofcontents
-% \clearpage \listoftodos % conflict: comment out \listoftodos when externalizing tikz, or use "\tikzexternalize[optimize=false"
+\clearpage \listoftodos % conflict: comment out \listoftodos when externalizing tikz, or use "\tikzexternalize[optimize=false]"
 % .
 % . _)       |             
 % .  | __ \  __|  __| _ \  
@@ -215,10 +217,12 @@ which leads to the discrimination between
   \caption{
     Jablonski diagram including vibrational levels for absorbance,
     non-radiative decay, and fluorescence. Obtained under CC0 license from
-    \cite{ja22}.
+    .
   }
   \label{f:asdf}
 \end{figure}
+
+%\protect\cite{ja22}
 
 Both processes happen by chance, which leads to the stochastic
 variables of the \x{rate} of a process $\rho$ that we can measure in
@@ -1493,7 +1497,7 @@ Figure~\ref{f:npco} and Figure~\ref{f:npcz} show an example overview
 visible, even the more or less eight-fold symmetry of the
 \x{nucleoporin}s is resolved.\\
 
-For comparison Figure\ref{f:npc} shows a reconstruction of a human
+For comparison Figure~\ref{f:npc} shows a reconstruction of a human
 \gls{npc} from \cite{npc} where the eight-fold symmetry is clearly
 visible.
 
@@ -1657,9 +1661,12 @@ further shrinks down our exemplary data set by about 60\%.
 We use \gls{npc}s as a test target for our method, thus we have some
 additional knowledge, like the geometry of each individual \gls{npc}:
 they comprise two stacked tori, each about \SI{150}{\nano\m} diameter
-(in x,y direction), and \SI{150}{\nano\m} apart (in z direction).
-
-\t{now the scheme would be really helpful}
+(in x,y direction), and \SI{150}{\nano\m} apart (in z direction). Mind
+that in Figure~\ref{f:npc}, the reconstruction of a human \gls{npc}
+from \cite{npc}, only the Cytoplasmic face is shown. The protein
+groups forming the torus are shown in colors on the grey membrane
+surface. The second torus is on the core side of the nuclear envelope,
+and is not shown here.\\
 
 Now we can group our dataset with close to 100 thousand localisations
 to clusters of roughly this size in x,y (set \tt{dim=2}). Note that
@@ -1744,7 +1751,7 @@ if they do not comprise a very meaningful parameter in the particular
 case due to the \gls{npc}s geometry.
 
 Figure~\ref{f:8_best_filtered_clusters} and
-Figure~\ref{f:9_best_filtered_clusters}shows a 3d plot of the
+Figure~\ref{f:9_best_filtered_clusters} show a 3d plot of the
 localisations within the 10 \e{best} clusters, colour coded by photon
 count respective by cluster assignment.
 
@@ -1811,9 +1818,8 @@ to a good \gls{snr} in the blue channel.
 Using the \gls{oxea} buffer described in Section~\ref{s:m:oxea}, we
 got both channels working, but the overall \gls{snr} proved to be not
 good enough for drift analysis via \e{ImageJ}, or even \x{particle
-  tracking}. There is no way we could try to recover the 3d
-transformation relating those data sets under this noisy conditions
-\t{image}.
+tracking}. There is no way we could try to recover the 3d
+transformation relating those data sets under this noisy conditions.
 
 Thus we will analyse simulated data instead: based on three
 dimensional random data sets in Section~\ref{s:r:3dsim}, as well as
@@ -2250,8 +2256,10 @@ suspicious immediately. In our case the translation vector is in the
 order of millimeters, which is not very plausible for two sets within
 the same cell. Thus we omitted the results.
 
+\clearpage
+\onecolumn
 
-\begin{figure*}[!t]
+\begin{figure*}[p]
   \vspace{-5em}
   \centering
   \begin{tikzpicture}
@@ -2310,11 +2318,13 @@ the same cell. Thus we omitted the results.
     \draw [dashed] (c2) -- (ax1.north west);
     \draw [dashed] (c3) -- (ax1.north east);
   \end{tikzpicture}
+
   \caption{Demonstration of a rigid transformation of the
-    localisations (magenta $\circ$) from blue channel (blue $\times$)
-    to red channel (violet $+$); the transformed blue channel
-    localisations mostly align well with the red channel
-    localisations.}
+    localisations (magenta {\color{magenta} $\circ$}) from blue channel
+    (blue {\color{cyan} $\times$}) to red channel ({\color{violet} $+$});
+    the transformed blue channel localisations mostly align well with the
+    red channel localisations.}
+  
   \label{f:npc_rigid}
 \end{figure*}
 
@@ -2326,13 +2336,19 @@ the same cell. Thus we omitted the results.
 % .  (   | |\__ \ (    |   |\__ \\__ \ | (   | |   | 
 % . \__,_|_|____/\___|\__,_|____/____/_|\___/ _|  _|
 % .
-\clearpage\chapter{Discussion}
+\clearpage\chapter{Discussion \& Conclusion}
 
 
 \section{Dual Colour Optics}
 
 
 \subsection{Zernike Modes}
+
+
+The \textsc{Zernike} modes for both red and blue channel are estimated
+via phase retrieval of in-focus measurements of beads at various
+depths. This yields a full PSF model to be used for defocus 3d
+\gls{smlm}.\\
 
 The image stacks look good, even if not all are perfectly
 symmetrical--some errors are to be expected.\\
@@ -2371,10 +2387,30 @@ preferable setting for the correction collar is 0.13.\\
 
 Yet the recommended setting for our microscope setup is 0.17! Based on
 the PSF stacks one would have guessed the 0.17 is more sensitive to z
-since it changes much more with different z positions than 0.13.
+since it changes much more with different z positions than 0.13.\\
+
+As a conclusion we propose The best setting of the correction collar
+for the Olympus \SI{1.5}{\NA} objective is shown to be 0.13. Here we
+find the preferable compromise between x,y precision and z precision,
+in the regime between about 0 and \SI{250}{\nano\meter}.
+
+
+\section{Three Dimensional SMLM}
+
+The analysis performed in Section~\ref{s:r:ana} is well suited to
+greatly reduce the localisations, just by omitting unplausible data
+and noise; in our example from initially 370k to below 100k, or to
+about 26\%.
 
 
 \section{NPC Analysis}~\label{s:d:ananpc}
+
+Our approach of fully automatic evaluation of the \gls{npc}
+\e{quality}, may well be considered failed.
+
+Nevertheless we might have gained some valuable insight, as some of
+the results of the \gls{npc} analysis might still prove themselves
+useful as a secondary filters.
 
 
 \subsection{Define Scalar Quality}
@@ -2437,6 +2473,20 @@ much easier way to plot some of them manually, than to zoom in on a
 plot of thousands of localisations repeatedly.
 
 
+\section{Dual Colour Buffer}
+
+The prepared samples, both beads and \gls{npc}s have been evaluated
+using \gls{gloxy} buffer and \gls{oxea} buffer.
+
+The two channels (red and blue) showed great differences in blinking
+speed, \e{dark state} and \e{bright state} lifetime, Signal and
+background magnitude as well as \gls{snr}.
+
+The data obtained from this dual colour three dimensional localisation
+was not of high enough precision to be analysed meaningfully. We thus
+propose further investigation in buffers used for dual colour SMLM.
+  
+
 \section{Dual Colour Projection}
 
 Simply put, the algorithm \tt{rig()} finds the \e{best} rigid
@@ -2493,68 +2543,6 @@ matrices $\b{R}_a^{r,a}$ to the ground truth $\b{R}_a^{t}$ shows show
 good agreement for the affine recovery, with the rigid recovery
 completely failing.
 
-% .
-% .                        |           _)             
-% .   __|  _ \  __ \   __| | |   |  __| |  _ \  __ \  
-% .  (    (   | |   | (    | |   |\__ \ | (   | |   | 
-% . \___|\___/ _|  _|\___|_|\__,_|____/_|\___/ _|  _| 
-% .
-\chapter{Conclusion}
-
-\t{I would fuse this with the above discussion or avoid making the
-  subchapters here}
-
-
-\section{Dual Colour Optics}
-
-
-\subsection{PSF Model \& Zernike}
-
-The \textsc{Zernike} modes for both red and blue channel are estimated
-via phase retrieval of in-focus measurements of beads at various
-depths. This yields a full PSF model to be used for defocus 3d
-\gls{smlm}.
-
-
-\subsection{Correction Collar}
-
-The best setting of the correction collar for the Olympus
-\SI{1.5}{\NA} objective is shown to be 0.13. Here we find the
-preferable compromise between x,y precision and z precision, in the
-regime between about 0 and \SI{250}{\nano\meter}.
-
-
-\section{Three Dimensional SMLM}
-
-The analysis performed in Section~\ref{s:r:ana} is well suited to
-greatly reduce the localisations, just by omitting unplausible data
-and noise; in our example from initially 370k to below 100k, or to
-about 26\%.
-
-
-\section{NPC Analysis}
-
-Our approach of fully automatic evaluation of the \gls{npc}
-\e{quality}, may well be considered failed.
-
-Nevertheless we might have gained some valuable insight, as some of
-the results of the \gls{npc} analysis might still prove themselves
-useful as a secondary filters.
-
-
-\section{Dual Colour Buffer}
-
-The prepared samples, both beads and \gls{npc}s have been evaluated
-using \gls{gloxy} buffer and \gls{oxea} buffer.
-
-The two channels (red and blue) showed great differences in blinking
-speed, \e{dark state} and \e{bright state} lifetime, Signal and
-background magnitude as well as \gls{snr}.
-
-The data obtained from this dual colour three dimensional localisation
-was not of high enough precision to be analysed meaningfully. We thus
-propose further investigation in buffers used for dual colour SMLM.
-  
 
 \section{Dual Colour Simulation}
 
@@ -2661,9 +2649,10 @@ completely, this method simply cannot work on two dimensional data.
 \appendix
 
 
-\chapter{Code}\label{ch:code}
-
 \onecolumn
+
+
+\chapter{Code}\label{ch:code}
 
 
 \section{3d SMLM Analysis: NPC}
@@ -2672,6 +2661,7 @@ completely, this method simply cannot work on two dimensional data.
   manni,
   linenos = true,
   frame = single,
+  breaklines,
 }
 
 
@@ -3464,6 +3454,8 @@ endif
 % . _|_|  _|\__,_|\___| _/\_\ 
 % .
 \clearpage \printindex
+
+\t{index}
 
 % .
 % .  |   |                          | 
